@@ -1,0 +1,314 @@
+<mujoco model="v2_4">
+  <compiler angle="radian"/>
+  <option solver="PGS" timestep="0.001" />
+  
+  <default>
+    <geom density="1700"/>
+  </default>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3"
+      rgb2=".2 .3 .4" width="300" height="300"/>
+    <material name="grid" texture="grid" texrepeat="8 8" reflectance=".2"/>
+
+    <mesh name="base_link" file="base_link.STL"/>
+    <mesh name="LF_Thigh" file="LF_Thigh.STL"/>
+    <mesh name="LF_Calf" file="LF_Calf.STL"/>
+    <mesh name="RF_Thigh" file="RF_Thigh.STL"/>
+    <mesh name="RF_Calf" file="RF_Calf.STL"/>
+    <mesh name="LB_Thigh" file="LB_Thigh.STL"/>
+    <mesh name="LB_Calf" file="LB_Calf.STL"/>
+    <mesh name="RB_Thigh" file="RB_Thigh.STL"/>
+    <mesh name="RB_Calf" file="RB_Calf.STL"/>
+    <mesh name="LF_MAA_UPLink" file="LF_MAA_UPLink.STL"/>
+    <mesh name="LF_MAA_FM_Link" file="LF_MAA_FM_Link.STL"/>
+    <mesh name="LF_MAA_LOLink" file="LF_MAA_LOLink.STL"/>
+    <mesh name="RF_MAA_UPLink" file="RF_MAA_UPLink.STL"/>
+    <mesh name="RF_MAA_FM_Link" file="RF_MAA_FM_Link.STL"/>
+    <mesh name="RF_MAA_LOLink" file="RF_MAA_LOLink.STL"/>
+    <mesh name="LB_MAA_UPLink" file="LB_MAA_UPLink.STL"/>
+    <mesh name="LB_MAA_FM_Link" file="LB_MAA_FM_Link.STL"/>
+    <mesh name="LB_MAA_LOLink" file="LB_MAA_LOLink.STL"/>
+    <mesh name="RB_MAA_UPLink" file="RB_MAA_UPLink.STL"/>
+    <mesh name="RB_MAA_FM_Link" file="RB_MAA_FM_Link.STL"/>
+    <mesh name="RB_MAA_LOLink" file="RB_MAA_LOLink.STL"/>
+    <mesh name="LF_BAA_UPLink" file="LF_BAA_UPLink.STL"/>
+    <mesh name="LF_BAA_FM_Link" file="LF_BAA_FM_Link.STL"/>
+    <mesh name="LF_BAA_LOLink" file="LF_BAA_LOLink.STL"/>
+    <mesh name="RF_BAA_UPLink" file="RF_BAA_UPLink.STL"/>
+    <mesh name="RF_BAA_FM_Link" file="RF_BAA_FM_Link.STL"/>
+    <mesh name="RF_BAA_LOLink" file="RF_BAA_LOLink.STL"/>
+    <mesh name="LB_BAA_UPLink" file="LB_BAA_UPLink.STL"/>
+    <mesh name="LB_BAA_FM_Link" file="LB_BAA_FM_Link.STL"/>
+    <mesh name="LB_BAA_LOLink" file="LB_BAA_LOLink.STL"/>
+    <mesh name="RB_BAA_UPLink" file="RB_BAA_UPLink.STL"/>
+    <mesh name="RB_BAA_FM_LINK" file="RB_BAA_FM_LINK.STL"/>
+    <mesh name="RB_BAA_LOLink" file="RB_BAA_LOLink.STL"/>
+  </asset>
+
+  <worldbody>
+    <light name="top" pos="0 0 10"/>
+    <geom size="10 10 .01" type="plane" material="grid"/>
+    <body name="base" pos="0 0 0.5">
+    <freejoint/>
+    <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="base_link" mass="0.2"/>
+    <body name="LF_Thigh" pos="-0.1245 0.235 -0.105">
+      <!-- <inertial pos="0.0095038 -0.00067671 -0.13181" quat="0.998805 -0.0254895 -0.00015864 -0.0416916" mass="0.088242" diaginertia="0.000491686 0.000489575 7.72796e-06"/> -->
+      <joint name="LF_Shoulder" pos="0 0 0" axis="1 0 0" range="-1.046 1.046"/>
+      <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="LF_Thigh" mass="0.086" contype="0" conaffinity="0"/>
+      <body name="LF_Calf" pos="0 0 -0.25">
+        <!-- <inertial pos="0.0094997 0.14516 0.0018158" quat="0.702254 0.710844 -0.0280475 0.0274312" mass="0.10463" diaginertia="0.00040927 0.000402787 1.76049e-05"/> -->
+        <joint name="LF_Elbow" pos="0 0 0" axis="1 0 0" range="-1.27 0.5233333333"/>
+        <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="LF_Calf" mass="0.1033" friction="1 0.005 0.0001"/>
+      </body>
+    </body>
+    <body name="RF_Thigh" pos="0.1245 0.235 -0.105">
+      <!-- <inertial pos="-0.0096381 -0.00030317 -0.13031" quat="0.998671 -0.0254847 -0.000237269 -0.044789" mass="0.08659" diaginertia="0.000491548 0.000489544 7.61717e-06"/> -->
+      <joint name="RF_Shoulder" pos="0 0 0" axis="-1 0 0" range="-1.046 1.046"/>
+      <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="RF_Thigh" mass="0.086" contype="0" conaffinity="0"/>
+      <body name="RF_Calf" pos="0 0 -0.25">
+        <!-- <inertial pos="-0.0095003 0.14516 0.0018158" quat="0.702254 0.710844 -0.0280475 0.0274312" mass="0.10463" diaginertia="0.00040927 0.000402787 1.76049e-05"/> -->
+        <joint name="RF_Elbow" pos="0 0 0" axis="-1 0 0" range="-1.27 0.5233333333"/>
+        <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="RF_Calf" mass="0.1033" friction="1 0.005 0.0001"/>
+      </body>
+    </body>
+    <body name="LB_Thigh" pos="-0.125 -0.235 -0.105">
+      <!-- <inertial pos="0.00999622 0.000676712 -0.131806" quat="0.998803 0.0254893 0.000160069 -0.0417478" mass="0.0882422" diaginertia="0.000491688 0.00048958 7.728e-06"/> -->
+      <joint name="LB_Shoulder" pos="0 0 0" axis="1 0 0" range="-1.046 1.046"/>
+      <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="LB_Thigh" mass="0.086" contype="0" conaffinity="0"/>
+      <body name="LB_Calf" pos="0.0005 0 -0.25">
+        <!-- <inertial pos="0.00950033 -0.145161 0.00181582" quat="0.710843 0.702254 0.0274518 -0.0280683" mass="0.104633" diaginertia="0.000409268 0.00040279 1.76048e-05"/> -->
+        <joint name="LB_Elbow" pos="0 0 0" axis="1 0 0" range="-0.5233333333 1.27"/>
+        <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="LB_Calf" mass="0.1033" friction="1 0.005 0.0001"/>
+      </body>
+    </body>
+    <body name="RB_Thigh" pos="0.1245 -0.235 -0.105">
+      <!-- <inertial pos="-0.00909007 0.000314228 -0.126306" quat="0.998571 0.0255029 0.000282309 -0.0469686" mass="0.0835436" diaginertia="0.000490984 0.000489078 7.49674e-06"/> -->
+      <joint name="RB_Shoulder" pos="0 0 0" axis="-1 0 0" range="-1.046 1.046"/>
+      <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_Thigh" mass="0.086" contype="0" conaffinity="0"/>
+      <body name="RB_Calf" pos="0 0 -0.25">
+        <!-- <inertial pos="-0.00949967 -0.145161 0.00181582" quat="0.710843 0.702254 0.0274518 -0.0280683" mass="0.104633" diaginertia="0.000409268 0.00040279 1.76048e-05"/> -->
+        <joint name="RB_Elbow" pos="0 0 0" axis="-1 0 0" range="-0.5233333333 1.27"/>
+        <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_Calf" mass="0.1033" friction="1 0.005 0.0001"/>
+      </body>
+    </body>
+    <body name="LF_MAA_UPLink" pos="-0.125 0.175 -0.105">
+      <!-- <inertial pos="0.00946571 0.00225918 -0.0214302" quat="0.409664 0.028774 -0.073951 0.908778" mass="0.101356" diaginertia="3.27305e-05 3.12016e-05 1.33153e-05"/> -->
+      <joint name="LF_MAA_UPJoint" pos="0 0 0" axis="1 0 0"/>
+      <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="LF_MAA_UPLink" mass="0.001" contype="0" conaffinity="0"/>
+      <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.03091666667" contype="0" conaffinity="0"/>
+      <body name="LF_MAA_FM_Link" pos="0.01 0.015 -0.105">
+        <!-- <inertial pos="0 0 0" quat="0.463298 0.534187 -0.534187 0.463298" mass="0.000267035" diaginertia="1.93601e-08 1.02364e-08 1.02364e-08"/> -->
+        <joint name="LF_MAA_SlideJoint" pos="0 0 0" axis="0 0.141421 -0.989949" type="slide" damping="22" stiffness="740" springref="-0.019066"/>
+        <geom type="mesh" rgba="1 0 0 1" mesh="LF_MAA_FM_Link" mass="0.001" contype="0" conaffinity="0"/>
+        <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.1236666667" contype="0" conaffinity="0"/>
+        <body name="LF_MAA_LOLink" pos="-0.01 0.015 -0.105">
+          <!-- <inertial pos="0.0100016 -0.00530874 0.0341503" quat="0.997611 0.0690589 -0.000129232 0.00182151" mass="0.0161" diaginertia="9.30652e-06 9.22488e-06 1.76816e-06"/> -->
+          <joint name="LF_MAA_FM_SlideJoint" pos="0 0 0" axis="0 0.14142 -0.98995" type="slide" damping="22" stiffness="740" springref="-0.019066"/>
+          <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="LF_MAA_LOLink" mass="0.001" contype="0" conaffinity="0"/>
+          <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.03091666667" contype="0" conaffinity="0"/>
+        </body>
+      </body>
+    </body>
+    <body name="RF_MAA_UPLink" pos="0.125 0.175 -0.105">
+      <!-- <inertial pos="-0.0097509 0.00679665 -0.0501949" quat="0.908994 0.0655948 -0.0291701 0.410581" mass="0.0278699" diaginertia="2.40014e-05 2.38047e-05 1.9608e-06"/> -->
+      <joint name="RF_MAA_UPJoint" pos="0 0 0" axis="-1 0 0"/>
+      <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RF_MAA_UPLink" mass="0.001" contype="0" conaffinity="0"/>
+      <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.03091666667" contype="0" conaffinity="0"/>
+      <body name="RF_MAA_FM_Link" pos="-0.01 0.015 -0.105">
+        <!-- <inertial pos="0 0 0" quat="0.463298 0.534187 -0.534187 0.463298" mass="0.000267035" diaginertia="1.93601e-08 1.02364e-08 1.02364e-08"/> -->
+        <joint name="RF_MAA_SlideJoint" pos="0 0 0" axis="0 0.141421 -0.989949" type="slide" damping="22" stiffness="740" springref="-0.019066"/>
+        <geom type="mesh" rgba="1 0 0 1" mesh="RF_MAA_FM_Link" mass="0.001" contype="0" conaffinity="0"/>
+        <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.1236666667" contype="0" conaffinity="0"/>
+        <body name="RF_MAA_LOLink" pos="0.01 0.015 -0.105">
+          <!-- <inertial pos="-0.00999842 -0.00530874 0.0341503" quat="0.997611 0.0690589 -0.000129232 0.00182151" mass="0.0161" diaginertia="9.30652e-06 9.22488e-06 1.76816e-06"/> -->
+          <joint name="RF_MAA_FM_SlideJoint" pos="0 0 0" axis="0 0.141421 -0.989949" type="slide" damping="22" stiffness="740" springref="-0.019066"/>
+          <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RF_MAA_LOLink" mass="0.001" contype="0" conaffinity="0"/>
+          <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.03091666667" contype="0" conaffinity="0"/>
+        </body>
+      </body>
+    </body>
+    <body name="LB_MAA_UPLink" pos="-0.125 -0.175 -0.105">
+      <joint name="LB_MAA_UPJoint" pos="0 0 0" axis="1 0 0"/>
+      <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="LB_MAA_UPLink" mass="0.001" contype="0" conaffinity="0"/>
+      <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.03091666667" contype="0" conaffinity="0"/>
+      <body name="LB_MAA_FM_Link" pos="0.01 -0.015 -0.105">
+        <joint name="LB_MAA_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="22" stiffness="740" springref="-0.019066"/>
+        <geom type="mesh" rgba="1 0 0 1" mesh="LB_MAA_FM_Link" mass="0.001" contype="0" conaffinity="0"/>
+        <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.1236666667" contype="0" conaffinity="0"/>
+        <body name="LB_MAA_LOLink" pos="-0.01 -0.015 -0.105">
+          <joint name="LB_MAA_FM_SlideJoint" pos="0 0 0" axis="0 -0.14142 -0.98995" type="slide" damping="22" stiffness="740" springref="-0.019066"/>
+          <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="LB_MAA_LOLink" mass="0.001" contype="0" conaffinity="0"/>
+          <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.03091666667" contype="0" conaffinity="0"/>
+        </body>
+      </body>
+    </body>
+    <body name="RB_MAA_UPLink" pos="0.125 -0.175 -0.105">
+      <!-- <inertial pos="-0.00946571 -0.00225918 -0.0214302" quat="0.409664 -0.028774 0.073951 0.908778" mass="0.101356" diaginertia="3.27305e-05 3.12016e-05 1.33153e-05"/> -->
+      <joint name="RB_MAA_UpJoint" pos="0 0 0" axis="-1 0 0"/>
+      <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_MAA_UPLink" mass="0.001" contype="0" conaffinity="0"/>
+      <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.03091666667" contype="0" conaffinity="0"/>
+      <body name="RB_MAA_FM_Link" pos="-0.01 -0.015 -0.105">
+        <!-- <inertial pos="0 0 0" quat="0.534187 0.463298 -0.463298 0.534187" mass="0.000267035" diaginertia="1.93601e-08 1.02364e-08 1.02364e-08"/> -->
+        <joint name="RB_MAA_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="22" stiffness="740" springref="-0.019066"/>
+        <geom type="mesh" rgba="1 0 0 1" mesh="RB_MAA_FM_Link"  mass="0.001" contype="0" conaffinity="0"/>
+        <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.1236666667" contype="0" conaffinity="0"/>
+        <body name="RB_MAA_LOLink" pos="0.01 -0.015 -0.105">
+          <!-- <inertial pos="-0.0100016 0.00530874 0.0341503" quat="0.997611 -0.0690589 0.000129232 0.00182151" mass="0.0161" diaginertia="9.30652e-06 9.22488e-06 1.76816e-06"/> -->
+          <joint name="RB_MAA_FM_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="22" stiffness="740" springref="-0.019066"/>
+          <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_MAA_LOLink" mass="0.001" contype="0" conaffinity="0"/>
+          <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.03091666667" contype="0" conaffinity="0"/>
+        </body>
+      </body>
+    </body>
+    <body name="LF_BAA_UPLink" pos="-0.125 0.335 -0.105">
+      <!-- <inertial pos="0.00981181 -0.00562976 -0.0798569" quat="0.410065 -0.0137215 0.030221 0.911452" mass="0.0368916" diaginertia="8.19482e-05 8.17516e-05 2.11402e-06"/> -->
+      <joint name="LF_BAA_UpJoint" pos="0 0 0" axis="1 0 0"/>
+      <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="LF_BAA_UPLink" mass="0.001" contype="0" conaffinity="0"/>
+      <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.04498333333" contype="0" conaffinity="0"/>
+      <body name="LF_BAA_FM_Link" pos="0.01 -0.00669873 -0.1">
+        <!-- <inertial pos="0 0 0" quat="0.516439 0.483002 -0.483002 0.516439" mass="0.000267035" diaginertia="1.93601e-08 1.02364e-08 1.02364e-08"/> -->
+        <joint name="LF_BAA_SlideJoint" pos="0 0 0" axis="0 -0.0668375 -0.997764" type="slide" damping="22" stiffness="600" springref="0.02578"/>
+        <geom type="mesh" rgba="1 0 0 1" mesh="LF_BAA_FM_Link" mass="0.001" contype="0" conaffinity="0"/>
+        <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.1799333333" contype="0" conaffinity="0"/>
+        <body name="LF_BAA_LOLink" pos="-0.01 -0.00669873 -0.1">
+          <!-- <inertial pos="0.0100001 0.00426952 0.0584895" quat="0.999456 -0.0329796 0 0" mass="0.151653" diaginertia="0.000248348 0.000247712 1.52619e-05"/> -->
+          <joint name="LF_BAA_FM_SlideJoint" pos="0 0 0" axis="0 -0.0668375 -0.997764" type="slide" damping="22" stiffness="600" springref="0.02578"/>
+          <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="LF_BAA_LOLink" mass="0.001" contype="0" conaffinity="0"/>
+          <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.04498333333" contype="0" conaffinity="0"/>
+        </body>
+      </body>
+    </body>
+    <body name="RF_BAA_UPLink" pos="0.125 0.335 -0.105">
+      <!-- <inertial pos="-0.0096608 -0.0043083 -0.056772" quat="0.911688 -0.0297563 0.0137104 0.409575" mass="0.05526" diaginertia="8.41296e-05 8.3599e-05 4.95369e-06"/> -->
+      <joint name="RF_BAA_UpJoint" pos="0 0 0" axis="-1 0 0"/>
+      <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="RF_BAA_UPLink" mass="0.001" contype="0" conaffinity="0"/>
+      <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.04498333333" contype="0" conaffinity="0"/>
+      <body name="RF_BAA_FM_Link" pos="-0.01 -0.00669873 -0.1">
+        <!-- <inertial pos="0 0 0" quat="0.516439 0.483001 -0.483001 0.516439" mass="0.00026704" diaginertia="1.93598e-08 1.0236e-08 1.02362e-08"/> -->
+        <joint name="RF_BAA_SlideJoint" pos="0 0 0" axis="0 -0.0668375 -0.997764" type="slide" damping="22" stiffness="600" springref="0.02578"/>
+        <geom type="mesh" rgba="1 0 0 1" mesh="RF_BAA_FM_Link" mass="0.001" contype="0" conaffinity="0"/>
+        <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.1799333333" contype="0" conaffinity="0"/>
+        <body name="RF_BAA_LOLink" pos="0.01 -0.00669873 -0.1">
+          <!-- <inertial pos="-0.00999992 0.00426952 0.0584895" quat="0.999456 -0.0329796 0 0" mass="0.151653" diaginertia="0.000248348 0.000247712 1.52619e-05"/> -->
+          <joint name="RF_BAA_FM_SlideJoint" pos="0 0 0" axis="0 -0.0668375 -0.997764" type="slide" damping="22" stiffness="600" springref="0.02578"/>
+          <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RF_BAA_LOLink" mass="0.001" contype="0" conaffinity="0"/>
+          <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.04498333333" contype="0" conaffinity="0"/>
+        </body>
+      </body>
+    </body>
+    <body name="LB_BAA_UPLink" pos="-0.125 -0.335 -0.105">
+      <!-- <inertial pos="0.0098118 0.0050715 -0.079894" quat="0.409991 0.0137144 -0.0307668 0.911467" mass="0.036892" diaginertia="8.19481e-05 8.17515e-05 2.11406e-06"/> -->
+      <joint name="LB_BAA_UpJoint" pos="0 0 0" axis="1 0 0"/>
+      <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="LB_BAA_UPLink" mass="0.001" contype="0" conaffinity="0"/>
+      <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.04498333333" contype="0" conaffinity="0"/>
+      <body name="LB_BAA_FM_Link" pos="0.01 0.00669873 -0.1">
+        <!-- <inertial pos="0 0 0" quat="0.483001 0.516439 -0.516439 0.483001" mass="0.00026704" diaginertia="1.93598e-08 1.0236e-08 1.02362e-08"/> -->
+        <joint name="LB_BAA_SlideJoint" pos="0 0 0" axis="0 0.0668375 -0.997764" type="slide" damping="22" stiffness="600" springref="0.02578"/>
+        <geom type="mesh" rgba="1 0 0 1" mesh="LB_BAA_FM_Link" mass="0.001" contype="0" conaffinity="0"/>
+        <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.1799333333" contype="0" conaffinity="0"/>
+        <body name="LB_BAA_LOLink" pos="-0.01 0.00669873 -0.1">
+          <!-- <inertial pos="0.0099999 -0.0042695 0.05849" quat="0.999456 0.0329808 0 0" mass="0.15165" diaginertia="0.00024835 0.00024771 1.52617e-05"/> -->
+          <joint name="LB_BAA_FM_SlideJoint" pos="0 0 0" axis="0 0.0668375 -0.997764" type="slide" damping="22" stiffness="600" springref="0.02578"/>
+          <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="LB_BAA_LOLink" mass="0.001" contype="0" conaffinity="0"/>
+          <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.04498333333" contype="0" conaffinity="0"/>
+        </body>
+      </body>
+    </body>
+    <body name="RB_BAA_UPLink" pos="0.125 -0.335 -0.105">
+      <!-- <inertial pos="0.0098118 -0.0050715 -0.079894" quat="0.911467 -0.0307668 0.0137144 0.409991" mass="0.036892" diaginertia="8.19481e-05 8.17515e-05 2.11406e-06"/> -->
+      <joint name="RB_BAA_UpJoint" pos="0 0 0" axis="-1 0 0"/>
+      <geom type="mesh" rgba="1 1 1 1" mesh="RB_BAA_UPLink" mass="0.001" contype="0" conaffinity="0"/>
+      <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.04498333333" contype="0" conaffinity="0"/>
+      <body name="RB_BAA_FM_LINK" pos="-0.01 0.00669873 -0.1">
+        <!-- <inertial pos="0 0 0" quat="0.483001 0.516439 -0.516439 0.483001" mass="0.00026704" diaginertia="1.93598e-08 1.0236e-08 1.02362e-08"/> -->
+        <joint name="RB_BAA_SlideJoint" pos="0 0 0" axis="0 0.0668375 -0.997764" type="slide" damping="22" stiffness="600" springref="0.02578"/>
+        <geom type="mesh" rgba="1 0 0 1" mesh="RB_BAA_FM_LINK" mass="0.001" contype="0" conaffinity="0"/>
+        <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.1799333333" contype="0" conaffinity="0"/>
+        <body name="RB_BAA_LOLink" pos="0.01 0.00669873 -0.1">
+          <!-- <inertial pos="-0.01 -0.0042695 0.05849" quat="0.999456 0.0329808 0 0" mass="0.15165" diaginertia="0.00024835 0.00024771 1.52617e-05"/> -->
+          <joint name="RB_BAA_FM_SlideJoint" pos="0 0 0" axis="0 0.0668375 -0.997764" type="slide" damping="22" stiffness="600" springref="0.02578"/>
+          <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="RB_BAA_LOLink" mass="0.001" contype="0" conaffinity="0"/>
+          <geom type="sphere" size="0.01" rgba="1 0 0 1" mass="0.04498333333" contype="0" conaffinity="0"/>
+        </body>
+      </body>
+    </body>
+
+    </body>
+  </worldbody>
+
+  <!-- 增加在RB_BAA_LowerJoint等关节中加入8个位置控制器，要求增加位置限制 -->
+  <actuator>
+    <!-- <position joint="LF_Shoulder" ctrlrange="-1 1" kp="30" kv="0.1"/>
+    <position joint="LF_Elbow" ctrlrange="-1 1" kp="30" kv="0.1"/>
+    <position joint="RF_Shoulder" ctrlrange="-1 1" kp="30" kv="0.1"/>
+    <position joint="RF_Elbow" ctrlrange="-1 1" kp="30" kv="0.1"/>
+    <position joint="LB_Shoulder" ctrlrange="-1 1" kp="30" kv="0.1"/>
+    <position joint="LB_Elbow" ctrlrange="-1 1" kp="30" kv="0.1"/>
+    <position joint="RB_Shoulder" ctrlrange="-1 1" kp="30" kv="0.1"/>
+    <position joint="RB_Elbow" ctrlrange="-1 1" kp="30" kv="0.1"/> -->
+
+    <general joint="RF_MAA_SlideJoint" ctrllimited="true" ctrlrange="-300 300" />
+    <general joint="LF_MAA_SlideJoint" ctrllimited="true" ctrlrange="-300 300" />
+    <general joint="RB_MAA_SlideJoint" ctrllimited="true" ctrlrange="-300 300" />
+    <general joint="LB_MAA_SlideJoint" ctrllimited="true" ctrlrange="-300 300" />
+
+    <general joint="RF_MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-300 300" />
+    <general joint="LF_MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-300 300" />
+    <general joint="RB_MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-300 300" />
+    <general joint="LB_MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-300 300" />
+    <!-- <general joint="RF_BAA_SlideJoint" ctrllimited="true" ctrlrange="-8000 8000" />
+    <general joint="LF_BAA_SlideJoint" ctrllimited="true" ctrlrange="-8000 8000" />
+    <general joint="RB_BAA_SlideJoint" ctrllimited="true" ctrlrange="-8000 8000" />
+    <general joint="LB_BAA_SlideJoint" ctrllimited="true" ctrlrange="-8000 8000" /> -->
+
+    <!-- <position joint="LF_MAA_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="RF_MAA_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="LB_MAA_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="RB_MAA_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="LF_BAA_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="RF_BAA_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="LB_BAA_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="RB_BAA_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+
+    <position joint="LF_MAA_FM_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="RF_MAA_FM_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="LB_MAA_FM_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="RB_MAA_FM_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="LF_BAA_FM_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="RF_BAA_FM_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="LB_BAA_FM_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/>
+    <position joint="RB_BAA_FM_SlideJoint" ctrlrange="-30 30" kp="100" kv="0"/> -->
+  </actuator>
+
+  <!-- 建立并联关系，如 RB_BAA_LOLink 应该与 RB_Calf 连接 --> 
+  <equality>
+    <connect name="RB_BAA_LOLink" body1="RB_BAA_LOLink" body2="RB_Calf" anchor="0 0 0" solref="0.001 1" solimp="0.999 0.9995 0.001"/>
+    <connect name="LB_BAA_LOLink" body1="LB_BAA_LOLink" body2="LB_Calf" anchor="0 0 0" solref="0.001 1" solimp="0.999 0.9995 0.001"/>
+    <connect name="RF_BAA_LOLink" body1="RF_BAA_LOLink" body2="RF_Calf" anchor="0 0 0" solref="0.001 1" solimp="0.999 0.9995 0.001"/>
+    <connect name="LF_BAA_LOLink" body1="LF_BAA_LOLink" body2="LF_Calf" anchor="0 0 0" solref="0.001 1" solimp="0.999 0.9995 0.001"/>
+    <connect name="RB_MAA_LOLink" body1="RB_MAA_LOLink" body2="RB_Thigh" anchor="0 0 0" solref="0.001 1" solimp="0.999 0.9995 0.001"/>
+    <connect name="LB_MAA_LOLink" body1="LB_MAA_LOLink" body2="LB_Thigh" anchor="0 0 0" solref="0.001 1" solimp="0.999 0.9995 0.001"/>
+    <connect name="RF_MAA_LOLink" body1="RF_MAA_LOLink" body2="RF_Thigh" anchor="0 0 0" solref="0.001 1" solimp="0.999 0.9995 0.001"/>
+    <connect name="LF_MAA_LOLink" body1="LF_MAA_LOLink" body2="LF_Thigh" anchor="0 0 0" solref="0.001 1" solimp="0.999 0.9995 0.001"/>
+
+    <!-- FM 的相等约束 -->
+    <joint name="LF_MAA_FM" joint1="LF_MAA_SlideJoint" joint2="LF_MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001"/>
+    <joint name="RF_MAA_FM" joint1="RF_MAA_SlideJoint" joint2="RF_MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001"/>
+    <joint name="LB_MAA_FM" joint1="LB_MAA_SlideJoint" joint2="LB_MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001"/>
+    <joint name="RB_MAA_FM" joint1="RB_MAA_SlideJoint" joint2="RB_MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001"/>
+    <joint name="LF_BAA_FM" joint1="LF_BAA_SlideJoint" joint2="LF_BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001"/>
+    <joint name="RF_BAA_FM" joint1="RF_BAA_SlideJoint" joint2="RF_BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001"/>
+    <joint name="LB_BAA_FM" joint1="LB_BAA_SlideJoint" joint2="LB_BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001"/>
+    <joint name="RB_BAA_FM" joint1="RB_BAA_SlideJoint" joint2="RB_BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001"/>
+  </equality>
+
+  <!-- sensor -->
+  <sensor>
+    <jointpos joint="LB_Shoulder" />
+    <jointvel joint="LB_Shoulder" />
+    <jointpos joint="LB_Elbow" />
+    <jointvel joint="LB_Elbow" />
+  </sensor>
+
+</mujoco>

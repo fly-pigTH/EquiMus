@@ -1,0 +1,93 @@
+<mujoco model="v2_4">
+  <compiler angle="radian"/>
+  <option timestep="0.001" iterations="1000"/>
+  
+  <default>
+    <geom density="418"/>
+    <!-- <equality solimp="0.015 1 0.03" solref="0.005 1"/> -->
+  </default>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3"
+      rgb2=".2 .3 .4" width="300" height="300"/>
+    <material name="grid" texture="grid" texrepeat="8 8" reflectance=".2"/>
+
+    <!-- <mesh name="base_link" file="base_link.STL"/> -->
+    <mesh name="base_link" file="base_link.STL"/>
+    <mesh name="LF_Thigh" file="LF_Thigh.STL"/>
+    <mesh name="LF_Calf" file="LF_Calf.STL"/>
+    <mesh name="RF_Thigh" file="RF_Thigh.STL"/>
+    <mesh name="RF_Calf" file="RF_Calf.STL"/>
+    <mesh name="LB_Thigh" file="LB_Thigh.STL"/>
+    <mesh name="LB_Calf" file="LB_Calf.STL"/>
+    <mesh name="RB_Thigh" file="RB_Thigh.STL"/>
+    <mesh name="RB_Calf" file="RB_Calf.STL"/>
+    <mesh name="LF_MAA_UPLink" file="LF_MAA_UPLink.STL"/>
+    <mesh name="LF_MAA_FM_Link" file="LF_MAA_FM_Link.STL"/>
+    <mesh name="LF_MAA_LOLink" file="LF_MAA_LOLink.STL"/>
+    <mesh name="RF_MAA_UPLink" file="RF_MAA_UPLink.STL"/>
+    <mesh name="RF_MAA_FM_Link" file="RF_MAA_FM_Link.STL"/>
+    <mesh name="RF_MAA_LOLink" file="RF_MAA_LOLink.STL"/>
+    <mesh name="LB_MAA_UPLink" file="LB_MAA_UPLink.STL"/>
+    <mesh name="LB_MAA_FM_Link" file="LB_MAA_FM_Link.STL"/>
+    <mesh name="LB_MAA_LOLink" file="LB_MAA_LOLink.STL"/>
+    <mesh name="RB_MAA_UPLink" file="RB_MAA_UPLink.STL"/>
+    <mesh name="RB_MAA_FM_Link" file="RB_MAA_FM_Link.STL"/>
+    <mesh name="RB_MAA_LOLink" file="RB_MAA_LOLink.STL"/>
+    <mesh name="LF_BAA_UPLink" file="LF_BAA_UPLink.STL"/>
+    <mesh name="LF_BAA_FM_Link" file="LF_BAA_FM_Link.STL"/>
+    <mesh name="LF_BAA_LOLink" file="LF_BAA_LOLink.STL"/>
+    <mesh name="RF_BAA_UPLink" file="RF_BAA_UPLink.STL"/>
+    <mesh name="RF_BAA_FM_Link" file="RF_BAA_FM_Link.STL"/>
+    <mesh name="RF_BAA_LOLink" file="RF_BAA_LOLink.STL"/>
+    <mesh name="LB_BAA_UPLink" file="LB_BAA_UPLink.STL"/>
+    <mesh name="LB_BAA_FM_Link" file="LB_BAA_FM_Link.STL"/>
+    <mesh name="LB_BAA_LOLink" file="LB_BAA_LOLink.STL"/>
+    <mesh name="RB_BAA_UPLink" file="RB_BAA_UPLink.STL"/>
+    <mesh name="RB_BAA_FM_LINK" file="RB_BAA_FM_LINK.STL"/>
+    <mesh name="RB_BAA_LOLink" file="RB_BAA_LOLink.STL"/>
+  </asset>
+
+  <worldbody>
+    <light name="top" pos="0 0 5"/>
+    <geom size="10 10 .01" type="plane" material="grid" friction="1 0.005 0.0001"/>
+
+    <body name="base" pos="0.1 0 1">
+      <!-- <freejoint/> -->
+      <!-- <joint name="base_joint" type="slide" axis="0 0 1" damping="10" stiffness="10000" springref="1"/> -->
+      <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="base_link" mass="0.155"/>
+
+      <body name="RB_MAA_UPLink" pos="0.125 -0.175 -0.105">
+        <joint name="RB_MAA_UpJoint" pos="0 0 0" axis="-1 0 0" damping="0.01" stiffness="0" springref="0"/>
+        <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_MAA_UPLink" mass="0.03"/>
+
+
+        <body name="RB_MAA_FM_Link" pos="-0.01 -0.015 -0.105">
+          <joint name="RB_MAA_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="10" stiffness="100" springref="0"/>
+          <geom type="mesh" rgba="1 0 0 1" mesh="RB_MAA_FM_Link" mass="0.1236666667"/>
+          
+          <body name="RB_MAA_LOLink" pos="0.01 -0.015 -0.105">
+            <joint name="RB_MAA_FM_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="10" stiffness="100" springref="0"/>
+            <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_MAA_LOLink" mass="0.03"/>
+          </body>
+
+        </body>
+
+      </body>
+      
+    </body>
+
+  </worldbody>
+
+  <!-- 增加在RB_BAA_LowerJoint等关节中加入8个位置控制器，要求增加位置限制 -->
+  <actuator>
+  </actuator>
+
+  <!-- 建立并联关系，如 RB_BAA_LOLink 应该与 RB_Calf 连接 --> 
+  <equality>
+  </equality>
+
+  <sensor>
+  </sensor>
+
+</mujoco>
