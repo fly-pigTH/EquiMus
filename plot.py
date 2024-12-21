@@ -60,7 +60,6 @@ sim_data = np.load("./data/Exp-Static_ideal-20241221_152046/StaticState_list.npy
 
 print(sim_data)
 print("--")
-print(sim_data.shape)
 size = 20
 sim_data = sim_data.reshape(size,size,10, order="F")
 print(sim_data[0,0,:])
