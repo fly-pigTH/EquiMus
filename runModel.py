@@ -1,3 +1,4 @@
+
 import time
 
 import mujoco
@@ -10,6 +11,8 @@ import matplotlib
 import mediapy as media
 import datetime
 import os
+import pandas as pd
+import scipy.io
 matplotlib.use('TkAgg')
 
 
@@ -17,9 +20,10 @@ path1 = "/Users/flypig/Documents/Coding/MujocoLearn/1101/1101/mydog110.xml"
 path2 = '/Users/flypig/Documents/Coding/MujocoLearn/v2_4/urdf/dog2_4singleLeg.xml'
 path3 = '/Users/flypig/Documents/Coding/MujocoLearn/v2_4/urdf/Exp_MAA.xml'
 path4 = "/Users/flypig/Documents/Coding/MujocoLearn/v2_4/urdf/Exp_singleKMC.xml"
+path5 = "/Users/flypig/Documents/Coding/MujocoLearn/Model/SingleLeg_ideal.xml"
 
-ExpName = "SingleLeg-Super"
-m = mujoco.MjModel.from_xml_path(path2)
+ExpName = "Static_ideal"
+m = mujoco.MjModel.from_xml_path(path5)
 d = mujoco.MjData(m)
 flag = 0
 
@@ -40,67 +44,95 @@ flip = 0
 
 ExpResultList = []
 
-target_force_MAA_list = np.linspace(-20, 20, 161)
-target_force_BAA_list = np.linspace(-20, 20, 161)
+# target_force_MAA_list = np.linspace(-20, 20, 161)
+# target_force_BAA_list = np.linspace(-20, 20, 161)
 
-# with mujoco.viewer.launch_passive(m, d) as viewer:
-for MAAPressure in target_force_MAA_list:
-  for BAAPressure in target_force_BAA_list:
+# read the file
+# MAAP = scipy.io.loadmat('F1.mat').get('F1')
+# BAAP = scipy.io.loadmat('F2.mat').get('F2')
+
+MAAP = scipy.io.loadmat('F1_10.mat').get("F1_matrix") # new data
+BAAP = scipy.io.loadmat('F2_10.mat').get("F2_matrix")
+
+print(MAAP)
+# input()
+
+theta_1_array = np.linspace(math.pi/6, math.pi*2/3, 20) # 切分十个点
+theta_2_array = np.linspace(0, math.pi/2, 20)
+
+MAAP_list = MAAP
+BAAP_list = BAAP
+
+# Pre_list = [-4.71529817, 13.85488671]
+
+# MAAP_list = [Pre_list[0]]
+# BAAP_list = [Pre_list[1]]
+
+# theta_1_array = [math.pi/2]
+# theta_2_array = [math.pi/2]
+
+
+print(MAAP[0][0], BAAP[0][0])
+
+viewer_flag = 0
+
+# if viewer_flag:
+#   with mujoco.viewer.launch_passive(m, d) as viewer:
+for i in range(len(theta_1_array)):
+  for j in range(len(theta_2_array)):
+    # 设置初始位置
+    tar_theta1 = theta_1_array[i]-math.pi/2
+    tar_theta2 = theta_2_array[j]
+    mujoco.mj_forward(m, d)
+
+    MAAPressure = MAAP[i][j]  
+    BAAPressure = BAAP[i][j]
+
+    # MAAPressure = MAAP_list[i]  
+    # BAAPressure = BAAP_list[j]
     # 3s 时间步长后关闭viewer
-    print(f"Exp with MAA: {MAAPressure}, BAA: {BAAPressure}")
-    start = d.time
+    # print(f"Exp {i}-{j} with MAA: {MAAPressure}, BAA: {BAAPressure}")
+    start = time.time() if viewer_flag else d.time
     try:
-      while d.time - start < 15: # viewer.is_running() and
+      while (time.time() if viewer_flag else d.time) - start < 15: # viewer.is_running() and
+        # print(time.time()-start if viewer_flag else d.time)
+        time_now = time.time() if viewer_flag else d.time
+        
         step += 1
-        step_start = d.time
-        # print(d.time)
+        step_start = time.time() if viewer_flag else d.time
 
         time_step = 5
-        start_force_M = -20  # SOTA: -500
         target_force_MAA = MAAPressure
         target_force_BAA = BAAPressure
-        # if step_start % time_step < time_step/2:
-          # if flip == 0:
-            # d.ctrl[:] = start_force_M+20    # 20N
-
-        if d.time - start > 5 and d.time - start < 14: # 稳定时间
+        
+        if time_now - start > 3 and time_now - start < 14: # 稳定时间
           d.ctrl[:2] = target_force_MAA    # 50N
           d.ctrl[2:] = target_force_BAA    # 50N
           record = True
-          # flip = 1
-        # else:
-          # d.ctrl[:] = start_force_M   # 0N
-          # d.ctrl[:] = start_force_M
-          # flip = 0
 
-        # 记录传感器数据
-        # print(d.sensordata)
-        # sensor_list.append(np.array([d.sensordata[0], d.sensordata[1], d.sensordata[2], d.sensordata[3]]))
-
-        if d.time - start > 14 and record == True:
+        if time_now - start > 14 and record == True:
           StaticPositon = np.array(d.qpos)
           res = np.hstack(([target_force_MAA, target_force_BAA], StaticPositon))
           ExpResultList.append(res)
+          print(f"[Max Error]: {max(abs(tar_theta1 - d.qpos[0]), abs(tar_theta2 - d.qpos[1]))}, [Error of Tar1]:", tar_theta1 - d.qpos[0], "[Error of Tar2]:", tar_theta2 - d.qpos[1])
           record = False
-        # print(d.qpos)
-        # RobotState = np.array(d.qpos)
-        # time_list.append(d.time)
-        # sensor_list.append(RobotState)
 
         mujoco.mj_step(m, d)  # update!
 
-        # 获取物理状态的更改，应用扰动，从GUI更新选项。
-        # viewer.sync()   # TODO
-
-        # 粗略的计时，相对于挂钟会有漂移。
-        # time_until_next_step = m.opt.timestep - (time.time() - step_start)
-        # if time_until_next_step > 0:
-        #   time.sleep(time_until_next_step)
-        # time.sleep(0.01)
+        if viewer_flag:
+          # 获取物理状态的更改，应用扰动，从GUI更新选项。
+          # viewer.sync()   # TODO
+          # 粗略的计时，相对于挂钟会有漂移。
+          time_until_next_step = m.opt.timestep - (time.time() - step_start)
+          if time_until_next_step > 0:
+            time.sleep(time_until_next_step)
+          # time.sleep(0.01)
 
     # # 按住ctrl C退出循环
     except KeyboardInterrupt:
       pass
+
+print(d.qpos)
 
 
 print(ExpResultList)

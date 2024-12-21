@@ -1,11 +1,9 @@
 import time
-
 import mujoco
 import mujoco.viewer
 import numpy as np
 import random
 import math
-
 from qpos_cal import qpos_cal
 
 path1 = "/Users/flypig/Documents/Coding/MujocoLearn/1101/1101/mydog110.xml"
@@ -26,8 +24,7 @@ print("qvel:", d.qvel)
 print("qacc:", d.qacc)
 print("----")
 
-
-# 30时间步长后关闭viewer
+# Check the inverse dynamics
 duration = 20
 start = time.time()
 if True:
@@ -121,10 +118,6 @@ d.qacc[:] = 0  # 所有关节的加速度为零
 mujoco.mj_inverse(m, d)
 static_force = d.qfrc_inverse
 print(f"inverse(static)-using cal-qpos: {d.qfrc_inverse}")
-
-
-
-
 
 # 重置状态. 对比！
 d.qpos[:] = 0
