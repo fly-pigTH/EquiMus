@@ -1,4 +1,3 @@
-# 动力学验证：在稳态点进行切换
 
 import time
 import mujoco
