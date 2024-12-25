@@ -1,0 +1,24 @@
+<mujoco model="quadruped_with_force">
+    <compiler angle="radian"/>
+
+    <worldbody>
+        <body name="base" pos="0 0 0">
+            <!-- 其他机器人身体部分 -->
+            
+            <body name="point_A" pos="0 0 0.3">
+                <geom type="sphere" size="0.02" rgba="1 0 0 1"/> <!-- 点 A -->
+            </body>
+
+            <body name="point_B" pos="0 0 0.5">
+                <geom type="sphere" size="0.02" rgba="0 0 1 1"/> <!-- 点 B -->
+            </body>
+
+            <joint name="AB_joint" type="slide" axis="0 0 1" range="0 0.5"/> <!-- AB之间的滑动关节 -->
+            <spring name="AB_spring" joint="AB_joint" stiffness="100" damping="0.1"/> <!-- 定义弹簧 -->
+        </body>
+    </worldbody>
+
+    <actuator>
+        <motor joint="AB_joint" gear="100"/> <!-- 力控制的 actuator -->
+    </actuator>
+</mujoco>
