@@ -14,9 +14,9 @@ import os
 import pandas as pd
 import scipy.io
 from tqdm import tqdm
+from utils.auto_record import record_experiment
 
 matplotlib.use('TkAgg')
-
 
 # 静力学计算模块
 def get_static_func(theta_1, theta_2):
@@ -159,9 +159,8 @@ def get_static_func(theta_1, theta_2):
     StaticForce = np.linalg.solve(LHSA, b) + F_k
     return StaticForce
 
-path = "./Model/SingleLeg_ideal.xml"
+path = "./models/SingleLeg_ideal.xml"
 
-ExpName = "A2B 10000"
 m = mujoco.MjModel.from_xml_path(path)
 d = mujoco.MjData(m)
 flag = 0
@@ -171,8 +170,8 @@ print(m.body_mass)
 d.ctrl = np.zeros_like(d.ctrl)
 mujoco.mj_step(m, d)  # update!
 
-Theta1_array = np.linspace(math.pi/6, math.pi*2/3, 10)
-Theta2_array = np.linspace(0, math.pi/2, 10)
+Theta1_array = np.linspace(math.pi/6, math.pi*2/3, 2)
+Theta2_array = np.linspace(0, math.pi/2, 2)
 StartPointArray = []
 for theta_1 in Theta1_array:
   for theta_2 in Theta2_array:
@@ -233,10 +232,25 @@ AllExpResArray = np.array(AllExpResArray)
 
 # print(AllExpResArray.shape)
 
-# 获取文件名
+# Exp Setting for save and record
+
+ExpName = "A2B 10000"
+
 current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 ExpTime = current_time
 folder_path = f"./data/Exp-{ExpName}-{ExpTime}"
+
+# 获取文件名
 os.makedirs(folder_path, exist_ok=False)  # 如果文件名称冲突，报错!
 staticPlace_list_filename = os.path.join(folder_path, "StaticState_list.npy")
 np.save(staticPlace_list_filename, AllExpResArray)
+
+# if success, record it in the Whole CSV
+exp_config = {
+    "id": f"{ExpName}-{ExpTime}",
+    "start_time": datetime.datetime.now(),
+    "dataFileName": staticPlace_list_filename,
+    "notes": "这是一次测试"
+}
+
+record_experiment(exp_config)
