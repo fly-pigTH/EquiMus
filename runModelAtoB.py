@@ -13,6 +13,7 @@ import datetime
 import os
 import pandas as pd
 import scipy.io
+from tqdm import tqdm
 
 matplotlib.use('TkAgg')
 
@@ -160,7 +161,7 @@ def get_static_func(theta_1, theta_2):
 
 path = "./Model/SingleLeg_ideal.xml"
 
-ExpName = "10N Force Pulse"
+ExpName = "A2B 10000"
 m = mujoco.MjModel.from_xml_path(path)
 d = mujoco.MjData(m)
 flag = 0
@@ -170,56 +171,67 @@ print(m.body_mass)
 d.ctrl = np.zeros_like(d.ctrl)
 mujoco.mj_step(m, d)  # update!
 
-# Experiment Settings
-StartPoint = [math.pi/2, 0]
-EndPoint = [math.pi/2, 0]
+Theta1_array = np.linspace(math.pi/6, math.pi*2/3, 10)
+Theta2_array = np.linspace(0, math.pi/2, 10)
+StartPointArray = []
+for theta_1 in Theta1_array:
+  for theta_2 in Theta2_array:
+    StartPointArray.append([theta_1, theta_2])
+StartPointArray = np.array(StartPointArray)
+EndPointArray = StartPointArray
 
-Fstatic_start = get_static_func(StartPoint[0], StartPoint[1])
-Fstatic_end = get_static_func(EndPoint[0], EndPoint[1])
-ForcePulse = [10, 10]
+AllExpResList = []
+viewer_flag = False
 
-step = 0
-ExpResultList = []
-viewer_flag = True
+# if viewer_flag:
+#   with mujoco.viewer.launch_passive(m, d) as viewer:
+for StartPoint in tqdm(StartPointArray):
+  for EndPoint in EndPointArray:
+    # 开始循环实验
+    # print(f"Exp[{StartPoint*180/math.pi} to {EndPoint*180/math.pi}]")
+    step = 0
+    ExpResultList = []
+    Fstatic_start = get_static_func(*StartPoint)
+    Fstatic_end = get_static_func(*EndPoint)
 
-if viewer_flag:
-  with mujoco.viewer.launch_passive(m, d) as viewer:
-    # print(f"Exp {i}-{j} with MAA: {MAAPressure}, BAA: {BAAPressure}")
     start = time.time() if viewer_flag else d.time
-    try:
-      while (time.time() if viewer_flag else d.time) - start < 20: # viewer.is_running() and
-        # print(time.time()-start if viewer_flag else d.time)
-        step += 1
-        step_time = time.time() if viewer_flag else d.time
+    while (time.time() if viewer_flag else d.time) - start < 20: # viewer.is_running() and
+      # print(time.time()-start if viewer_flag else d.time)
+      step += 1
+      step_time = time.time() if viewer_flag else d.time
 
-        if step_time - start > 0 and step_time - start < 10: # 稳定时间
-          d.ctrl[:2] = Fstatic_start[0]
-          d.ctrl[2:] = Fstatic_start[1]
+      if 0 < step_time - start < 10: # 稳定时间
+        d.ctrl[:2] = Fstatic_start[0]
+        d.ctrl[2:] = Fstatic_start[1]
 
-        if 10 < step_time - start < 20: # 稳定时间
-          d.ctrl[:2] = ForcePulse[0]
-          d.ctrl[2:] = ForcePulse[1]
+      elif 10 <= step_time - start: # 稳定时间
+        d.ctrl[:2] = Fstatic_end[0]
+        d.ctrl[2:] = Fstatic_end[1]
+        res = np.hstack((d.time - 10, d.qpos))   # NOTE: 使用仿真时间
+        ExpResultList.append(res)
 
-          Positon = np.array(d.qpos)
-          res = np.hstack(([ForcePulse[0], ForcePulse[1], d.time], Positon))
-          ExpResultList.append(res)
+      mujoco.mj_step(m, d)  # update!
+      # print(type(d.qpos))
 
-        mujoco.mj_step(m, d)  # update!
+      if viewer_flag:
+        # 获取物理状态的更改，应用扰动，从GUI更新选项。
+        # viewer.sync()   # TODO
+        # 粗略的计时，相对于挂钟会有漂移。
+        time_until_next_step = m.opt.timestep - (time.time() - step_time)
+        if time_until_next_step > 0:
+          time.sleep(time_until_next_step)
+    # print(len(ExpResultList))
+    AllExpResList.append(np.array(ExpResultList))
 
-        if viewer_flag:
-          # 获取物理状态的更改，应用扰动，从GUI更新选项。
-          viewer.sync()   # TODO
-          # 粗略的计时，相对于挂钟会有漂移。
-          time_until_next_step = m.opt.timestep - (time.time() - step_time)
-          if time_until_next_step > 0:
-            time.sleep(time_until_next_step)
+AllExpResList = np.array(AllExpResList, dtype=object)
+# print(len(AllExpResList))
 
-    # # 按住ctrl C退出循环
-    except KeyboardInterrupt:
-      pass
+# 后处理数据：list of array->array, 需要先剪裁
+min_length = min([len(i) for i in AllExpResList])
+AllExpResArray = [SingleRes[:min_length] for SingleRes in AllExpResList]
+AllExpResArray = np.array(AllExpResArray)
 
-ExpResultList = np.array(ExpResultList)
-print(ExpResultList.shape)
+# print(AllExpResArray.shape)
 
 # 获取文件名
 current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -227,4 +239,4 @@ ExpTime = current_time
 folder_path = f"./data/Exp-{ExpName}-{ExpTime}"
 os.makedirs(folder_path, exist_ok=False)  # 如果文件名称冲突，报错!
 staticPlace_list_filename = os.path.join(folder_path, "StaticState_list.npy")
-np.save(staticPlace_list_filename, ExpResultList)
+np.save(staticPlace_list_filename, AllExpResArray)

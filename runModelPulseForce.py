@@ -179,43 +179,43 @@ ForcePulse = [10, 10]
 
 step = 0
 ExpResultList = []
-viewer_flag = True
+viewer_flag = False
 
-if viewer_flag:
-  with mujoco.viewer.launch_passive(m, d) as viewer:
-    # print(f"Exp {i}-{j} with MAA: {MAAPressure}, BAA: {BAAPressure}")
-    start = time.time() if viewer_flag else d.time
-    try:
-      while (time.time() if viewer_flag else d.time) - start < 20: # viewer.is_running() and
-        # print(time.time()-start if viewer_flag else d.time)
-        step += 1
-        step_time = time.time() if viewer_flag else d.time
+# if viewer_flag:
+#   with mujoco.viewer.launch_passive(m, d) as viewer:
+# print(f"Exp {i}-{j} with MAA: {MAAPressure}, BAA: {BAAPressure}")
+start = time.time() if viewer_flag else d.time
+try:
+  while (time.time() if viewer_flag else d.time) - start < 20: # viewer.is_running() and
+    # print(time.time()-start if viewer_flag else d.time)
+    step += 1
+    step_time = time.time() if viewer_flag else d.time
 
-        if step_time - start > 0 and step_time - start < 10: # 稳定时间
-          d.ctrl[:2] = Fstatic_start[0]
-          d.ctrl[2:] = Fstatic_start[1]
+    if step_time - start > 0 and step_time - start < 10: # 稳定时间
+      d.ctrl[:2] = Fstatic_start[0]
+      d.ctrl[2:] = Fstatic_start[1]
 
-        if 10 < step_time - start < 20: # 稳定时间
-          d.ctrl[:2] = ForcePulse[0]
-          d.ctrl[2:] = ForcePulse[1]
+    if 10 < step_time - start < 20: # 稳定时间
+      d.ctrl[:2] = ForcePulse[0]
+      d.ctrl[2:] = ForcePulse[1]
 
-          Positon = np.array(d.qpos)
-          res = np.hstack(([ForcePulse[0], ForcePulse[1], d.time], Positon))
-          ExpResultList.append(res)
+      Positon = np.array(d.qpos)
+      res = np.hstack(([ForcePulse[0], ForcePulse[1], d.time], Positon))
+      ExpResultList.append(res)
 
-        mujoco.mj_step(m, d)  # update!
+    mujoco.mj_step(m, d)  # update!
 
-        if viewer_flag:
-          # 获取物理状态的更改，应用扰动，从GUI更新选项。
-          viewer.sync()   # TODO
-          # 粗略的计时，相对于挂钟会有漂移。
-          time_until_next_step = m.opt.timestep - (time.time() - step_time)
-          if time_until_next_step > 0:
-            time.sleep(time_until_next_step)
+    if viewer_flag:
+      # 获取物理状态的更改，应用扰动，从GUI更新选项。
+      # viewer.sync()   # TODO
+      # 粗略的计时，相对于挂钟会有漂移。
+      time_until_next_step = m.opt.timestep - (time.time() - step_time)
+      if time_until_next_step > 0:
+        time.sleep(time_until_next_step)
 
-    # # 按住ctrl C退出循环
-    except KeyboardInterrupt:
-      pass
+# # 按住ctrl C退出循环
+except KeyboardInterrupt:
+  pass
 
 ExpResultList = np.array(ExpResultList)
 print(ExpResultList.shape)

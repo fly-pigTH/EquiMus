@@ -2,7 +2,7 @@
 
 <mujoco model="v2_4">
   <compiler angle="radian"/>
-  <option timestep="0.001" iterations="1000" gravity="0 0 -9.8"/>
+  <option timestep="0.001" iterations="2000" gravity="0 0 -9.8" tolerance="1e-10"/>
   
   <default>
     <geom density="418"/>
@@ -27,7 +27,7 @@
                 <body name="Calf" pos="0 0 -0.25">
                     <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.1033" fromto="0 0 0 0 0 -0.25" contype="0" conaffinity="0"/>
                     <joint name="Elbow" type="hinge" axis="1 0 0" range="0 1.57"/>
-                    <site name="D1" pos="0  0.049999999999999996 -0.08660254037844388"/>
+                    <site name="D1" pos="0  0.05 -0.08660254037844388"/>
                 </body>
             </body>
             <body name="MAA_UPLink" pos="0 -0.06 0">
@@ -76,11 +76,11 @@
 
     <!-- 建立并联关系，如 RB_BAA_LOLink 应该与 RB_Calf 连接 --> 
     <equality>
-        <connect name="MAA_connect" site1="C1" site2="C2" solimp="0.95 0.99 0.00001"/>
-        <connect name="BAA_connect" site1="D1" site2="D2" solimp="0.95 0.99 0.00001"/>
+        <connect name="MAA_connect" site1="C1" site2="C2" solimp="0.95 0.99 0.00001 0.1 2"/>
+        <connect name="BAA_connect" site1="D1" site2="D2" solimp="0.95 0.99 0.00001 0.1 2"/>
         <!-- FM 的相等约束 -->
-        <joint name="MAA" joint1="MAA_SlideJoint" joint2="MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001"/>
-        <joint name="BAA" joint1="BAA_SlideJoint" joint2="BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001"/>
+        <joint name="MAA" joint1="MAA_SlideJoint" joint2="MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
+        <joint name="BAA" joint1="BAA_SlideJoint" joint2="BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
     </equality>
 
 </mujoco>
