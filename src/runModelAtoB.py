@@ -170,8 +170,8 @@ print(m.body_mass)
 d.ctrl = np.zeros_like(d.ctrl)
 mujoco.mj_step(m, d)  # update!
 
-Theta1_array = np.linspace(math.pi/6, math.pi*2/3, 2)
-Theta2_array = np.linspace(0, math.pi/2, 2)
+Theta1_array = np.linspace(math.pi/6, math.pi*2/3, 10)
+Theta2_array = np.linspace(0, math.pi/2, 10)
 StartPointArray = []
 for theta_1 in Theta1_array:
   for theta_2 in Theta2_array:
@@ -250,7 +250,7 @@ exp_config = {
     "id": f"{ExpName}-{ExpTime}",
     "start_time": datetime.datetime.now(),
     "dataFileName": staticPlace_list_filename,
-    "notes": "这是一次测试"
+    "notes": "ideal模型大实验, 更新使用body约束"
 }
 
 record_experiment(exp_config)
