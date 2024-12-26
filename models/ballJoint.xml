@@ -1,0 +1,106 @@
+<!-- 单腿的理想杆球模型 -->
+
+<mujoco model="v2_4">
+  <compiler angle="radian"/>
+  <option timestep="0.001" iterations="2000" gravity="0 0 -9.8" tolerance="1e-10"/>
+  
+  <default>
+    <geom density="418"/>
+  </default>
+
+    <asset>
+        <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3"
+            rgb2=".2 .3 .4" width="300" height="300"/>
+        <material name="grid" texture="grid" texrepeat="8 8" reflectance=".2"/>
+    </asset>
+
+    <worldbody>
+        <light name="top" pos="0 0 5"/>
+        <geom size="10 10 .01" type="plane" material="grid" friction="1 0.005 0.0001"/>
+        <body name="Center" pos="0 0 0.6">
+            <geom size="0.01" type="sphere" rgba="0.8 0 0 0.8" mass="1"  contype="0" conaffinity="0"/>
+            <body name="CenterY">
+                <geom size="0.01" type="sphere" rgba="0.8 0 0 0.8" mass="0.086" contype="0" conaffinity="0"/>
+                <joint name="rotateY" type="hinge" axis="0 1 0" range="-0.1 0.1"/>
+                <body name="CenterZ">
+                    <geom size="0.01" type="sphere" rgba="0.8 0 0 0.8" mass="0.086" contype="0" conaffinity="0"/>
+                    <joint name="rotateZ" type="hinge" axis="0 0 1"/>
+                    <body name="connectRod">
+                        <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.086" fromto="0 0 0 0.8 0 0" contype="0" conaffinity="0"/>
+                        <!-- <body name="CenterY2" pos="0.8 0 0">
+                            <geom size="0.01" type="sphere" rgba="0.8 0 0 0.8" mass="0.086" contype="0" conaffinity="0"/>
+                            <joint name="rotateY2" type="hinge" axis="0 1 0" range="-0.5 0.5"/> -->
+                            <!-- <body name="leg">
+                                <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.086" fromto="0 0 0 0 0 0.2" contype="0" conaffinity="0"/>
+                            </body> -->
+                            <body name="Base" pos="0.8 0 0">
+                                <geom size="0.01 0.2 0.01" type="box" rgba="0.8 0 0 0.8" mass="1"/>
+                                <body name="Thigh" pos="0 0 0">
+                                    <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.086" fromto="0 0 0 0 0 -0.25" contype="0" conaffinity="0"/>
+                                    <joint name="Shoulder" type="hinge" axis="1 0 0" range="-1.57 1.57"/>
+                                    <site name="C1" pos="0 -0.02999933715459505 -0.20999803968200498"/>
+                                    <body name="Calf" pos="0 0 -0.25">
+                                        <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.1033" fromto="0 0 0 0 0 -0.25"/>
+                                        <joint name="Elbow" type="hinge" axis="1 0 0" range="0 1.57"/>
+                                        <site name="D1" pos="0  0.05 -0.08660254037844388"/>
+                                    </body>
+                                </body>
+                                <body name="MAA_UPLink" pos="0 -0.06 0">
+                                    <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.03" contype="0" conaffinity="0"/>
+                                    <joint name="MAA_UPJoint" type="hinge" axis="1 0 0"/>
+                                    <body name="MAA_FMLink" pos="0 0 -0.087">
+                                        <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.12" contype="0" conaffinity="0"/>
+                                        <joint name="MAA_SlideJoint" type="slide" axis="0 0 -1" damping="22.68" stiffness="637.52" springref="0"/>
+                                        <body name="MAA_LOLink" pos="0 0 -0.087">
+                                            <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.03" contype="0" conaffinity="0"/>
+                                            <joint name="MAA_FM_SlideJoint" type="slide" axis="0 0 -1" damping="22.68" stiffness="637.52" springref="0"/>
+                                            <site name="C2"/>
+                                        </body>
+                                    </body>
+                                </body>
+                                <body name="BAA_UPLink" pos="0 0.1 0">
+                                    <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.03" contype="0" conaffinity="0"/>
+                                    <joint name="BAA_UPJoint"type="hinge" axis="1 0 0"/>
+                                    <body name="BAA_FMLink" pos="0 0 -0.126">
+                                        <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.12" contype="0" conaffinity="0"/>
+                                        <joint name="BAA_SlideJoint" type="slide" axis="0 0 -1" damping="21.8" stiffness="631.6" springref="0"/>
+                                        <body name="BAA_LOLink" pos="0 0 -0.126">
+                                            <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.03" contype="0" conaffinity="0"/>
+                                            <joint name="BAA_FM_SlideJoint" type="slide" axis="0 0 -1" damping="21.8" stiffness="631.6" springref="0"/>
+                                            <site name="D2"/>
+                                        </body>
+                                    </body>
+                                </body>
+                            </body>
+                        <!-- </body> -->
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+          <!-- 增加在RB_BAA_LowerJoint等关节中加入8个位置控制器，要求增加位置限制 -->
+    <actuator>
+        <motor joint="MAA_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
+        <motor joint="MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
+        <motor joint="BAA_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
+        <motor joint="BAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
+    </actuator>
+
+    <!-- 建立并联关系，如 RB_BAA_LOLink 应该与 RB_Calf 连接 --> 
+    <equality>
+        <!-- <connect name="MAA_connect" body1="MAA_LOLink" body2="Thigh" anchor="0 0 0" solimp="0.95 0.99 0.001 0.1 2"/>
+        <connect name="BAA_connect" body1="BAA_LOLink" body2="Calf" anchor="0 0 0" solimp="0.95 0.99 0.001 0.1 2"/> -->
+
+        <connect name="MAA_connect" site1="C1" site2="C2" solimp="0.95 0.99 0.001 0.1 2"/>
+        <connect name="BAA_connect" site1="D1" site2="D2" solimp="0.95 0.99 0.001 0.1 2"/>
+        <!-- FM 的相等约束 -->
+        <joint name="MAA" joint1="MAA_SlideJoint" joint2="MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
+        <joint name="BAA" joint1="BAA_SlideJoint" joint2="BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
+    </equality>
+
+    <keyframe>
+        <key time="0" qpos="0 0 0 0 0 0 0 0 0 1"/>
+    </keyframe>
+
+</mujoco>

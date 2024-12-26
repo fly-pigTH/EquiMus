@@ -157,7 +157,8 @@ def get_static_func(theta_1, theta_2):
     StaticForce = np.linalg.solve(LHSA, b) + F_k
     return StaticForce
 
-path = "./Model/SingleLeg_ideal.xml"
+path = "./models/SingleLeg_ideal.xml"
+
 
 ExpName = "10N Force Pulse"
 m = mujoco.MjModel.from_xml_path(path)
