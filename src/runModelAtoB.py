@@ -242,7 +242,7 @@ folder_path = f"./data/Exp-{ExpName}-{ExpTime}"
 
 # 获取文件名
 os.makedirs(folder_path, exist_ok=False)  # 如果文件名称冲突，报错!
-staticPlace_list_filename = os.path.join(folder_path, "StaticState_list.npy")
+staticPlace_list_filename = os.path.join(folder_path, "StepResponse_list.npy")
 np.save(staticPlace_list_filename, AllExpResArray)
 
 # if success, record it in the Whole CSV

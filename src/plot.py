@@ -20,7 +20,7 @@ ax = fig.add_subplot(111, projection='3d')
 
 # load sim data
 # sim_data = np.load("./data/Exp-Static-20241220_152829/StaticState_list.npy")
-sim_data = np.load("./data/Exp-Static_ideal-20241222_002106/StaticState_list.npy")
+sim_data = np.load("./data/Exp-Static_ideal_gridScan-20241226_223433/StaticState_list.npy")
 
 print(sim_data)
 print("--")
@@ -59,7 +59,7 @@ error_matrix = np.abs(sim_data[:,:,2]+math.pi/2 - X)
 plt.figure(figsize=(12, 8))
 plt.imshow(error_matrix, cmap='hot', interpolation='nearest')
 plt.colorbar(label='Error')  # 添加颜色条
-plt.clim(0, 0.2)
+plt.clim(0, 0.04)
 plt.title('Error Heatmap of Theta1')
 plt.xlabel('theta_1/rad')
 plt.ylabel('theta_2/rad')
@@ -87,7 +87,7 @@ error_matrix = np.abs(sim_data[:,:,3] - Y)
 plt.figure(figsize=(12, 8))
 plt.imshow(error_matrix, cmap='hot', interpolation='nearest')
 plt.colorbar(label='Error')  # 添加颜色条
-plt.clim(0, 0.2)
+plt.clim(0, 0.04)
 plt.title('Error Heatmap of Theta2')
 plt.xlabel('theta_1/rad')
 plt.ylabel('theta_2/rad')

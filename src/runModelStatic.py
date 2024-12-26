@@ -13,17 +13,14 @@ import datetime
 import os
 import pandas as pd
 import scipy.io
+from utils.auto_record import record_experiment
 matplotlib.use('TkAgg')
 
 
-path1 = "/Users/flypig/Documents/Coding/MujocoLearn/1101/1101/mydog110.xml"
-path2 = '/Users/flypig/Documents/Coding/MujocoLearn/v2_4/urdf/dog2_4singleLeg.xml'
-path3 = '/Users/flypig/Documents/Coding/MujocoLearn/v2_4/urdf/Exp_MAA.xml'
-path4 = "/Users/flypig/Documents/Coding/MujocoLearn/v2_4/urdf/Exp_singleKMC.xml"
-path5 = "/Users/flypig/Documents/Coding/MujocoLearn/Model/SingleLeg_ideal.xml"
+path = "./models/SingleLeg_ideal.xml"
 
-ExpName = "Static_ideal"
-m = mujoco.MjModel.from_xml_path(path5)
+ExpName = "Static_ideal_gridScan"
+m = mujoco.MjModel.from_xml_path(path)
 d = mujoco.MjData(m)
 flag = 0
 
@@ -51,10 +48,10 @@ ExpResultList = []
 # MAAP = scipy.io.loadmat('F1.mat').get('F1')
 # BAAP = scipy.io.loadmat('F2.mat').get('F2')
 
-MAAP = scipy.io.loadmat('F1_10.mat').get("F1_matrix") # new data
-BAAP = scipy.io.loadmat('F2_10.mat').get("F2_matrix")
+MAAP = scipy.io.loadmat('./src/F1_10.mat').get("F1_matrix") # new data
+BAAP = scipy.io.loadmat('./src/F2_10.mat').get("F2_matrix")
 
-print(MAAP)
+print(MAAP.shape)
 # input()
 
 theta_1_array = np.linspace(math.pi/6, math.pi*2/3, 20) # 切分十个点
@@ -145,36 +142,13 @@ os.makedirs(folder_path, exist_ok=False)  # 如果文件名称冲突，报错!
 staticPlace_list_filename = os.path.join(folder_path, "StaticState_list.npy")
 np.save(staticPlace_list_filename, ExpResultList)
 
+# if success, record it in the Whole CSV
+exp_config = {
+    "id": f"{ExpName}-{ExpTime}",
+    "start_time": datetime.datetime.now(),
+    "dataFileName": staticPlace_list_filename,
+    "notes": "ideal模型大实验, 之前的ideal长度有问题，已修复"
+}
 
-if False:
-  # 循环结束时，记录数据
-  time_list = np.array(time_list)
-  sensor_list = np.array(sensor_list)
-  print("Time list shape:", time_list.shape)
-  print("Sensor list:", sensor_list)
-  # 当前路径下保存
-  # 获取当前时间并格式化
-  current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-
-  # 获取文件名
-
-  ExpTime = current_time
-  folder_path = f"./data/Exp-{ExpName}-{ExpTime}"
-  os.makedirs(folder_path, exist_ok=False)  # 如果文件名称冲突，报错!
-
-  # 生成文件名
-  time_list_filename = os.path.join(folder_path, "time_list.npy")
-  sensor_list_filename = os.path.join(folder_path, "sensor_list.npy")
-
-  # 保存数据
-  np.save(time_list_filename, time_list)
-  np.save(sensor_list_filename, sensor_list)
-
-  # 绘制图
-  # plt.plot(time_list, sensor_list[:, 0])
-  # plt.plot(time_list, sensor_list[:, 1])
-  # print("Save!")
-  # plt.savefig("./fig/sensor.png")
-  # show the fig
-  # plt.show()
-  input("type to end")
+record_experiment(exp_config)
+print("Exp Saved!")
