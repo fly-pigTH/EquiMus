@@ -2,3 +2,4 @@ Experiment ID,Start Time,End Time,DataFileName,Notes
 Static_ideal_gridScan-20241226_221600,2024-12-26 22:16:00.586162,2024-12-26 22:16:00.586354,./data/Exp-Static_ideal_gridScan-20241226_221600/StaticState_list.npy,"ideal模型大实验, 更新使用body约束, “数据和理论误差有点大”
 Static_ideal_gridScan-20241226_222120,2024-12-26 22:21:20.102197,2024-12-26 22:21:20.102320,./data/Exp-Static_ideal_gridScan-20241226_222120/StaticState_list.npy,"ideal模型大实验, 更新使用body约束", 
 Static_ideal_gridScan-20241226_223433,2024-12-26 22:34:33.282940,2024-12-26 22:34:33.282999,./data/Exp-Static_ideal_gridScan-20241226_223433/StaticState_list.npy,"ideal模型大实验, 之前的ideal长度有问题，已修复"
+A2B 10000-20241226_230233,2024-12-26 23:03:22.774700,2024-12-26 23:03:22.834321,./data/Exp-A2B 10000-20241226_230233/StepResponse_list.npy,"ideal模型大实验, 更新使用body约束"
