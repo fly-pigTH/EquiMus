@@ -9,7 +9,8 @@ import math
 path1 = "/Users/flypig/Documents/Coding/MujocoLearn/1101/1101/mydog110.xml"
 path2 = '/Users/flypig/Documents/Coding/MujocoLearn/v2_4/urdf/dog2_4singleLeg.xml'
 path3 = '/Users/flypig/Documents/Coding/MujocoLearn/v2_4/urdf/dog2_4.xml'
-m = mujoco.MjModel.from_xml_path(path3)
+path4 = '/Users/flypig/Documents/Coding/MujocoLearn/models/ballJoint.xml'
+m = mujoco.MjModel.from_xml_path(path4)
 d = mujoco.MjData(m)
 flag = 0
 
@@ -41,14 +42,14 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
       step += 1
       step_start = time.time()
 
-      time_step = 5
-      start_force_M = -0  # SOTA: -500
-      start_force_B = -0  # SOTA: -200
-      if time.time()%time_step < time_step/2:
+      time_step = 2
+      start_force_M = -10  # SOTA: -500
+      start_force_B = 0  # SOTA: -200
+      if time.time()%time_step < time_step/3:
         if flip == 0:
           # 随机给控制指令，但是保证0=1，2=3
-          d.ctrl[:4] = start_force_M+1.962*2
-          d.ctrl[4:] = start_force_B+15.042*2
+          d.ctrl[:2] = random.uniform(10, 10)*6
+          d.ctrl[2:] = random.uniform(35, 35)*1.5
           flip = 1
       else:
         d.ctrl[[0,1]] = start_force_M

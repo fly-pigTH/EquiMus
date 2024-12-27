@@ -22,7 +22,7 @@
             <geom size="0.05" type="sphere" rgba="0.8 0 0 0.8" mass="1" contype="0" conaffinity="0"/> -->
         <body name="Base" pos="0 0 0.8">
             <!-- <joint name="connector" type="slide" axis="0 0 1" range="-1.57 1.57"/> -->
-            <geom size="0.01 0.2 0.01" type="box" rgba="0.8 0 0 0.8" mass="1" contype="0" conaffinity="0"/>
+            <geom size="0.01 0.2 0.01" type="box" rgba="0.8 0 0 0.8" mass="0.155" contype="0" conaffinity="0"/>
             <body name="Thigh" pos="0 0 0">
                 <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.086" fromto="0 0 0 0 0 -0.25" contype="0" conaffinity="0"/>
                 <joint name="Shoulder" type="hinge" axis="1 0 0" range="-1.57 1.57"/>

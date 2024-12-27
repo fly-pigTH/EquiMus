@@ -13,11 +13,12 @@ import datetime
 import os
 import pandas as pd
 import scipy.io
+from tqdm import tqdm
 from utils.auto_record import record_experiment
 matplotlib.use('TkAgg')
 
 
-path = "./models/SingleLeg_ideal.xml"
+path = "./models/v2_4/urdf/dog2_4singleLeg.xml"
 
 ExpName = "Static_ideal_gridScan"
 m = mujoco.MjModel.from_xml_path(path)
@@ -70,15 +71,16 @@ BAAP_list = BAAP
 
 
 print(MAAP[0][0], BAAP[0][0])
+# input()
 
 viewer_flag = 0
 
 # if viewer_flag:
 #   with mujoco.viewer.launch_passive(m, d) as viewer:
-for i in range(len(theta_1_array)):
+for i in tqdm(range(len(theta_1_array))):
   for j in range(len(theta_2_array)):
     # 设置初始位置
-    tar_theta1 = theta_1_array[i]-math.pi/2
+    tar_theta1 = theta_1_array[i]
     tar_theta2 = theta_2_array[j]
     mujoco.mj_forward(m, d)
 
@@ -111,7 +113,8 @@ for i in range(len(theta_1_array)):
           StaticPositon = np.array(d.qpos)
           res = np.hstack(([target_force_MAA, target_force_BAA], StaticPositon))
           ExpResultList.append(res)
-          print(f"[Max Error]: {max(abs(tar_theta1 - d.qpos[0]), abs(tar_theta2 - d.qpos[1]))}, [Error of Tar1]:", tar_theta1 - d.qpos[0], "[Error of Tar2]:", tar_theta2 - d.qpos[1])
+          # print(f"Pos: {d.qpos+math.pi/2}")
+          print(f"[Max Error]: {max(abs(tar_theta1 - d.qpos[0] - math.pi/2), abs(tar_theta2 - d.qpos[1] - math.pi/2))}, [Error of Tar1]:", tar_theta1 - d.qpos[0] - math.pi/2, "[Error of Tar2]:", tar_theta2 - d.qpos[1] - math.pi/2)
           record = False
 
         mujoco.mj_step(m, d)  # update!
@@ -147,7 +150,7 @@ exp_config = {
     "id": f"{ExpName}-{ExpTime}",
     "start_time": datetime.datetime.now(),
     "dataFileName": staticPlace_list_filename,
-    "notes": "ideal模型大实验, 之前的ideal长度有问题，已修复"
+    "notes": "real 模型大实验，测试"
 }
 
 record_experiment(exp_config)

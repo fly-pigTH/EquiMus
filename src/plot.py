@@ -20,7 +20,7 @@ ax = fig.add_subplot(111, projection='3d')
 
 # load sim data
 # sim_data = np.load("./data/Exp-Static-20241220_152829/StaticState_list.npy")
-sim_data = np.load("./data/Exp-Static_ideal_gridScan-20241226_223433/StaticState_list.npy")
+sim_data = np.load("./data/Exp-Static_ideal_gridScan-20241227_101514/StaticState_list.npy")
 
 print(sim_data)
 print("--")
@@ -81,7 +81,7 @@ for i in range(error_matrix.shape[0]):
 plt.show()
 
 # 计算误差矩阵（绝对误差）
-error_matrix = np.abs(sim_data[:,:,3] - Y)
+error_matrix = np.abs(sim_data[:,:,3] - Y + math.pi/2)
 
 # 绘制热力图
 plt.figure(figsize=(12, 8))
@@ -107,3 +107,4 @@ for i in range(error_matrix.shape[0]):
             plt.text(j, i, f"{error_matrix[i, j]:.4f}", ha='center', va='center', color='white')
 
 plt.show()
+
