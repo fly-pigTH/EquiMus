@@ -5,10 +5,12 @@ import mujoco.viewer
 import numpy as np
 import random
 import math
+import scipy
 
 path1 = "/Users/flypig/Documents/Coding/MujocoLearn/1101/1101/mydog110.xml"
 path2 = '/Users/flypig/Documents/Coding/MujocoLearn/v2_4/urdf/dog2_4singleLeg.xml'
 path3 = '/Users/flypig/Documents/Coding/MujocoLearn/v2_4/urdf/dog2_4.xml'
+path4 = '/Users/flypig/Documents/Coding/MujocoLearn/models/ballJoint.xml'
 path4 = '/Users/flypig/Documents/Coding/MujocoLearn/models/ballJoint.xml'
 m = mujoco.MjModel.from_xml_path(path4)
 d = mujoco.MjData(m)
@@ -32,6 +34,9 @@ input("Start")
 time_list = []
 sensor_list = []
 
+# Stand Test
+
+
 step = 0
 flip = 0
 with mujoco.viewer.launch_passive(m, d) as viewer:
@@ -45,16 +50,24 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
       time_step = 2
       start_force_M = -10  # SOTA: -500
       start_force_B = 0  # SOTA: -200
-      if time.time()%time_step < time_step/3:
-        if flip == 0:
-          # 随机给控制指令，但是保证0=1，2=3
-          d.ctrl[:2] = random.uniform(10, 10)*6
-          d.ctrl[2:] = random.uniform(35, 35)*1.5
-          flip = 1
-      else:
-        d.ctrl[[0,1]] = start_force_M
-        d.ctrl[[2,3]] = start_force_B
-        flip = 0
+      # if time.time()%time_step < time_step/3:
+      #   if flip == 0:
+      #     # 随机给控制指令，但是保证0=1，2=3
+      #     d.ctrl[:2] = random.uniform(10, 10)*6
+      #     d.ctrl[2:] = random.uniform(35, 35)*1.5
+      #     flip = 1
+      # else:
+      #   d.ctrl[[0,1]] = start_force_M
+      #   d.ctrl[[2,3]] = start_force_B
+      #   flip = 0
+
+      d.qacc[3] = 0.01  # 所有关节的加速度为零
+
+      # 执行逆向动力学
+      mujoco.mj_inverse(m, d)
+      torques = d.qfrc_inverse
+      print(torques)
+
 
       # 记录传感器数据
       # print(d.sensordata)
@@ -70,7 +83,7 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
       mujoco.mj_step(m, d)
 
       # print state
-      print(d.qpos)
+      # print(d.qpos)
       # 查看器选项的修改示例：每两秒钟切换一次接触点。
       # with viewer.lock():
       #   viewer.opt.flags[mujoco.mjtVisFlag.mjVIS_CONTACTPOINT] = int(d.time % 2)
