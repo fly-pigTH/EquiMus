@@ -49,8 +49,13 @@ ExpResultList = []
 # MAAP = scipy.io.loadmat('F1.mat').get('F1')
 # BAAP = scipy.io.loadmat('F2.mat').get('F2')
 
-MAAP = scipy.io.loadmat('./src/F1_10.mat').get("F1_matrix") # new data
-BAAP = scipy.io.loadmat('./src/F2_10.mat').get("F2_matrix")
+# Fixed
+# MAAP = scipy.io.loadmat('./src/F1_10.mat').get("F1_matrix") # new data
+# BAAP = scipy.io.loadmat('./src/F2_10.mat').get("F2_matrix")
+
+# Landing
+MAAP = scipy.io.loadmat('./src/F1_landing2DOF.mat').get("F1_matrix") # new data
+BAAP = scipy.io.loadmat('./src/F2_landing2DOF.mat').get("F2_matrix") # new data
 
 print(MAAP.shape)
 # input()
@@ -93,7 +98,7 @@ for i in tqdm(range(len(theta_1_array))):
     # print(f"Exp {i}-{j} with MAA: {MAAPressure}, BAA: {BAAPressure}")
     start = time.time() if viewer_flag else d.time
     try:
-      while (time.time() if viewer_flag else d.time) - start < 15: # viewer.is_running() and
+      while (time.time() if viewer_flag else d.time) - start < 50: # viewer.is_running() and
         # print(time.time()-start if viewer_flag else d.time)
         time_now = time.time() if viewer_flag else d.time
         
@@ -109,7 +114,7 @@ for i in tqdm(range(len(theta_1_array))):
           d.ctrl[2:] = target_force_BAA    # 50N
           record = True
 
-        if time_now - start > 14 and record == True:
+        if time_now - start > 49 and record == True:
           StaticPositon = np.array(d.qpos)
           res = np.hstack(([target_force_MAA, target_force_BAA], StaticPositon))
           ExpResultList.append(res)

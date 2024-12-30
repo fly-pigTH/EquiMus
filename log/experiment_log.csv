@@ -7,3 +7,5 @@ Static_ideal_gridScan-20241227_100204,2024-12-27 10:02:04.323664,2024-12-27 10:0
 Static_ideal_gridScan-20241227_100757,2024-12-27 10:07:57.509673,2024-12-27 10:07:57.509791,./data/Exp-Static_ideal_gridScan-20241227_100757/StaticState_list.npy,real 模型大实验，测试
 Static_ideal_gridScan-20241227_101240,2024-12-27 10:12:40.268766,2024-12-27 10:12:40.269159,./data/Exp-Static_ideal_gridScan-20241227_101240/StaticState_list.npy,real 模型大实验，测试
 Static_ideal_gridScan-20241227_101514,2024-12-27 10:15:14.787968,2024-12-27 10:15:14.788089,./data/Exp-Static_ideal_gridScan-20241227_101514/StaticState_list.npy,real 模型大实验，测试
+Static_ideal_gridScan-20241230_102113,2024-12-30 10:21:13.925493,2024-12-30 10:21:13.926227,./data/Exp-Static_ideal_gridScan-20241230_102113/StaticState_list.npy,real 模型大实验，测试, landing model 2DOF
+Static_ideal_gridScan-20241230_104248,2024-12-30 10:42:48.298748,2024-12-30 10:42:48.298981,./data/Exp-Static_ideal_gridScan-20241230_104248/StaticState_list.npy,real 模型大实验，测试

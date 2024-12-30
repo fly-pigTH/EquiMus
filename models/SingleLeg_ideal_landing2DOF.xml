@@ -27,11 +27,11 @@
             <geom size="0.01 0.2 0.01" type="box" rgba="0.8 0 0 1" mass="0.155" contype="0" conaffinity="0"/>
             <body name="Thigh" pos="0 0 0">
                 <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.086" fromto="0 0 0 0 0 -0.25" contype="0" conaffinity="0"/>
-                <joint name="Shoulder" type="hinge" axis="1 0 0" range="-1.57 1.57"/>
+                <joint name="Shoulder" type="hinge" axis="1 0 0" range="-1.57 1.57" damping="0.01"/>
                 <site name="C1" pos="0 -0.02999933715459505 -0.20999803968200498"/>
                 <body name="Calf" pos="0 0 -0.25">
                     <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.1033" fromto="0 0 0 0 0 -0.25"/>
-                    <joint name="Elbow" type="hinge" axis="1 0 0" range="0 2.09"/>
+                    <joint name="Elbow" type="hinge" axis="1 0 0" range="0 2.09" damping="0.01"/>
                     <site name="D1" pos="0  0.05 -0.08660254037844388"/>
                     <body name="Foot" pos="0 0 -0.25">
                     </body>
@@ -71,10 +71,10 @@
 
           <!-- 增加在RB_BAA_LowerJoint等关节中加入8个位置控制器，要求增加位置限制 -->
     <actuator>
-        <motor joint="MAA_SlideJoint" ctrllimited="true" ctrlrange="-20 20" />
-        <motor joint="MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-20 20" />
-        <motor joint="BAA_SlideJoint" ctrllimited="true" ctrlrange="-20 20" />
-        <motor joint="BAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-20 20" />
+        <motor joint="MAA_SlideJoint" ctrllimited="true" ctrlrange="-80 80" />
+        <motor joint="MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-80 80" />
+        <motor joint="BAA_SlideJoint" ctrllimited="true" ctrlrange="-80 80" />
+        <motor joint="BAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-80 80" />
         <!-- <position joint="RB_MAA_UpJoint" ctrllimited="true" ctrlrange="-1 1" /> -->
         <!-- <motor joint="RB_MAA_SlideJoint" ctrllimited="true" ctrlrange="-20 20" />
         <motor joint="RB_MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-20 20" />
@@ -86,7 +86,7 @@
     <equality>
         <connect name="MAA_connect" anchor="0 0 0" body2="Calf" body1="BAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
         <connect name="BAA_connect" anchor="0 0 0" body2="Thigh" body1="MAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
-        <connect name="foot_landed" anchor="0 0 0" body2="Horizontal_Rail" body1="Foot" solimp="0.95 0.99 0.00001 0.1 2"/>
+        <connect name="foot_landed" anchor="0 0 0" body2="Horizontal_Rail" body1="Foot" solimp="0.9 0.95 0.001 0.1 2"/>
         
         <!-- <connect name="MAA_connect" site1="C1" site2="C2" solimp="0.95 0.99 0.00001 0.1 2"/>
         <connect name="BAA_connect" site1="D1" site2="D2" solimp="0.95 0.99 0.00001 0.1 2"/> -->
@@ -94,5 +94,9 @@
         <joint name="MAA" joint1="MAA_SlideJoint" joint2="MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
         <joint name="BAA" joint1="BAA_SlideJoint" joint2="BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
     </equality>
+
+    <keyframe>
+        <key qpos='-0.13069 -0.302131 -0.493654 2.14682 -0.510301 -0.0145901 -0.0146984 -0.548023 -0.0632735 -0.0633618'/>
+    </keyframe>
 
 </mujoco>
