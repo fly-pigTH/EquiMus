@@ -426,6 +426,9 @@ def static_energy(theta_1, theta_2, StaticForce, mode="Landing2DOF"):
 
 
 if __name__ == '__main__':
+
+    plt.figure(figsize=(10,8))
+
     for theta_10 in np.linspace(0, math.pi*2/3, 10):
         for theta_20 in np.linspace(0, math.pi*2/3, 10):
             # theta_10 = math.pi/4
@@ -467,10 +470,9 @@ if __name__ == '__main__':
 
             # 绘制
             # 填充等高线
-            plt.figure(figsize=(10,8))
             print("All Shape:", X.shape, Y.shape, E.shape)
             contour_filled = plt.contourf(X, Y, E, levels=40, cmap='viridis')
-            plt.colorbar(contour_filled, label="Value")  # 添加颜色条
+            # plt.colorbar(contour_filled, label="Value")  # 添加颜色条
 
             # 绘制等高线
             contour_lines = plt.contour(X, Y, E, levels=40, colors='black', linewidths=0.5)
@@ -485,4 +487,8 @@ if __name__ == '__main__':
             plt.title('Potential Energy with \nsStatic Point at theta_1 = %.2f, theta_2 = %.2f' % (theta_10, theta_20))
 
             # 显示图像
-            plt.show()   
+
+            plt.show(block=False)
+            plt.pause(0.1)
+            plt.cla()
+
