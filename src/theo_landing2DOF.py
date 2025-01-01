@@ -426,28 +426,29 @@ def static_energy(theta_1, theta_2, StaticForce, mode="Landing2DOF"):
 
 
 if __name__ == '__main__':
-
+    
+    runMode = "Landing2DOF"
     plt.figure(figsize=(10,8))
 
-    for theta_10 in np.linspace(0, math.pi*2/3, 10):
-        for theta_20 in np.linspace(0, math.pi*2/3, 10):
+    for theta_10 in np.linspace(0, math.pi*2/3, 20):
+        for theta_20 in np.linspace(0, math.pi*2/3, 20):
             # theta_10 = math.pi/4
             # theta_20 = math.pi/2
-            StaticForce, qpos = get_static_func_and_qpos_forLanding2DOF(theta_10, theta_20, mode="Fixed")
+            StaticForce, qpos = get_static_func_and_qpos_forLanding2DOF(theta_10, theta_20, mode="runMode")
             print(f"theta_1 = {theta_10}, theta_2 = {theta_20}, StaticForce = {StaticForce}, qpos = {qpos}")
             
 
             # plot the potential energy
-            theta_1 = np.linspace(0, math.pi*2/3, 30)
-            theta_2 = np.linspace(0, math.pi*2/3, 30)
-            print(f"Static Energy = {static_energy(theta_10, theta_20, StaticForce, 'Fixed')}")
+            theta_1 = np.linspace(0, math.pi*2/3, 20)
+            theta_2 = np.linspace(0, math.pi*2/3, 20)
+            print(f"Static Energy = {static_energy(theta_10, theta_20, StaticForce, 'runMode')}")
 
             E = np.zeros((len(theta_1), len(theta_2)))
             for i in range(len(theta_1)):
                 for j in range(len(theta_2)):
-                    E[i, j] = static_energy(theta_1[i], theta_2[j], StaticForce, 'Fixed')
+                    E[i, j] = static_energy(theta_1[i], theta_2[j], StaticForce, 'runMode')
 
-            # 为了和MeshGrid统一，这里需要转置，使X对应行列
+            # 为了和MeshGrid统一，这里需要转置，使X对应横坐标
             E = E.T
 
             # 绘制3D
@@ -471,24 +472,77 @@ if __name__ == '__main__':
             # 绘制
             # 填充等高线
             print("All Shape:", X.shape, Y.shape, E.shape)
-            contour_filled = plt.contourf(X, Y, E, levels=40, cmap='viridis')
-            # plt.colorbar(contour_filled, label="Value")  # 添加颜色条
+            if False:
+                contour_filled = plt.contourf(X, Y, E, levels=40, cmap='viridis')
+                # plt.colorbar(contour_filled, label="Value")  # 添加颜色条
 
-            # 绘制等高线
-            contour_lines = plt.contour(X, Y, E, levels=40, colors='black', linewidths=0.5)
-            plt.clabel(contour_lines, inline=True, fontsize=8)  # 添加线上的标签
+                # 绘制等高线
+                contour_lines = plt.contour(X, Y, E, levels=40, colors='black', linewidths=0.5)
+                plt.clabel(contour_lines, inline=True, fontsize=8)  # 添加线上的标签
 
-            plt.plot(theta_10, theta_20, label="Static Point", marker='o', color='red')  # 绘制静态点
+                plt.plot(theta_10, theta_20, label="Static Point", marker='o', color='red')  # 绘制静态点
 
-            # 设置标题和轴标签
-            plt.title("Contour Plot")
-            plt.xlabel("Theta1 Coordinate")
-            plt.ylabel("Theta2 Coordinate")
-            plt.title('Potential Energy with \nsStatic Point at theta_1 = %.2f, theta_2 = %.2f' % (theta_10, theta_20))
+                # 设置标题和轴标签
+                plt.title("Contour Plot")
+                plt.xlabel("Theta1 Coordinate")
+                plt.ylabel("Theta2 Coordinate")
+                plt.title('Potential Energy with \nsStatic Point at theta_1 = %.2f, theta_2 = %.2f' % (theta_10, theta_20))
 
             # 显示图像
 
+            # plt.show(block=False)
+            # plt.pause(0.1)
+            # plt.cla()
+
+            # 绘制机器人足端坐标
+            End_x = []
+            End_y = []
+            Mid_x = []
+            Mid_y = []
+            for i in range(len(theta_1)):
+                for j in range(len(theta_2)):
+                    end_x1 = 0.25 * np.cos(theta_1[i]) + 0.25 * np.cos(theta_1[i] + theta_2[j])
+                    end_y1 = 0.25 * np.sin(theta_1[i]) + 0.25 * np.sin(theta_1[i] + theta_2[j])
+                    Mid_x.append(0.25 * np.cos(theta_1[i]))
+                    Mid_y.append(0.25 * np.sin(theta_1[i]))
+                    End_x.append(end_x1)
+                    End_y.append(end_y1)
+            End_x = np.array(End_x).reshape(len(theta_1), len(theta_2))
+            End_y = np.array(End_y).reshape(len(theta_1), len(theta_2))
+            Mid_x = np.array(Mid_x).reshape(len(theta_1), len(theta_2))
+            Mid_y = np.array(Mid_y).reshape(len(theta_1), len(theta_2))
+
+            # 全部转置，对应meshgrid
+            End_x = End_x.T
+            End_y = End_y.T
+            Mid_x = Mid_x.T
+            Mid_y = Mid_y.T
+
+            print(End_x.shape, End_y.shape)
+            
+
+            contour_filled = plt.contourf(End_x, End_y, E, levels=20, cmap='viridis', linewidths=0.5)
+            contour_lines = plt.contour(End_x, End_y, E, levels=20, colors='black', linewidths=0.5)
+            plt.clabel(contour_lines, inline=True, fontsize=8)  # 添加线上的标签
+            # plt.colorbar()
+            plt.xlabel('x')
+            plt.ylabel('y')
+
+            # 绘制足端位置
+            plt.plot(0, 0, marker='o', color='red', label='Origin')
+            plt.plot(0.25*np.cos(theta_10), 0.25*np.sin(theta_10), marker='o', color='blue', label='Mid Point')
+            plt.plot(0.25*np.cos(theta_10)+0.25*np.cos(theta_10+theta_20), 0.25*np.sin(theta_10)+0.25*np.sin(theta_10+theta_20), marker='o', color='blue', label='End Point')
+            plt.plot([0, 0.25*np.cos(theta_10)], [0, 0.25*np.sin(theta_10)], color='green', linestyle='--')
+            plt.plot([0.25*np.cos(theta_10), 0.25*np.cos(theta_10)+0.25*np.cos(theta_10+theta_20)], [0.25*np.sin(theta_10), 0.25*np.sin(theta_10)+0.25*np.sin(theta_10+theta_20)], color='green', linestyle='--')
+            
+            # 获取当前轴对象并倒立坐标轴
+            current_axes = plt.gca()
+            current_axes.invert_xaxis()  # 倒立X轴
+            current_axes.invert_yaxis()  # 倒立Y轴
+
+            # 循环播放
             plt.show(block=False)
-            plt.pause(0.1)
+            plt.pause(0.05)
             plt.cla()
+            
 
