@@ -201,11 +201,12 @@ if viewer_flag:
         step_time = time.time() if viewer_flag else d.time
 
         if step_time - start > 0 and step_time - start < 10: # 稳定时间
-          # d.qpos[3] = 0 # 强制设定位置！
-          # d.qpos[2] = 0
-          mujoco.mju_copy(d.qpos, init_qpos)
-          d.ctrl[:2] = init_force[0]
-          d.ctrl[2:] = init_force[1]
+          d.qpos[0] = 0 # 强制设定位置！
+          d.qpos[3] = 0 # 强制设定位置！
+          d.qpos[2] = 0
+          # mujoco.mju_copy(d.qpos, init_qpos)
+          # d.ctrl[:2] = init_force[0]
+          # d.ctrl[2:] = init_force[1]
           # d.ctrl[:2] = MAAP[0]
           # d.ctrl[2:] = BAAP[0]
 
@@ -215,10 +216,10 @@ if viewer_flag:
           print(f"rank={rank}")
           # d.qpos[2] = 0
 
-          d.ctrl[:2] = init_force[0]
-          d.ctrl[2:] = init_force[1]
-          # d.ctrl[:2] = MAAP[rank]
-          # d.ctrl[2:] = BAAP[rank]
+          # d.ctrl[:2] = init_force[0]
+          # d.ctrl[2:] = init_force[1]
+          d.ctrl[:2] = MAAP[rank]
+          d.ctrl[2:] = BAAP[rank]
 
           Positon = np.array(d.qpos)
           res = np.hstack(([ForcePulse[0], ForcePulse[1], d.time], Positon))

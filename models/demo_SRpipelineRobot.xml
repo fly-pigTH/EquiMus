@@ -1,0 +1,44 @@
+<!-- 单腿的理想杆球模型 -->
+
+<mujoco model="v2_4">
+  <compiler angle="radian"/>
+  <option timestep="0.001" iterations="2000" gravity="0 0 -9.8" tolerance="1e-10"/>
+  
+  <default>
+    <geom density="418"/>
+  </default>
+
+    <asset>
+        <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3"
+            rgb2=".2 .3 .4" width="300" height="300"/>
+        <material name="grid" texture="grid" texrepeat="8 8" reflectance=".2"/>
+    </asset>
+
+    <worldbody>
+        <light name="top" pos="0 0 5"/>
+        <geom name="floor" size="10 10 .01" condim="3" type="plane" material="grid"/>
+        <body name="head" pos="0 0 0.1">
+            <geom name="head_geom" size="0.02 0.005 0.005" type="box" rgba="0.8 0 0 0.8" mass="3" solref="0.02 1" solimp="0.9 0.95 0.001"/>
+            <freejoint/>
+            <body name="tail" pos="-0.1 0 0">
+                <geom name="tail_geom" size="0.02 0.005 0.005" type="box" rgba="0.8 0 0 0.8" mass="3" solref="0.02 1" solimp="0.9 0.95 0.001"/>
+                <joint name="head_joint" type="slide" axis="-1 0 0" damping="0" stiffness="0" springref="0"/>
+            </body>
+        </body>
+    </worldbody>
+
+          <!-- 增加在RB_BAA_LowerJoint等关节中加入8个位置控制器，要求增加位置限制 -->
+    <actuator>
+        <motor joint="head_joint" ctrllimited="true" ctrlrange="-200 200" />
+    </actuator>
+
+    <!-- 建立并联关系，如 RB_BAA_LOLink 应该与 RB_Calf 连接 --> 
+    <equality>
+    </equality>
+
+    <contact>
+        <pair geom1="floor" geom2="head_geom" friction="1 1 0.005 0.0001 0.0001"/>
+        <pair geom1="floor" geom2="tail_geom" friction="0 0 0.005 0.0001 0.0001"/>
+    </contact>
+
+</mujoco>

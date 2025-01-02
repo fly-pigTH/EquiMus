@@ -1,4 +1,5 @@
 # landing model 2DOF 静力学推导分析，用于计算初始qpos和对应的平衡力
+# 静力学稳定性分析
 
 import numpy as np
 import math
@@ -22,7 +23,7 @@ def get_static_func_and_qpos_forLanding2DOF(theta_1, theta_2, mode="Landing2DOF"
     d_2 = 0.10
     s = 0
 
-    M = 0.155  # 真实值
+    M = 1+0.155  # 真实值
     m_1, m_2 = 0.086, 0.1033
     I_1, I_2 = (1/12 * m_1 * 0.25**2), (1/12 * m_2 * 0.25**2)
 
@@ -247,7 +248,7 @@ def static_energy(theta_1, theta_2, StaticForce, mode="Landing2DOF"):
     d_2 = 0.10
     s = 0
 
-    M = 0.155  # 真实值
+    M = 1+0.155  # 真实值
     m_1, m_2 = 0.086, 0.1033
     I_1, I_2 = (1/12 * m_1 * 0.25**2), (1/12 * m_2 * 0.25**2)
 
@@ -428,51 +429,32 @@ def static_energy(theta_1, theta_2, StaticForce, mode="Landing2DOF"):
 if __name__ == '__main__':
     
     runMode = "Landing2DOF"
+
     plt.figure(figsize=(10,8))
 
     for theta_10 in np.linspace(0, math.pi*2/3, 20):
         for theta_20 in np.linspace(0, math.pi*2/3, 20):
-            # theta_10 = math.pi/4
-            # theta_20 = math.pi/2
-            StaticForce, qpos = get_static_func_and_qpos_forLanding2DOF(theta_10, theta_20, mode="runMode")
+            StaticForce, qpos = get_static_func_and_qpos_forLanding2DOF(theta_10, theta_20, mode=runMode)
             print(f"theta_1 = {theta_10}, theta_2 = {theta_20}, StaticForce = {StaticForce}, qpos = {qpos}")
-            
 
             # plot the potential energy
             theta_1 = np.linspace(0, math.pi*2/3, 20)
             theta_2 = np.linspace(0, math.pi*2/3, 20)
-            print(f"Static Energy = {static_energy(theta_10, theta_20, StaticForce, 'runMode')}")
+            print(f"Static Energy = {static_energy(theta_10, theta_20, StaticForce, runMode)}")
 
             E = np.zeros((len(theta_1), len(theta_2)))
             for i in range(len(theta_1)):
                 for j in range(len(theta_2)):
-                    E[i, j] = static_energy(theta_1[i], theta_2[j], StaticForce, 'runMode')
+                    E[i, j] = static_energy(theta_1[i], theta_2[j], StaticForce, runMode)
 
             # 为了和MeshGrid统一，这里需要转置，使X对应横坐标
             E = E.T
 
-            # 绘制3D
-            # fig = plt.figure()
-            # ax = fig.add_subplot(111, projection='3d')
             X, Y = np.meshgrid(theta_1, theta_2)
-            # ax.plot_surface(X, Y, E, cmap='rainbow')
-            # # 绘制等高线
-            # plt.contourf(X, Y, E, 8, alpha=0.75, cmap='rainbow')
-            # # 绘制theta_1, theta_2的位置
-            # ax.scatter3D(theta_10, theta_20, static_energy(theta_10, theta_20, StaticForce), color="green", label="static Point")
-
-            # # plt.scatter(theta_20, theta_10, c='r')
-            # # plt.colorbar()
-            # plt.legend()
-            # plt.xlabel('theta_1')
-            # plt.ylabel('theta_2')
-            # plt.title('Potential Energy')
-            # plt.show()
-
-            # 绘制
+            
             # 填充等高线
             print("All Shape:", X.shape, Y.shape, E.shape)
-            if False:
+            if False:   # 角度图
                 contour_filled = plt.contourf(X, Y, E, levels=40, cmap='viridis')
                 # plt.colorbar(contour_filled, label="Value")  # 添加颜色条
 
@@ -499,46 +481,77 @@ if __name__ == '__main__':
             End_y = []
             Mid_x = []
             Mid_y = []
+            Base_x = []     # for Landing2DOF
+            Base_y = []
             for i in range(len(theta_1)):
                 for j in range(len(theta_2)):
                     end_x1 = 0.25 * np.cos(theta_1[i]) + 0.25 * np.cos(theta_1[i] + theta_2[j])
                     end_y1 = 0.25 * np.sin(theta_1[i]) + 0.25 * np.sin(theta_1[i] + theta_2[j])
+                    base_x1 = -end_x1
+                    base_y1 = -end_y1
                     Mid_x.append(0.25 * np.cos(theta_1[i]))
                     Mid_y.append(0.25 * np.sin(theta_1[i]))
                     End_x.append(end_x1)
                     End_y.append(end_y1)
+                    Base_x.append(base_x1)
+                    Base_y.append(base_y1)
             End_x = np.array(End_x).reshape(len(theta_1), len(theta_2))
             End_y = np.array(End_y).reshape(len(theta_1), len(theta_2))
             Mid_x = np.array(Mid_x).reshape(len(theta_1), len(theta_2))
             Mid_y = np.array(Mid_y).reshape(len(theta_1), len(theta_2))
-
+            
             # 全部转置，对应meshgrid
             End_x = End_x.T
             End_y = End_y.T
             Mid_x = Mid_x.T
             Mid_y = Mid_y.T
+            Base_x = np.array(Base_x).reshape(len(theta_1), len(theta_2)).T
+            Base_y = np.array(Base_y).reshape(len(theta_1), len(theta_2)).T
 
             print(End_x.shape, End_y.shape)
-            
 
-            contour_filled = plt.contourf(End_x, End_y, E, levels=20, cmap='viridis', linewidths=0.5)
-            contour_lines = plt.contour(End_x, End_y, E, levels=20, colors='black', linewidths=0.5)
-            plt.clabel(contour_lines, inline=True, fontsize=8)  # 添加线上的标签
-            # plt.colorbar()
+            if runMode == "Landing2DOF":
+                contour_filled = plt.contourf(Base_x, Base_y, E, levels=20, cmap='viridis', linewidths=0.5)
+                contour_lines = plt.contour(Base_x, Base_y, E, levels=20, colors='black', linewidths=0.5)
+                plt.clabel(contour_lines, inline=True, fontsize=8)  # 添加线上的标签
+            else:
+                contour_filled = plt.contourf(End_x, End_y, E, levels=20, cmap='viridis', linewidths=0.5)
+                contour_lines = plt.contour(End_x, End_y, E, levels=20, colors='black', linewidths=0.5)
+                plt.clabel(contour_lines, inline=True, fontsize=8)  # 添加线上的标签
             plt.xlabel('x')
             plt.ylabel('y')
 
             # 绘制足端位置
-            plt.plot(0, 0, marker='o', color='red', label='Origin')
-            plt.plot(0.25*np.cos(theta_10), 0.25*np.sin(theta_10), marker='o', color='blue', label='Mid Point')
-            plt.plot(0.25*np.cos(theta_10)+0.25*np.cos(theta_10+theta_20), 0.25*np.sin(theta_10)+0.25*np.sin(theta_10+theta_20), marker='o', color='blue', label='End Point')
-            plt.plot([0, 0.25*np.cos(theta_10)], [0, 0.25*np.sin(theta_10)], color='green', linestyle='--')
-            plt.plot([0.25*np.cos(theta_10), 0.25*np.cos(theta_10)+0.25*np.cos(theta_10+theta_20)], [0.25*np.sin(theta_10), 0.25*np.sin(theta_10)+0.25*np.sin(theta_10+theta_20)], color='green', linestyle='--')
+            origin_x = 0    # 坐标原点
+            origin_y = 0
+            if runMode == "Landing2DOF":
+                origin_x = 0.25 * np.cos(theta_10) + 0.25 * np.cos(theta_10 + theta_20)
+                origin_y = 0.25 * np.sin(theta_10) + 0.25 * np.sin(theta_10 + theta_20)
+            else:
+                origin_x = 0
+                origin_y = 0
+            O_array_x = 0 - origin_x
+            O_array_y = 0 - origin_y
+            E_array_x = 0.25 * np.cos(theta_10) - origin_x
+            E_array_y = 0.25 * np.sin(theta_10) - origin_y
+            F_array_x = 0.25 * np.cos(theta_10) + 0.25 * np.cos(theta_10 + theta_20) - origin_x
+            F_array_y = 0.25 * np.sin(theta_10) + 0.25 * np.sin(theta_10 + theta_20) - origin_y
+
+            plt.plot(O_array_x, O_array_y, marker='o', color='red', label='O')
+            plt.plot(E_array_x, E_array_y, marker='o', color='blue', label='E')
+            plt.plot(F_array_x, F_array_y, marker='o', color='blue', label='F')
+            plt.plot([O_array_x, E_array_x, F_array_x], [O_array_y, E_array_y, F_array_y], color='green', linestyle='--')
             
             # 获取当前轴对象并倒立坐标轴
             current_axes = plt.gca()
+            current_axes.set_xlim(-0.5, 0.5)
+            current_axes.set_ylim(-0.5, 0.5)
             current_axes.invert_xaxis()  # 倒立X轴
             current_axes.invert_yaxis()  # 倒立Y轴
+            current_axes.set_aspect(1)
+            plt.grid(linestyle='--', linewidth=0.5)
+            plt.legend()
+            plt.title(f"runMode: {runMode}\n theta10: {round(theta_10*180/math.pi, 4)}deg, theta20: {round(theta_20*180/math.pi, 4)}deg")
 
             # 循环播放
             plt.show(block=False)

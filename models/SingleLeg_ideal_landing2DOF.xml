@@ -86,7 +86,7 @@
     <equality>
         <connect name="MAA_connect" anchor="0 0 0" body2="Calf" body1="BAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
         <connect name="BAA_connect" anchor="0 0 0" body2="Thigh" body1="MAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
-        <connect name="foot_landed" anchor="0 0 0" body2="Horizontal_Rail" body1="Foot" solimp="0.9 0.95 0.001 0.1 2"/>
+        <connect name="foot_landed" anchor="0 0 0" body2="Horizontal_Rail" body1="Foot" solimp="0.95 0.99 0.00001 0.1 2"/>
         
         <!-- <connect name="MAA_connect" site1="C1" site2="C2" solimp="0.95 0.99 0.00001 0.1 2"/>
         <connect name="BAA_connect" site1="D1" site2="D2" solimp="0.95 0.99 0.00001 0.1 2"/> -->
