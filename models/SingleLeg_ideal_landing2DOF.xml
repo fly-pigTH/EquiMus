@@ -27,11 +27,11 @@
             <geom size="0.01 0.2 0.01" type="box" rgba="0.8 0 0 1" mass="0.155" contype="0" conaffinity="0"/>
             <body name="Thigh" pos="0 0 0">
                 <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.086" fromto="0 0 0 0 0 -0.25" contype="0" conaffinity="0"/>
-                <joint name="Shoulder" type="hinge" axis="1 0 0" range="-1.57 1.57" damping="0.01"/>
+                <joint name="Shoulder" type="hinge" axis="1 0 0" range="-1.57 1.57"/>
                 <site name="C1" pos="0 -0.02999933715459505 -0.20999803968200498"/>
                 <body name="Calf" pos="0 0 -0.25">
                     <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.1033" fromto="0 0 0 0 0 -0.25"/>
-                    <joint name="Elbow" type="hinge" axis="1 0 0" range="0 2.09" damping="0.01"/>
+                    <joint name="Elbow" type="hinge" axis="1 0 0" range="0 2.09"/>
                     <site name="D1" pos="0  0.05 -0.08660254037844388"/>
                     <body name="Foot" pos="0 0 -0.25">
                     </body>

@@ -9,3 +9,8 @@ Static_ideal_gridScan-20241227_101240,2024-12-27 10:12:40.268766,2024-12-27 10:1
 Static_ideal_gridScan-20241227_101514,2024-12-27 10:15:14.787968,2024-12-27 10:15:14.788089,./data/Exp-Static_ideal_gridScan-20241227_101514/StaticState_list.npy,real 模型大实验，测试
 Static_ideal_gridScan-20241230_102113,2024-12-30 10:21:13.925493,2024-12-30 10:21:13.926227,./data/Exp-Static_ideal_gridScan-20241230_102113/StaticState_list.npy,real 模型大实验，测试, landing model 2DOF
 Static_ideal_gridScan-20241230_104248,2024-12-30 10:42:48.298748,2024-12-30 10:42:48.298981,./data/Exp-Static_ideal_gridScan-20241230_104248/StaticState_list.npy,real 模型大实验，测试
+landing 10-20N Force Pulse-20250103_010448,2025-01-03 01:04:48.861891,2025-01-03 01:04:48.862148,./data/Exp-landing 10-20N Force Pulse-20250103_010448/StaticState_list.npy, Landing2DOF 单点 Model 动力学
+landing 10-20N Force Pulse-20250103_011830,2025-01-03 01:18:30.805543,2025-01-03 01:18:30.805760,./data/Exp-landing 10-20N Force Pulse-20250103_011830/StaticState_list.npy, Landing2DOF 单点 Model 动力学
+landing 10-20N Force Pulse-20250103_011954,2025-01-03 01:19:54.661177,2025-01-03 01:19:54.661294,./data/Exp-landing 10-20N Force Pulse-20250103_011954/StaticState_list.npy, Landing2DOF 单点 Model 动力学
+landing 10-20N Force Pulse-20250103_012714,2025-01-03 01:27:14.009445,2025-01-03 01:27:14.009598,./data/Exp-landing 10-20N Force Pulse-20250103_012714/StaticState_list.npy, Landing2DOF 单点 Model 动力学
+landing 10-20N Force Pulse-20250103_012737,2025-01-03 01:27:37.753257,2025-01-03 01:27:37.753337,./data/Exp-landing 10-20N Force Pulse-20250103_012737/StaticState_list.npy, Landing2DOF 单点 Model 动力学

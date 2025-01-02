@@ -23,7 +23,7 @@ def get_static_func_and_qpos_forLanding2DOF(theta_1, theta_2, mode="Landing2DOF"
     d_2 = 0.10
     s = 0
 
-    M = 1+0.155  # 真实值
+    M = 0.155  # 真实值
     m_1, m_2 = 0.086, 0.1033
     I_1, I_2 = (1/12 * m_1 * 0.25**2), (1/12 * m_2 * 0.25**2)
 
@@ -248,7 +248,7 @@ def static_energy(theta_1, theta_2, StaticForce, mode="Landing2DOF"):
     d_2 = 0.10
     s = 0
 
-    M = 1+0.155  # 真实值
+    M = 0.155  # 真实值
     m_1, m_2 = 0.086, 0.1033
     I_1, I_2 = (1/12 * m_1 * 0.25**2), (1/12 * m_2 * 0.25**2)
 
@@ -426,6 +426,89 @@ def static_energy(theta_1, theta_2, StaticForce, mode="Landing2DOF"):
     return E_PG + E_PK + E_F
 
 
+# 应用参数：绘制某个F_1, F_2处的能量图（力坐标）
+def draw_energy_in_force(StaticForce, mode):
+    # plot the potential energy
+    theta_1 = np.linspace(0, math.pi*2/3, 20)
+    theta_2 = np.linspace(0, math.pi*2/3, 20)
+
+    E = np.zeros((len(theta_1), len(theta_2)))
+    for i in range(len(theta_1)):
+        for j in range(len(theta_2)):
+            E[i, j] = static_energy(theta_1[i], theta_2[j], StaticForce, mode=mode)
+
+    # 为了和MeshGrid统一，这里需要转置，使X对应横坐标
+    E = E.T
+
+    X, Y = np.meshgrid(theta_1, theta_2)
+    
+    # 填充等高线
+    contour_filled = plt.contourf(X, Y, E, levels=200, cmap='viridis')
+    plt.colorbar(contour_filled, label="Value")  # 添加颜色条
+
+    # 绘制等高线
+    contour_lines = plt.contour(X, Y, E, levels=200, colors='black', linewidths=0.5)
+    plt.clabel(contour_lines, inline=True, fontsize=8)  # 添加线上的标签
+
+    # test
+    plt.scatter(-0.3445+math.pi/2, 1.04)
+    plt.scatter(-0.0279+math.pi/2, 0.251)
+    center_energy = static_energy(-0.0279+math.pi/2, 0.251, StaticForce, mode=mode)
+
+    # 设置标题和轴标签
+    plt.title("Contour Plot")
+    plt.xlabel("Theta1 Coordinate")
+    plt.ylabel("Theta2 Coordinate")
+    # plt.title(f'Potential Energy with \nsStatic Point at theta_1 = {theta_1}.2f, theta_2 = {theta_2}.2f')
+    plt.title(f"StaticForce={StaticForce}, Center Energy={center_energy}")
+    plt.show()
+    pass
+
+# 应用参数：绘制某个theta_1, theta_2处的能量图（角度坐标）
+def draw_energy_in_angle(theta_10, theta_20, mode):
+    '''
+        绘制在theta_10, theta_20处的势能图
+    '''
+    StaticForce, qpos = get_static_func_and_qpos_forLanding2DOF(theta_10, theta_20, mode=mode)
+    print(f"theta_10 = {theta_10}, theta_20 = {theta_20}, StaticForce = {StaticForce}, qpos = {qpos}")
+
+    # plot the potential energy
+    theta_1 = np.linspace(0, math.pi*2/3, 50)
+    theta_2 = np.linspace(0, math.pi*2/3, 50)
+
+    E = np.zeros((len(theta_1), len(theta_2)))
+    for i in range(len(theta_1)):
+        for j in range(len(theta_2)):
+            E[i, j] = static_energy(theta_1[i], theta_2[j], StaticForce, mode=mode)
+
+    # 为了和MeshGrid统一，这里需要转置，使X对应横坐标
+    E = E.T
+
+    X, Y = np.meshgrid(theta_1, theta_2)
+
+    # 填充等高线
+    contour_filled = plt.contourf(X, Y, E, levels=200, cmap='viridis')
+    plt.colorbar(contour_filled, label="Value")  # 添加颜色条
+
+    # 绘制等高线
+    contour_lines = plt.contour(X, Y, E, levels=200, colors='black', linewidths=0.5)
+    plt.clabel(contour_lines, inline=True, fontsize=8)  # 添加线上的标签
+
+    plt.scatter(theta_10, theta_20, label="Static Point", marker='o', color='red')  # 绘制静态点
+
+    # 设置标题和轴标签
+    plt.title("Contour Plot")
+    plt.xlabel("Theta1 Coordinate")
+    plt.ylabel("Theta2 Coordinate")
+    plt.show()
+
+# draw_energy_in_force(np.array([15.2, 24.8]), "Landing2DOF")
+# theta_0 = [-0.0279+math.pi/2, 0.251]
+# theta_0 = [76*math.pi/180, 38*math.pi/180]
+# print(f"Theta_0 = {theta_0}")
+# draw_energy_in_angle(*theta_0, mode="Landing2DOF")
+
+
 if __name__ == '__main__':
     
     runMode = "Landing2DOF"
@@ -555,7 +638,7 @@ if __name__ == '__main__':
 
             # 循环播放
             plt.show(block=False)
-            plt.pause(0.05)
+            plt.pause(0.1)
             plt.cla()
             
 

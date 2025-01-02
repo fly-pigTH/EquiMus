@@ -1,3 +1,4 @@
+# Landing Model 动力学测试, 从初始加载直接施加[10, 20]N的力，保存数据
 
 import time
 import mujoco
@@ -13,6 +14,9 @@ import os
 import pandas as pd
 import scipy.io
 from theo_landing2DOF import get_static_func_and_qpos_forLanding2DOF
+import scipy.io
+from tqdm import tqdm
+from utils.auto_record import record_experiment
 
 matplotlib.use('TkAgg')
 
@@ -161,7 +165,7 @@ def get_static_func(theta_1, theta_2):
 path = "./models/SingleLeg_ideal_landing2DOF.xml"
 
 
-ExpName = "10N Force Pulse"
+ExpName = "landing 10-20N Force Pulse"
 m = mujoco.MjModel.from_xml_path(path)
 d = mujoco.MjData(m)
 flag = 0
@@ -182,70 +186,82 @@ print(MAAP.shape)
 
 
 # Fstatic_end = get_static_func(EndPoint[0], EndPoint[1])
-ForcePulse = [10, 10]
+ForcePulse = [10, 20]
 
 step = 0
 ExpResultList = []
-viewer_flag = True
+viewer_flag = False
 
 init_force, init_qpos = get_static_func_and_qpos_forLanding2DOF(math.pi/180*75, math.pi/180*30)
 
-if viewer_flag:
-  with mujoco.viewer.launch_passive(m, d) as viewer:
-  # print(f"Exp {i}-{j} with MAA: {MAAPressure}, BAA: {BAAPressure}")
-    start = time.time() if viewer_flag else d.time
-    try:
-      while (time.time() if viewer_flag else d.time) - start < 30: # viewer.is_running() and
-        # print(time.time()-start if viewer_flag else d.time)
-        step += 1
-        step_time = time.time() if viewer_flag else d.time
+# if viewer_flag:
+#   with mujoco.viewer.launch_passive(m, d) as viewer:
+start = time.time() if viewer_flag else d.time
+try:
+  while (time.time() if viewer_flag else d.time) - start < 30: # viewer.is_running() and
+    # print(time.time()-start if viewer_flag else d.time)
+    step += 1
+    step_time = time.time() if viewer_flag else d.time
 
-        if step_time - start > 0 and step_time - start < 10: # 稳定时间
-          d.qpos[0] = 0 # 强制设定位置！
-          d.qpos[3] = 0 # 强制设定位置！
-          d.qpos[2] = 0
-          # mujoco.mju_copy(d.qpos, init_qpos)
-          # d.ctrl[:2] = init_force[0]
-          # d.ctrl[2:] = init_force[1]
-          # d.ctrl[:2] = MAAP[0]
-          # d.ctrl[2:] = BAAP[0]
+    if step_time - start > 0 and step_time - start < 10: # 稳定时间
+      d.ctrl[:2] = ForcePulse[0]
+      d.ctrl[2:] = ForcePulse[1]
+      
+      # d.qpos[0] = 0 # 强制设定位置！
+      # d.qpos[3] = 0 # 强制设定位置！
+      # d.qpos[2] = 0
+      # mujoco.mju_copy(d.qpos, init_qpos)
+      # d.ctrl[:2] = init_force[0]
+      # d.ctrl[2:] = init_force[1]
+      # d.ctrl[:2] = MAAP[0]
+      # d.ctrl[2:] = BAAP[0]
 
-        if 10 < step_time - start < 80: # 稳定时间
-          rank = int((step_time - start)//1)
+    if 10 < step_time - start < 80: # 稳定时间
+      rank = int((step_time - start)//1)
 
-          print(f"rank={rank}")
-          # d.qpos[2] = 0
+      print(f"rank={rank}")
+      # d.qpos[2] = 0
 
-          # d.ctrl[:2] = init_force[0]
-          # d.ctrl[2:] = init_force[1]
-          d.ctrl[:2] = MAAP[rank]
-          d.ctrl[2:] = BAAP[rank]
+      d.ctrl[:2] = ForcePulse[0]
+      d.ctrl[2:] = ForcePulse[1]
+      # d.ctrl[:2] = MAAP[rank]
+      # d.ctrl[2:] = BAAP[rank]
 
-          Positon = np.array(d.qpos)
-          res = np.hstack(([ForcePulse[0], ForcePulse[1], d.time], Positon))
-          ExpResultList.append(res)
+    Positon = np.array(d.qpos)
+    res = np.hstack(([ForcePulse[0], ForcePulse[1], d.time], Positon))
+    ExpResultList.append(res)
 
-        mujoco.mj_step(m, d)  # update!
+    mujoco.mj_step(m, d)  # update!
 
-        if viewer_flag:
-          # 获取物理状态的更改，应用扰动，从GUI更新选项。
-          viewer.sync()   # TODO
-          # 粗略的计时，相对于挂钟会有漂移。
-          time_until_next_step = m.opt.timestep/2 - (time.time() - step_time)
-          if time_until_next_step > 0:
-            time.sleep(time_until_next_step)
+    if viewer_flag:
+      # 获取物理状态的更改，应用扰动，从GUI更新选项。
+      # viewer.sync()   # TODO
+      # 粗略的计时，相对于挂钟会有漂移。
+      time_until_next_step = m.opt.timestep - (time.time() - step_time)
+      if time_until_next_step > 0:
+        time.sleep(time_until_next_step)
 
-    # # 按住ctrl C退出循环
-    except KeyboardInterrupt:
-      pass
+# # 按住ctrl C退出循环
+except KeyboardInterrupt:
+  pass
 
-    # ExpResultList = np.array(ExpResultList)
-    # print(ExpResultList.shape)
+ExpResultList = np.array(ExpResultList)
+print(ExpResultList.shape)
 
-    # # 获取文件名
-    # current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    # ExpTime = current_time
-    # folder_path = f"./data/Exp-{ExpName}-{ExpTime}"
-    # os.makedirs(folder_path, exist_ok=False)  # 如果文件名称冲突，报错!
-    # staticPlace_list_filename = os.path.join(folder_path, "StaticState_list.npy")
-    # np.save(staticPlace_list_filename, ExpResultList)
+# 获取文件名
+current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+ExpTime = current_time
+folder_path = f"./data/Exp-{ExpName}-{ExpTime}"
+os.makedirs(folder_path, exist_ok=False)  # 如果文件名称冲突，报错!
+staticPlace_list_filename = os.path.join(folder_path, "StaticState_list.npy")
+np.save(staticPlace_list_filename, ExpResultList)
+
+# if success, record it in the Whole CSV
+exp_config = {
+    "id": f"{ExpName}-{ExpTime}",
+    "start_time": datetime.datetime.now(),
+    "dataFileName": staticPlace_list_filename,
+    "notes": " Landing2DOF 单点 Model 动力学"
+}
+
+record_experiment(exp_config)

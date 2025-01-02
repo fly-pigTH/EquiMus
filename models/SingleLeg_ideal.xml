@@ -89,4 +89,10 @@
         <joint name="BAA" joint1="BAA_SlideJoint" joint2="BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
     </equality>
 
+    <!-- 为可视化关节角度，绘制主要关节曲线 -->
+    <sensor>
+        <jointpos joint="Shoulder"/>
+        <jointpos joint="Elbow"/>
+    </sensor>
+
 </mujoco>
