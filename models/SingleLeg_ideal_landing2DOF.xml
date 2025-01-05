@@ -34,6 +34,8 @@
                     <joint name="Elbow" type="hinge" axis="1 0 0" range="0 2.09"/>
                     <site name="D1" pos="0  0.05 -0.08660254037844388"/>
                     <body name="Foot" pos="0 0 -0.25">
+                        <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.001" contype="0" conaffinity="0"/>
+                        <joint name="foot_weld" type="hinge" axis="1 0 0" range="-3.14 3.14"/>
                     </body>
                 </body>
             </body>
@@ -86,7 +88,8 @@
     <equality>
         <connect name="MAA_connect" anchor="0 0 0" body2="Calf" body1="BAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
         <connect name="BAA_connect" anchor="0 0 0" body2="Thigh" body1="MAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
-        <connect name="foot_landed" anchor="0 0 0" body2="Horizontal_Rail" body1="Foot" solimp="0.995 0.9995 0.00001 0.1 2"/>
+        <!-- <connect name="foot_landed" anchor="0 0 0" body2="Horizontal_Rail" body1="Foot" solimp="0.995 0.9995 0.00001 0.1 2"/> -->
+        <connect name="foot_landed_weld" anchor="0 0 0" body2="Horizontal_Rail" body1="Foot" solimp="0.995 0.9995 0.00001 0.1 2"/>
         
         <!-- <connect name="MAA_connect" site1="C1" site2="C2" solimp="0.95 0.99 0.00001 0.1 2"/>
         <connect name="BAA_connect" site1="D1" site2="D2" solimp="0.95 0.99 0.00001 0.1 2"/> -->
@@ -96,7 +99,7 @@
     </equality>
 
     <keyframe>
-        <key qpos='-0.13069 -0.302131 -0.493654 2.14682 -0.510301 -0.0145901 -0.0146984 -0.548023 -0.0632735 -0.0633618'/>
+        <!-- <key qpos='-0.13069 -0.302131 -0.493654 2.14682 -0.510301 -0.0145901 -0.0146984 -0.548023 -0.0632735 -0.0633618'/> -->
     </keyframe>
 
 </mujoco>

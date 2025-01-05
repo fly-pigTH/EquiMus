@@ -511,7 +511,7 @@ def draw_energy_in_angle(theta_10, theta_20, mode):
 
 if __name__ == '__main__':
     
-    runMode = "Landing2DOF"
+    runMode = "Fixed"
 
     plt.figure(figsize=(10,8))
 
