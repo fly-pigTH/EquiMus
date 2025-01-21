@@ -46,7 +46,10 @@ import random
 def get_static_func(theta_1, theta_2, params):
 
     # 参数
-    a_1, a_2, b_1, b_2, d_1, d_2, k_3, k_4, m_1, m_2, m_3, m_4, g, beta_1, beta_2, l_10, l_20, S_1, S_2 = params
+    a_1, a_2, b_1, b_2, d_1, d_2 = 0.25, 0.25, 0.21213, 0.1, 0.06, 0.10
+    beta_1, beta_2 = 8.13 / 180 * np.pi, 30 / 180 * np.pi
+    g = 9.8
+    k_3, k_4, m_1, m_2, m_3, m_4, l_10, l_20, S_1, S_2 = params
 
     A_x_O = d_1
     A_y_O = 0
@@ -155,7 +158,7 @@ def objective_function(params, theta_data, P_data):
     return loss
 
 # 初始参数猜测
-initial_params = [0.25, 0.25, 0.21213, 0.1, 0.06, 0.10, 637.52/2, 631.6/2, 0.086, 0.1033, 0.18, 0.18, 9.8, 8.13 / 180 * np.pi, 30 / 180 * np.pi, 0.174, 0.252, 6.54*1e-4, 6.37*1e-4]
+initial_params = [637.52*2.8/2, 631.6/2, 0.086, 0.1033, 0.18, 0.18, 0.174, 0.252, 6.54*1e-4, 6.37*1e-4]
 # initial_params = [0.25, 0.25, 0.21213, 0.1, 0.06, 0.10, 700/2, 700/2, 0.086, 0.1033, 0.18, 0.18, 9.8, 8.13 / 180 * np.pi, 30 / 180 * np.pi, 0.174, 0.252, 6.54*1e-4, 6.37*1e-4]
 
 
@@ -208,9 +211,41 @@ result = minimize(objective_function, initial_params, args=(theta_data, P_data),
 
 # 初始loss
 print("初始损失:", objective_function(initial_params, theta_data, P_data))
+# 初始RMSE
+print("初始RMSE:", np.sqrt(objective_function(initial_params, theta_data, P_data)/len(P_data)/2))
 
 # 输出回归结果
 optimal_params = result.x
 # loss
 print("回归得到的损失:", result.fun)
+# MSE
+print("回归得到的MSE:", result.fun/len(P_data)/2)
+# RMSE
+print("回归得到的RMSE:", np.sqrt(result.fun/len(P_data)/2))
+
+# MAE
+mae1_sum = 0
+mae2_sum = 0
+for i in range(len(P_data)):
+    P_model = get_static_func(theta_data[i][0], theta_data[i][1], optimal_params)
+    # cal MAE
+    mae1 = np.mean(np.abs(P_data[i][0] - P_model[0]))
+    mae2 = np.mean(np.abs(P_data[i][1] - P_model[1]))
+    mae1_sum += mae1
+    mae2_sum += mae2
+print("回归得到的MAE1:", mae1_sum/len(P_data))
+print("回归得到的MAE2:", mae2_sum/len(P_data))
+
 print("回归得到的参数:", optimal_params)
+# 刚度的两倍
+print("回归得到的刚度:", optimal_params[0]*2, optimal_params[1]*2)
+
+# 检查k的作用：在回归参数上加上噪声，看损失的变化
+delta_k = 1
+params_k = optimal_params.copy()
+params_k[0] += delta_k
+params_k[1] += delta_k
+loss_k = objective_function(params_k, theta_data, P_data)
+print(f"损失增加: {loss_k - result.fun}")
+# 百分比增加
+print(f"损失增加百分比: {(loss_k - result.fun)/result.fun*100}%")
