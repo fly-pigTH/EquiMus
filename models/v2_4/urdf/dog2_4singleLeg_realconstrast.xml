@@ -1,6 +1,6 @@
 <mujoco model="v2_4">
   <compiler angle="radian"/>
-  <option timestep="0.001" iterations="2000"/>
+  <option timestep="0.001" iterations="2000" gravity="0 0 -9.8" tolerance="1e-10"/>
   
   <default>
     <geom density="418"/>
@@ -52,18 +52,6 @@
     <light name="top" pos="0 0 5"/>
     <geom size="10 10 .01" type="plane" material="grid" friction="1 0.005 0.0001"/>
 
-
-    <!-- horizontal base -->
-    <!-- <body name="horizontal base" pos="-0.2 0 0">
-      <geom type="box" size="0.01 1 0.01" rgba="0 1 0 0.4" mass="0.001"/> -->
-  
-    <!-- vertical base  -->
-
-    <body name="vertical base" pos="0.1 0 1">
-      <geom type="box" size="0.01 0.01 0.4" rgba="0 1 0 0.4" mass="0.001"/>
-      <!-- <joint name="vertical base joint" type="slide" axis="0 1 0" damping="0" stiffness="0" springref="0"/> -->
-      
-
     <body name="base" pos="0.1 0 1">
       <!-- <freejoint/> -->
       <!-- <joint name="base_joint" type="slide" axis="0 0 1" damping="0" stiffness="0" springref="0.5"/> -->
@@ -73,12 +61,12 @@
         <!-- <joint name="RB_Shoulder" pos="0 0 0" axis="-1 0 0" range="-1.046 1.046" damping="0" stiffness="0" springref="0"/> -->
         <joint name="RB_Shoulder" pos="0 0 0" axis="-1 0 0" range="-3.046 3.046" damping="0" stiffness="0" springref="0"/>
         <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_Thigh" mass="0.086" contype="0" conaffinity="0"/>
-        <site name="C1" pos="0 -0.02999933715459505 -0.20999803968200498"/>
+        <!-- <site name="C1" pos="0 -0.02999933715459505 -0.20999803968200498"/> -->
         <body name="RB_Calf" pos="0 0 -0.25">
           <!-- <joint name="RB_Elbow" pos="0 0 0" axis="-1 0 0" range="-1.57 0.628" damping="0" stiffness="0" springref="0"/> -->
           <joint name="RB_Elbow" pos="0 0 0" axis="-1 0 0" range="-3.57 3.628" damping="0" stiffness="0" springref="0"/>
           <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_Calf" mass="0.1033" friction="1 0.005 0.0001"/>
-          <site name="D1" pos="0  0.05 -0.08660254037844388"/>
+          <!-- <site name="D1" pos="0  0.05 -0.08660254037844388"/> -->
         </body>
 
       </body>
@@ -86,17 +74,17 @@
       <body name="RB_MAA_UPLink" pos="0.125 -0.175 -0.105">
         <joint name="RB_MAA_UpJoint" pos="0 0 0" axis="-1 0 0" damping="0" stiffness="0" springref="0"/>
         <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_MAA_UPLink" mass="0.00001" contype="0" conaffinity="0"/>
-        <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.03" contype="0" conaffinity="0"/>
+        <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.03108" contype="0" conaffinity="0"/>
 
         <body name="RB_MAA_FM_Link" pos="-0.01 -0.015 -0.105">
-          <joint name="RB_MAA_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="22.68" stiffness="637.52" springref="-0.019065093741353706"/>
+          <joint name="RB_MAA_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="22.68" stiffness="284.4406966195" springref="-0.023988714875685144"/>
           <geom type="mesh" rgba="1 0 0 1" mesh="RB_MAA_FM_Link" mass="0.00001" contype="0" conaffinity="0"/>
-          <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.12" contype="0" conaffinity="0"/>
+          <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.12432" contype="0" conaffinity="0"/>
           
           <body name="RB_MAA_LOLink" pos="0.01 -0.015 -0.105">
-            <joint name="RB_MAA_FM_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="22.68" stiffness="637.52" springref="-0.019065093741353706"/>
+            <joint name="RB_MAA_FM_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="22.68" stiffness="284.4406966195" springref="-0.023988714875685144"/>
             <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_MAA_LOLink" mass="0.00001" contype="0" conaffinity="0"/>
-            <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.03" contype="0" conaffinity="0"/>
+            <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.03108" contype="0" conaffinity="0"/>
             <!-- <site name="C2"/> -->
           </body>
 
@@ -108,18 +96,18 @@
         <joint name="RB_BAA_UpJoint" pos="0 0 0" axis="-1 0 0" damping="0" stiffness="0" springref="0"/>
         <geom type="mesh" rgba="1 1 1 1" mesh="RB_BAA_UPLink" mass="0.00001" contype="0" conaffinity="0"/>
         <!-- <site name="RB_BAA_START" pos="0 0 0" size="0.01" rgba="1 0 0 1"/> -->
-        <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.03" contype="0" conaffinity="0"/>
+        <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.04544333333" contype="0" conaffinity="0"/>
         
         <body name="RB_BAA_FM_LINK" pos="-0.01 0.00669873 -0.1">
-          <joint name="RB_BAA_SlideJoint" pos="0 0 0" axis="0 0.0668375 -0.997764" type="slide" damping="21.8" stiffness="631.6" springref="0.025775886229521552"/>
+          <joint name="RB_BAA_SlideJoint" pos="0 0 0" axis="0 0.0668375 -0.997764" type="slide" damping="21.8" stiffness="258.9884689826" springref=" 0.02873847635368125"/>
           <geom type="mesh" rgba="1 0 0 1" mesh="RB_BAA_FM_LINK" mass="0.00001" contype="0" conaffinity="0"/>
-          <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.12" contype="0" conaffinity="0"/>
+          <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.1817733333" contype="0" conaffinity="0"/>
           
           <body name="RB_BAA_LOLink" pos="0.01 0.00669873 -0.1">
-            <joint name="RB_BAA_FM_SlideJoint" pos="0 0 0" axis="0 0.0668375 -0.997764" type="slide" damping="21.8" stiffness="631.6" springref="0.025775886229521552"/>
+            <joint name="RB_BAA_FM_SlideJoint" pos="0 0 0" axis="0 0.0668375 -0.997764" type="slide" damping="21.8" stiffness="258.9884689826" springref="0.02873847635368125"/>
             <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="RB_BAA_LOLink" mass="0.00001" contype="0" conaffinity="0"/>
-            <site name="RB_BAA_END" pos="0 0 0" size="0.01" rgba="1 0 0 1"/>
-            <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.03" contype="0" conaffinity="0"/>
+            <!-- <site name="RB_BAA_END" pos="0 0 0" size="0.01" rgba="1 0 0 1"/> -->
+            <geom type="sphere" size="0.005" rgba="1 0 0 1" mass="0.04544333333" contype="0" conaffinity="0"/>
             <!-- <site name="D2"/> -->
           </body>
 
@@ -129,21 +117,6 @@
 
     </body>
 
-
-    
-    <!-- <body name="base box" pos="0 0 0">
-      <geom type="box" size="0.01 0.01 0.01" rgba="0 1 0 1"/> -->
-
-      <!-- <body name="floating mass" pos="0 0 0.1">
-        <geom type="box" size="0.01 0.01 0.01" rgba="1 0 0 1"/>
-        <joint name="j1" type="slide" axis="0 0 1" damping="10" stiffness="1000" springref="0"/> -->
-
-        <!-- <body name="end box" pos="0 0 0.4"> 
-          <geom type="box" size="0.3 0.3 0.005" rgba="0 1 0 1" mass="10"/>
-          <joint name="j2" type="slide" axis="0 0 1" damping="10" stiffness="1000" springref="0"/>
-        </body> -->
-      </body>
-    <!-- </body> -->
 
   </worldbody>
 
