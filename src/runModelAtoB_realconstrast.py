@@ -1,4 +1,4 @@
-# 用于对比实际实验数据
+# 动力学验证：在稳态点进行切换
 
 import time
 import mujoco
@@ -13,9 +13,10 @@ import datetime
 import os
 import pandas as pd
 import scipy.io
+from tqdm import tqdm
+from utils.auto_record import record_experiment
 
 matplotlib.use('TkAgg')
-
 
 # 静力学计算模块
 def get_static_func(theta_1, theta_2):
@@ -158,117 +159,100 @@ def get_static_func(theta_1, theta_2):
     StaticForce = np.linalg.solve(LHSA, b) + F_k
     return StaticForce
 
-path = "./models/SingleLeg_ideal_contrast.xml"
-path = "./models/v2_4/urdf/dog2_4singleLeg_realconstrast.xml"
-# dog2_4singleLeg_realconstrast.xml
+path = "./models/SingleLeg_ideal.xml"
 
-ExpName = "sim-real constrast"
 m = mujoco.MjModel.from_xml_path(path)
 d = mujoco.MjData(m)
 flag = 0
 
 # Init the model
-print(m.geom)
+print(m.body_mass)
 d.ctrl = np.zeros_like(d.ctrl)
 mujoco.mj_step(m, d)  # update!
 
-# Load the parameter and change the property of the model
-s1 = 0.0003490837132109409
-s2 = 0.0003815501584986775
-k1 = 142.22034830974255
-k2 = 129.49423449130097
-l10 = 0.1641527577313371
-l20 = 0.2579251802483194
+# Theta1_array = np.linspace(math.pi/6, math.pi*2/3, 10)
+# Theta2_array = np.linspace(0, math.pi/2, 10)
+# StartPointArray = []
+# for theta_1 in Theta1_array:
+#   for theta_2 in Theta2_array:
+#     StartPointArray.append([theta_1, theta_2])
+# StartPointArray = np.array(StartPointArray)
+# EndPointArray = StartPointArray
+StartPointArray = [[math.pi/3, math.pi/6]]
+EndPointArray = [[math.pi/6, math.pi/3]]
 
-# Experiment Settings
-StartPoint = [math.pi/2, 0]
-EndPoint = [math.pi/2, 0]
+AllExpResList = []
+viewer_flag = False
 
-# Read the input-pressure file
-data = pd.read_csv("./log/realdata/StaticProcess/data/Archive/real_StaticPoint_6group_2025-02-21_08-55-07.csv.csv")
-# 全部做，对比
-# P1_array = np.linspace(0, 50, 6)
-# P2_array = np.linspace(0, 50, 6)
+# if viewer_flag:
+#   with mujoco.viewer.launch_passive(m, d) as viewer:
+for StartPoint in tqdm(StartPointArray):
+  for EndPoint in EndPointArray:
+    # 开始循环实验
+    # print(f"Exp[{StartPoint*180/math.pi} to {EndPoint*180/math.pi}]")
+    step = 0
+    ExpResultList = []
+    Fstatic_start = get_static_func(*StartPoint)
+    Fstatic_end = get_static_func(*EndPoint)
 
-P1_array = data['P1'].values
-P2_array = data['P2'].values
-theta1_array = data['theta1'].values
-theta2_array = data['theta2'].values
-P1_array = np.array(P1_array) * 1000
-P2_array = np.array(P2_array) * 1000
-theta1_array = np.array(theta1_array) * math.pi / 180
-theta2_array = np.array(theta2_array) * math.pi / 180
+    start = time.time() if viewer_flag else d.time
+    while (time.time() if viewer_flag else d.time) - start < 20: # viewer.is_running() and
+      # print(time.time()-start if viewer_flag else d.time)
+      step += 1
+      step_time = time.time() if viewer_flag else d.time
 
-step = 0
-ExpResultList = []
-viewer_flag = True
+      if 0 < step_time - start < 10: # 稳定时间
+        d.ctrl[:2] = Fstatic_start[0]
+        d.ctrl[2:] = Fstatic_start[1]
 
-exp_num = theta1_array.shape
-theta_static = []
+      elif 10 <= step_time - start: # 稳定时间
+        d.ctrl[:2] = Fstatic_end[0]
+        d.ctrl[2:] = Fstatic_end[1]
+        res = np.hstack((d.time - 10, d.qpos))   # NOTE: 使用仿真时间
+        ExpResultList.append(res)
 
-if viewer_flag:
-  with mujoco.viewer.launch_passive(m, d) as viewer:
-    input("Press to start!")
-    # print(f"Exp {i}-{j} with MAA: {MAAPressure}, BAA: {BAAPressure}")
-    try:
-      for p1, p2 in zip(P1_array, P2_array):
-        for i in range(1):
-      # for p1 in P1_array:
-      #   for p2 in P2_array:
+      mujoco.mj_step(m, d)  # update!
+      # print(type(d.qpos))
 
-          start = time.time() if viewer_flag else d.time
-          torecord_flag = True
-          while (time.time() if viewer_flag else d.time) - start < 10: # viewer.is_running() and
-            # print(time.time()-start if viewer_flag else d.time)
-            step += 1
-            step_time = time.time() if viewer_flag else d.time
+      if viewer_flag:
+        # 获取物理状态的更改，应用扰动，从GUI更新选项。
+        # viewer.sync()   # TODO
+        # 粗略的计时，相对于挂钟会有漂移。
+        time_until_next_step = m.opt.timestep - (time.time() - step_time)
+        if time_until_next_step > 0:
+          time.sleep(time_until_next_step)
+    # print(len(ExpResultList))
+    AllExpResList.append(np.array(ExpResultList))
 
-            # show the state
-            # INFO
-            interval = 0.01
-            if time.time()%0.1 < interval:
-                Positon = np.array(d.qpos)
-                print("\033[H\033[J")  # 使用ANSI转义序列清除终端输出
-                print(f"Pressure command: \n{[float(p1)/1000, float(p2)/1000]} kPa")
-                print(f"Theta_1: {(Positon[0]+math.pi/2)*180/math.pi:.2f}°")
-                print(f"Theta_2: {(Positon[1]+math.pi/2)*180/math.pi:.2f}°")
+AllExpResList = np.array(AllExpResList, dtype=object)
+# print(len(AllExpResList))
 
-            if step_time - start > 0 and step_time - start < 9: # 稳定时间
-              F1 = p1*s1
-              F2 = p2*s2
-              d.ctrl[:2] = F1
-              d.ctrl[2:] = F2
+# 后处理数据：list of array->array, 需要先剪裁
+min_length = min([len(i) for i in AllExpResList])
+AllExpResArray = [SingleRes[:min_length] for SingleRes in AllExpResList]
+AllExpResArray = np.array(AllExpResArray)
 
-            if 9 < step_time - start < 10: # 稳定时间
-              if torecord_flag:
-                Positon = np.array(d.qpos)
-                res = np.hstack(([F1, F2, d.time], Positon))
-                ExpResultList.append(res)
-                torecord_flag = False
+# print(AllExpResArray.shape)
 
-            mujoco.mj_step(m, d)  # update!
+# Exp Setting for save and record
 
-            if viewer_flag:
-              # 获取物理状态的更改，应用扰动，从GUI更新选项。
-              viewer.sync()   # TODO
-              # 粗略的计时，相对于挂钟会有漂移。
-              time_until_next_step = m.opt.timestep - (time.time() - step_time)
-              if time_until_next_step > 0:
-                time.sleep(time_until_next_step)
+ExpName = "A2B 10000"
 
-    # # 按住ctrl C退出循环
-    except KeyboardInterrupt:
-      pass
-
-ExpResultList = np.array(ExpResultList)
-print(ExpResultList.shape)
-print(ExpResultList)
-
-# 获取文件名
 current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 ExpTime = current_time
-folder_path = f"./data/real_contrast_static/Exp-{ExpName}-{ExpTime}"
-os.makedirs(folder_path, exist_ok=False)  # 如果文件名称冲突，报错!
-staticPlace_list_filename = os.path.join(folder_path, "StaticState_list.npy")
-np.save(staticPlace_list_filename, ExpResultList)
+folder_path = f"./data/Exp-{ExpName}-{ExpTime}"
 
+# 获取文件名
+os.makedirs(folder_path, exist_ok=False)  # 如果文件名称冲突，报错!
+staticPlace_list_filename = os.path.join(folder_path, "StepResponse_list.npy")
+np.save(staticPlace_list_filename, AllExpResArray)
+
+# if success, record it in the Whole CSV
+exp_config = {
+    "id": f"{ExpName}-{ExpTime}",
+    "start_time": datetime.datetime.now(),
+    "dataFileName": staticPlace_list_filename,
+    "notes": "ideal模型大实验, 更新使用body约束"
+}
+
+record_experiment(exp_config)

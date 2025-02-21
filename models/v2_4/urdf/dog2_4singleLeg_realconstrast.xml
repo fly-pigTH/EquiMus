@@ -52,19 +52,19 @@
     <light name="top" pos="0 0 5"/>
     <geom size="10 10 .01" type="plane" material="grid" friction="1 0.005 0.0001"/>
 
-    <body name="base" pos="0.1 0 1">
+    <body name="base" pos="0.1 0 0.8">
       <!-- <freejoint/> -->
       <!-- <joint name="base_joint" type="slide" axis="0 0 1" damping="0" stiffness="0" springref="0.5"/> -->
       <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="base_link" mass="0.155" contype="0" conaffinity="0"/>
 
       <body name="RB_Thigh" pos="0.1245 -0.235 -0.105">
         <!-- <joint name="RB_Shoulder" pos="0 0 0" axis="-1 0 0" range="-1.046 1.046" damping="0" stiffness="0" springref="0"/> -->
-        <joint name="RB_Shoulder" pos="0 0 0" axis="-1 0 0" range="-3.046 3.046" damping="0" stiffness="0" springref="0"/>
+        <joint name="RB_Shoulder" pos="0 0 0" axis="-1 0 0" range="-1.57 1.57" damping="0" stiffness="0" springref="0"/>
         <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_Thigh" mass="0.086" contype="0" conaffinity="0"/>
         <!-- <site name="C1" pos="0 -0.02999933715459505 -0.20999803968200498"/> -->
         <body name="RB_Calf" pos="0 0 -0.25">
           <!-- <joint name="RB_Elbow" pos="0 0 0" axis="-1 0 0" range="-1.57 0.628" damping="0" stiffness="0" springref="0"/> -->
-          <joint name="RB_Elbow" pos="0 0 0" axis="-1 0 0" range="-3.57 3.628" damping="0" stiffness="0" springref="0"/>
+          <joint name="RB_Elbow" pos="0 0 0" axis="-1 0 0" range="-1.57 1" damping="0" stiffness="0" springref="0"/>
           <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="RB_Calf" mass="0.1033" friction="1 0.005 0.0001"/>
           <!-- <site name="D1" pos="0  0.05 -0.08660254037844388"/> -->
         </body>
