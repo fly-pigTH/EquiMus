@@ -7,14 +7,11 @@ import numpy as np
 import random
 import math
 import matplotlib.pyplot as plt
-import matplotlib
 import mediapy as media
 import datetime
 import os
 import pandas as pd
-import scipy.io
 
-matplotlib.use('TkAgg')
 
 
 # 静力学计算模块
@@ -158,7 +155,7 @@ def get_static_func(theta_1, theta_2):
     StaticForce = np.linalg.solve(LHSA, b) + F_k
     return StaticForce
 
-path = "./models/SingleLeg_ideal_contrast.xml"
+# path = "./models/SingleLeg_ideal_contrast.xml"
 path = "./models/v2_4/urdf/dog2_4singleLeg_realconstrast.xml"
 # dog2_4singleLeg_realconstrast.xml
 
@@ -173,8 +170,8 @@ d.ctrl = np.zeros_like(d.ctrl)
 mujoco.mj_step(m, d)  # update!
 
 # Load the parameter and change the property of the model
-s1 = 0.0003490837132109409
-s2 = 0.0003815501584986775
+s1 = 0.0003538647203395965
+s2 = 0.00034663180121508557
 k1 = 142.22034830974255
 k2 = 129.49423449130097
 l10 = 0.1641527577313371
@@ -185,13 +182,18 @@ StartPoint = [math.pi/2, 0]
 EndPoint = [math.pi/2, 0]
 
 # Read the input-pressure file
-data = pd.read_csv("./log/realdata/StaticProcess/data/Archive/real_StaticPoint_6group_2025-02-21_08-55-07.csv.csv")
+data = pd.read_csv("./log/realdata/StaticProcess/real_StaticPoint_6group_2025-02-21_08-55-07.csv")
 # 全部做，对比
 # P1_array = np.linspace(0, 50, 6)
 # P2_array = np.linspace(0, 50, 6)
 
-P1_array = data['P1'].values
-P2_array = data['P2'].values
+# P1_array = data['P1'].values
+# P2_array = data['P2'].values
+
+# test the 10kPa
+P1_array = [10]
+P2_array = [10]
+
 theta1_array = data['theta1'].values
 theta2_array = data['theta2'].values
 P1_array = np.array(P1_array) * 1000
@@ -263,6 +265,9 @@ if viewer_flag:
 ExpResultList = np.array(ExpResultList)
 print(ExpResultList.shape)
 print(ExpResultList)
+
+plt.plot(ExpResultList[:, 3])
+input()
 
 # 获取文件名
 current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")

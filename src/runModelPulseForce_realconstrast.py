@@ -26,18 +26,24 @@ RB_BAA_FM_SlideJoint_id = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_JOINT, "RB_BA
 RB_MAA_SlideJoint_id = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_JOINT, "RB_MAA_SlideJoint")
 RB_MAA_FM_SlideJoint_id = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_JOINT, "RB_MAA_FM_SlideJoint")
 
-P1, P2 = 10*10**3, 10*10**3
-s1 = 0.0003490837132109409
-s2 = 0.0003815501584986775
-ForcePulse = [P1*s1, P2*s2]
+# print(RB_BAA_SlideJoint_id, RB_BAA_FM_SlideJoint_id, RB_MAA_SlideJoint_id, RB_MAA_FM_SlideJoint_id)
+
+# input()
+P1, P2 = 30*10**3, 10*10**3
+s1 = 0.0003538647203395965
+s2 = 0.00034663180121508557
+
+P1_array = np.array([P1])
+P2_array = np.array([P2])
 
 
-def run_single_experiment(params):
+def run_single_experiment(params, P1, P2, save=True):
   """
     单次实验运行函数
     :param params: 包含(damping_MAA, damping_BAA, exp_id)的元组
   """
   exp_id, damping_MAA, damping_BAA = params
+  ForcePulse = np.array([P1*s1, P2*s2])
   
   # load the model
   m = mujoco.MjModel.from_xml_path(path)
@@ -72,15 +78,16 @@ def run_single_experiment(params):
         d.ctrl[:2] = 0
         d.ctrl[2:] = 0
 
-        Positon = np.array(d.qpos)
-        res = np.hstack(([damping_MAA, damping_BAA, d.time], Positon))
-        ExpResultList.append(res)
+      Position = np.array(d.qpos)
+      res = np.hstack(([damping_MAA, damping_BAA, P1, P2, d.time], Position))
+      ExpResultList.append(res)
       mujoco.mj_step(m, d)  # update!
 
   # # 按住ctrl C退出循环
   except KeyboardInterrupt:
     pass
-  
+  print((res[5]+math.pi/2)*180/math.pi, end=" ")
+  print((res[6]+math.pi/2)*180/math.pi)
   result_array = np.array(ExpResultList)
   # 创建文件夹
   if not os.path.exists(f"./data/SimConstrastResults/{ExpName}"):
@@ -94,7 +101,7 @@ def run_single_experiment(params):
 
 if __name__ == "__main__":
   # 参数范围定义
-  damping_values = np.linspace(40, 80, 11)  # 100个阻尼值
+  damping_values = np.linspace(1, 100, 20)  # 100个阻尼值
 
   # 生成全排列组合
   damping_combinations = list(itertools.product(damping_values, repeat=2))
@@ -102,9 +109,13 @@ if __name__ == "__main__":
 
   # 添加实验ID
   paras = [(i, maa, baa) for i, (maa, baa) in enumerate(damping_combinations)]
-  # print(paras)
+  print(paras)
+  
   for para in tqdm(paras):
     # print(para[0])
-    run_single_experiment(para)
+    for p1 in P1_array:
+      for p2 in P2_array:
+        run_single_experiment(para, p1, p2, save=True)
+    # time.sleep(0.1)
   end_time = time.time()
   print("Time Cost: ", end_time-start_time)
