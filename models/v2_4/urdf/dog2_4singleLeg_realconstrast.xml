@@ -1,6 +1,10 @@
 <mujoco model="v2_4">
   <compiler angle="radian"/>
-  <option timestep="0.001" iterations="2000" gravity="0 0 -9.8" tolerance="1e-10"/>
+  <option timestep="0.005" iterations="2000" gravity="0 0 -9.8" tolerance="1e-10"/>
+  <option>
+    <flag contact="disable"/>
+  </option>
+  
   
   <default>
     <geom density="418"/>
