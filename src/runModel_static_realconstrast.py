@@ -266,7 +266,7 @@ ExpResultList = np.array(ExpResultList)
 print(ExpResultList.shape)
 print(ExpResultList)
 
-plt.plot(ExpResultList[:, 3])
+# plt.plot(ExpResultList[:, 3])
 input()
 
 # 获取文件名

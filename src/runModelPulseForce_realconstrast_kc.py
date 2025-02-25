@@ -1,5 +1,6 @@
 # 气压点转移A2B sim vs real对比实验框架，用于计算参数c1, c2
 # 批量生成数据，并直接进行优化
+# 同时辨识 kc
 import time
 import mujoco
 import mujoco.viewer
@@ -94,12 +95,12 @@ P1, P2 = 30*10**3, 10*10**3
 s1 = 0.0003538647203395965
 s2 = 0.00034663180121508557
 
-def run_single_experiment(params, P1, P2, save=True):
+def run_single_experiment(params, P1, P2, save=False):
   """
     单次实验运行函数
     :param params: 包含(damping_MAA, damping_BAA, exp_id)的元组
   """
-  exp_id, damping_MAA, damping_BAA = params
+  exp_id, damping_MAA, damping_BAA, stiffness_MAA, stiffness_BAA, l10, l20 = params
   ForcePulse = np.array([P1*s1, P2*s2])
   
   # load the model
@@ -111,6 +112,18 @@ def run_single_experiment(params, P1, P2, save=True):
   m.dof_damping[RB_BAA_FM_SlideJoint_id] = damping_BAA  # N·s/m
   m.dof_damping[RB_MAA_SlideJoint_id] = damping_MAA  # N·s/m
   m.dof_damping[RB_MAA_FM_SlideJoint_id] = damping_MAA  # N·s/m
+  # k
+  m.jnt_stiffness[RB_BAA_SlideJoint_id] = stiffness_BAA  # N·m/rad
+  m.jnt_stiffness[RB_BAA_FM_SlideJoint_id] = stiffness_BAA  # N·m/rad
+  m.jnt_stiffness[RB_MAA_SlideJoint_id] = stiffness_MAA  # N·m/rad
+  m.jnt_stiffness[RB_MAA_FM_SlideJoint_id] = stiffness_MAA  # N·m/rad
+  # l0
+  m.qpos_spring[RB_BAA_SlideJoint_id] = l10  # rad
+  m.qpos_spring[RB_BAA_FM_SlideJoint_id] = l10  # rad
+  m.qpos_spring[RB_MAA_SlideJoint_id] = l20  # rad
+  m.qpos_spring[RB_MAA_FM_SlideJoint_id] = l20  # rad
+
+
 
   # Init the model
   # print(m.body_mass)
@@ -171,11 +184,11 @@ def error(params, mode="train", data_mode=data_mode):
   # global flag_idx
   # flag_idx += 1
   # print(flag_idx)
-  c1, c2 = params
+  c1, c2, k1, k2, l10, l20 = params
   expdata_sim_all = []
   if data_mode == "effective":
     for p1, p2 in zip(P1_array, P2_array):
-      time_sim, theta1_sim, theta2_sim = run_single_experiment((0, c1, c2), p1, p2, save=False)
+      time_sim, theta1_sim, theta2_sim = run_single_experiment((0, c1, c2, k1, k2, l10, l20), p1, p2, save=False)
       t_intervel = np.linspace(0, 4, 300)
       theta1_sim_intervel = np.interp(t_intervel, time_sim, theta1_sim)
       theta2_sim_intervel = np.interp(t_intervel, time_sim, theta2_sim)
@@ -217,7 +230,7 @@ plt.rcParams['font.family'] = 'Arial'  # 设置字体为 Arial
 plt.rcParams['font.size'] = 15  # 设置全局字体大小
 
 # draw the optimal solution
-if __name__ == "__main__":
+if __name__ != "__main__":
   para = (0, 291.5757670770301, 98.3306672255234)
   expdata_sim_all = []
   for p1, p2 in zip(P1_array, P2_array):
@@ -300,7 +313,7 @@ if __name__ == "__main__":
 
 
 # train or test
-if __name__ != "__main__":
+if __name__ == "__main__":
 
   exp_mode = "train"  # train or test
   # data_mode = "all"  # all or effictive
@@ -318,16 +331,17 @@ if __name__ != "__main__":
       epi += 1
       time_cost_epi = time.time() - time_epi_start
       time_epi_start = time.time()
-      print(f"Epoch{epi}: Optimal c1={xk[0]:.4f}, c2={xk[1]:.4f}, MSE={error(xk):.4f}, Convergence={convergence:.6f}", end=" | ")
+      print(f"Epoch{epi}: Optimal c1={xk[0]:.4f}, c2={xk[1]:.4f}, k1={xk[2]:.4f}, k2={xk[3]:.4f}, l10={xk[4]:.4f}, l20={xk[5]:.4f}, MSE={error(xk):.4f}, Convergence={convergence:.6f}", end=" | ")
       print(f"Time/epoch: {time_cost_epi:.2f}s")
+      
 
     from scipy.optimize import differential_evolution
-    bounds = [(0, 1000), (0, 1000)]  # c1, c2 的范围
+    bounds = [(0, 300), (0, 300), (0, 1000), (0, 1000), (-1, 1), (-1, 1)]  # c1, c2, k1, k2, l10, l20 的范围
 
-    result = differential_evolution(error, bounds, strategy='best1bin', maxiter=1000, disp=True, callback=callback, popsize=15)
+    result = differential_evolution(error, bounds, strategy='best1bin', maxiter=1000, disp=False, callback=callback, popsize=10)
 
-    best_c1, best_c2 = result.x
-    print(f"最优参数: c1={best_c1}, c2={best_c2}, error={result.fun}")
+    best_c1, best_c2, best_k1, best_k2, best_l10, best_l20 = result.x
+    print(f"Optimal c1={best_c1:.4f}, c2={best_c2:.4f}, k1={best_k1:.4f}, k2={best_k2:.4f}, l10={best_l10:.4f}, l20={best_l20:.4f}, MSE={result.fun:.4f}")
     time_cost = time.time() - time_start
     print(f"Time Cost: {time_cost:.2f}s")
   
