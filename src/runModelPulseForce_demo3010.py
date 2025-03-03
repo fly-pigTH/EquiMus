@@ -12,7 +12,7 @@ path = "./models/v2_4/urdf/dog2_4singleLeg_realconstrast.xml"
 
 s1 = 0.0003538647203395965
 s2 = 0.00034663180121508557
-damping_MAA, damping_BAA = 291.5757670770301/20, 98.3306672255234/8
+damping_MAA, damping_BAA = 291.5757670770301, 98.3306672255234
 
 m = mujoco.MjModel.from_xml_path(path)
 d = mujoco.MjData(m)
@@ -39,6 +39,7 @@ viewer_flag = True
 
 if viewer_flag:
   with mujoco.viewer.launch_passive(m, d) as viewer:
+    input("Press to start!")
     start = time.time() if viewer_flag else d.time
     try:
       while (time.time() if viewer_flag else d.time) - start < 20: # viewer.is_running() and

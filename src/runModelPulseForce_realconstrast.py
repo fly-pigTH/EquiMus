@@ -184,7 +184,7 @@ def error(params, mode="train", data_mode=data_mode):
     expdata_sim_all = np.array(expdata_sim_all)
     errorMat = expdata_sim_all - expdata_real_effective
     SE_mat = errorMat**2
-    MSE_mat = np.mean(SE_mat, axis=2)
+    MSE_mat = np.max(SE_mat, axis=2)
     # theta1 和 theta2 的总体MSE
     MSE_mat_overview = np.mean(MSE_mat, axis=0)
     MSE_all = np.mean(MSE_mat_overview[1:])
@@ -217,7 +217,7 @@ plt.rcParams['font.family'] = 'Arial'  # 设置字体为 Arial
 plt.rcParams['font.size'] = 15  # 设置全局字体大小
 
 # draw the optimal solution
-if __name__ == "__main__":
+if __name__ != "__main__":
   para = (0, 291.5757670770301, 98.3306672255234)
   expdata_sim_all = []
   for p1, p2 in zip(P1_array, P2_array):
@@ -336,3 +336,18 @@ if __name__ != "__main__":
     best_c1, best_c2 = 291.5757670770301, 98.3306672255234
     MSE_mat_overview = error([best_c1, best_c2], mode=exp_mode)
     print(MSE_mat_overview)
+
+if __name__ == "__main__":
+  best_c1, best_c2 = 291.5757670770301, 98.3306672255234
+  time_sim, theta1_sim, theta2_sim = run_single_experiment((0, best_c1/6*2, best_c2/3), 30*1000, 10*1000, save=False)
+  t_intervel = np.linspace(0, 4, 300)
+  theta1_sim_intervel = np.interp(t_intervel, time_sim, theta1_sim)
+  theta2_sim_intervel = np.interp(t_intervel, time_sim, theta2_sim)
+  # expdata_sim = np.stack((t_intervel, theta1_sim_intervel, theta2_sim_intervel), axis=0) 
+  # expdata_sim_all.append(expdata_sim)
+  # expdata_sim_all = np.array(expdata_sim_all)
+  # errorMat = expdata_sim_all - expdata_real_effective
+  plt.plot(t_intervel, theta1_sim_intervel, label="theta1")
+  plt.plot(t_intervel, theta2_sim_intervel, label="theta2")
+  plt.legend()
+  plt.show()
