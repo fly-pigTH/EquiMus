@@ -455,7 +455,7 @@ if __name__ != "__main__":
 
 
 # draw the optimal solution
-if __name__ != "__main__":
+if __name__ == "__main__":
   # 优化后的参数
   k1 = 385.1225
   k2 = 335.4172
@@ -468,11 +468,20 @@ if __name__ != "__main__":
   c1_thigh = 4.9746
   c2_calf = 0.3958
 
+  k1 = 524.9779
+  k2 = 281.8427
+  l10 = 0.1893
+  l20 = 0.2682
+  c1 = 28.0952
+  c2 = 27.5535
+  s1 = 0.00084641
+  s2 = 0.00081535
+  c1_thigh = 2.8155
+  c2_calf = 0.3083
+
   para = [k1, k2, l10, l20, c1, c2, s1, s2, c1_thigh, c2_calf]
   expdata_sim_all = []
   for p1, p2 in zip(P1_array, P2_array):
-  # for p1 in P1_array:
-  #   for p2 in P2_array:
       time_sim, theta1_sim, theta2_sim = run_single_experiment(para, p1, p2, save=False)
       t_intervel = np.linspace(0, 2, 201)
       theta1_sim_intervel = np.interp(t_intervel, time_sim, theta1_sim)
@@ -668,7 +677,7 @@ if __name__== "__main__":
     # ===== 其他参数补充（根据示例需求）=====
     c1_thigh = 3.0              # 大腿附加阻尼（示例默认值）
     c2_calf = 1.0               # 小腿附加阻尼（示例默认值）
-    bounds = [(k1*0.9, k1*1.2), (k2*0.9, k2*1.2), (l10*0.9, l10*1.1), (l20*0.9, l20*1.1), (0, 25), (0, 25), (s1*0.5, s1*1.5), (s2*0.5, s2*1.5), (0, 5), (0, 5)]  # 每个参数都有10%的变化范围
+    bounds = [(k1*0.9, k1*1.5), (k2*0.9, k2*1.5), (l10*0.9, l10*1.1), (l20*0.9, l20*1.1), (0, 30), (0, 30), (s1*0.5, s1*1.5), (s2*0.5, s2*1.5), (0, 5), (0, 5)]  # 每个参数都有10%的变化范围
     result = differential_evolution(error, bounds, strategy='best1bin', maxiter=10000, disp=False, callback=callback, popsize=25)
     # print the res
     k1_opt, k2_opt, l10_opt, l20_opt, c1_opt, c2_opt, s1_opt, s2_opt, c1_thigh_opt, c2_calf_opt = result.x
