@@ -14,6 +14,8 @@ import os
 import pandas as pd
 import scipy.io
 from tqdm import tqdm
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from utils.auto_record import record_experiment
 matplotlib.use('TkAgg')
 
@@ -50,15 +52,20 @@ ExpResultList = []
 # BAAP = scipy.io.loadmat('F2.mat').get('F2')
 
 # Fixed
-# MAAP = scipy.io.loadmat('./src/F1_10.mat').get("F1_matrix") # new data
-# BAAP = scipy.io.loadmat('./src/F2_10.mat').get("F2_matrix")
+MAAP = scipy.io.loadmat('./src/simulation_verify/static/F1_10.mat').get("F1_matrix") # new data
+BAAP = scipy.io.loadmat('./src/simulation_verify/static/F2_10.mat').get("F2_matrix")
 
 # Landing
-MAAP = scipy.io.loadmat('./src/F1_landing2DOF.mat').get("F1_matrix") # new data
-BAAP = scipy.io.loadmat('./src/F2_landing2DOF.mat').get("F2_matrix") # new data
+# MAAP = scipy.io.loadmat('./src/simulation_verify/static/F1_landing2DOF.mat').get("F1_matrix") # new data
+# BAAP = scipy.io.loadmat('./src/simulation_verify/static/F2_landing2DOF.mat').get("F2_matrix") # new data
 
 print(MAAP.shape)
 # input()
+
+print(f"MAAP: {MAAP}")
+print(f"BAAP: {BAAP}")
+input()
+
 
 theta_1_array = np.linspace(math.pi/6, math.pi*2/3, 20) # 切分十个点
 theta_2_array = np.linspace(0, math.pi/2, 20)
@@ -98,7 +105,7 @@ if viewer_flag:
         # print(f"Exp {i}-{j} with MAA: {MAAPressure}, BAA: {BAAPressure}")
         start = time.time() if viewer_flag else d.time
         try:
-          while (time.time() if viewer_flag else d.time) - start < 50: # viewer.is_running() and
+          while (time.time() if viewer_flag else d.time) - start < 10: # viewer.is_running() and
             # print(time.time()-start if viewer_flag else d.time)
             time_now = time.time() if viewer_flag else d.time
             
@@ -109,16 +116,19 @@ if viewer_flag:
             target_force_MAA = MAAPressure
             target_force_BAA = BAAPressure
             
-            if time_now - start > 3 and time_now - start < 14: # 稳定时间
+            if time_now - start > 0 and time_now - start < 8: # 稳定时间
               d.ctrl[:2] = target_force_MAA    # 50N
               d.ctrl[2:] = target_force_BAA    # 50N
               record = True
 
-            if time_now - start > 49 and record == True:
+            if time_now - start >= 8 and record == True:
               StaticPositon = np.array(d.qpos)
               res = np.hstack(([target_force_MAA, target_force_BAA], StaticPositon))
               ExpResultList.append(res)
               # print(f"Pos: {d.qpos+math.pi/2}")
+
+              # exp info
+              print(f"Exp {i}-{j} with F1: {MAAPressure}, F2: {BAAPressure}")
               print(f"[Max Error]: {max(abs(tar_theta1 - d.qpos[0] - math.pi/2), abs(tar_theta2 - d.qpos[1] - math.pi/2))}, [Error of Tar1]:", tar_theta1 - d.qpos[0] - math.pi/2, "[Error of Tar2]:", tar_theta2 - d.qpos[1] - math.pi/2)
               record = False
 
@@ -135,13 +145,14 @@ if viewer_flag:
 
         # # 按住ctrl C退出循环
         except KeyboardInterrupt:
-          pass
+          raise KeyboardInterrupt
 
 print(d.qpos)
 
 
 print(ExpResultList)
 ExpResultList = np.array(ExpResultList)
+
 # 获取文件名
 current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 ExpTime = current_time

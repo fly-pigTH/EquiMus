@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 # load sim data
 # sim_data = np.load("./data/Exp-Static-20241220_152829/StaticState_list.npy")
 sim_data = np.load("./data/Exp-Static_ideal_gridScan-20241230_104248/StaticState_list.npy")
+# sim_data = np.load("./data/Exp-Static_ideal_gridScan-20241227_101514/StaticState_list.npy")
 theta1_rank = 4
 theta2_rank = 5
 
