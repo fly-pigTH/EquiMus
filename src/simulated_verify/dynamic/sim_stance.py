@@ -1,0 +1,1 @@
+# Generate the stance trajectory for the simulated robot, plan scan (10, 10) x (10, 10) grid
