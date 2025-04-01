@@ -197,5 +197,5 @@ for theta_1_start in tqdm(theta1_array, desc="Theta 1 Start Loop"):
 
 # save as json file format
 # 保存为 JSON 文件
-with open("src/simulated_verify/dynamic/data/experiment_data.json", "w") as f:
+with open("src/simulated_verify/dynamic/data/sqing_experiment_data.json", "w") as f:
     json.dump(exp_data_serializable, f, indent=4)

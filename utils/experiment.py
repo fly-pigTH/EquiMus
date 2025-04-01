@@ -25,7 +25,7 @@ class MujocoExperiment(object):
         self.height = 320
         self.width = 400
         self.framerate = 60  # (Hz)
-        self.model_type = model_type
+        self.model_type = model_type        # default: swing
 
     @staticmethod
     def calculate_length(theta1, theta2):
@@ -146,13 +146,19 @@ class MujocoExperiment(object):
             while d.time < duration:
                 d.ctrl[:2] = params['P1'] * params['s1'] if d.time < time_step else params['P1_prime'] * params['s1']
                 d.ctrl[2:] = params['P2'] * params['s2'] if d.time < time_step else params['P2_prime'] * params['s2']
-
-                results.append((d.time, d.qpos[0], d.qpos[1]))
+                
+                if self.model_type == "real_geom":
+                    theta1 = d.qpos[0] + np.pi / 2
+                    theta2 = d.qpos[1] + np.pi / 2
+                else:   # ideal geom
+                    theta1 = d.qpos[2] + np.pi / 2
+                    theta2 = d.qpos[3] + 0
+                results.append((d.time, theta1, theta2))
                 # check NOTE: only consider the real geom
                 # TODO: add threshold to judge the <=
                 threshold = math.pi/180     # 1 deg in rad
                 # NOTE: Here we wet the range of angle to be [0, pi*2/3]
-                if (np.pi/6+threshold >= (d.qpos[0]+np.pi/2)) or ((d.qpos[0]+np.pi/2) >= np.pi/6 + 2/3*np.pi-threshold) or (0+threshold >= (d.qpos[1]+np.pi/2)) or ((d.qpos[1]+np.pi/2) >= 0+2/3*np.pi-threshold):
+                if ((np.pi/6+threshold) >= (theta1)) or ((theta1) >= (np.pi/6 + 2/3*np.pi-threshold)) or ((0+threshold) >= (theta2)) or ((theta2) >= (0+2/3*np.pi-threshold)):
                     valid = False
 
                 mujoco.mj_step(m, d)
@@ -161,12 +167,10 @@ class MujocoExperiment(object):
                     if ifrender:
                         renderer.update_scene(d, camera="closeup")
                         frames.append(renderer.render())
-            if (np.pi/6+threshold >= (d.qpos[0]+np.pi/2)) or ((d.qpos[0]+np.pi/2) >= np.pi/6 + 2/3*np.pi-threshold) or (0+threshold >= (d.qpos[1]+np.pi/2)) or ((d.qpos[1]+np.pi/2) >= 0+2/3*np.pi-threshold):
+            if ((np.pi/6+threshold) >= (theta1)) or ((theta1) >= (np.pi/6 + 2/3*np.pi-threshold)) or ((0+threshold) >= (theta2)) or ((theta2) >= (0+2/3*np.pi-threshold)):
                 valid_last = False
 
         time_sim, theta1_sim, theta2_sim = np.array(results).T
-        theta1_sim = theta1_sim + np.pi / 2
-        theta2_sim = theta2_sim + np.pi / 2
         return time_sim, theta1_sim, theta2_sim, frames, valid, valid_last
     
     @staticmethod
