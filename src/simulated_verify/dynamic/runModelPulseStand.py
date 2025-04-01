@@ -13,7 +13,7 @@ import datetime
 import os
 import pandas as pd
 import scipy.io
-from theo_landing2DOF import get_static_func_and_qpos_forLanding2DOF
+from energy_stable.theo_landing2DOF import get_static_func_and_qpos_forLanding2DOF
 import scipy.io
 from tqdm import tqdm
 from utils.auto_record import record_experiment

@@ -1,5 +1,5 @@
-# Generate the stance trajectory for the simulated robot, plan scan (10, 10) x (10, 10) grid
-# Landing Model 动力学测试, 从初始加载直接施加[10, 20]N的力，保存数据
+# Simulated Verificaition, dynamics with STANCE PHASE
+# This scripts generate the step response trajectory
 
 import mediapy as media
 import pandas as pd
@@ -12,8 +12,8 @@ import mediapy as media
 path = "./models/SingleLeg_ideal_landing2DOF.xml"
 experiment_instance = MujocoExperiment(path, model_type = "ideal_geom")
 fixed_para = {
-    'stiffness_MAA': 318.76, #637.52 / 2,
-    'stiffness_BAA': 315.8, #631.6 / 2,
+    'stiffness_MAA': 318.76, # 637.52 / 2,
+    'stiffness_BAA': 315.8, # 631.6 / 2,
     'l10': 0.174,
     'l20': 0.252,
     'damping_MAA': 11.34,
