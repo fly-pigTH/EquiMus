@@ -42,4 +42,4 @@ df = pd.DataFrame({
     'valid': valid_,
     'valid_last': valid_last_
 })
-df.to_csv("./src/simulated_verify/dynamic/data/stance.csv", index=False)
+df.to_csv("./src/simulated_verify/dynamic/data/stance_exp_data.csv", index=False)
