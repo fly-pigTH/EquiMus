@@ -176,7 +176,7 @@ for theta_1_start in tqdm(theta1_array, desc="Theta 1 Start Loop"):
                 fixed_para['P2'] = get_static_func(theta_1_start, theta_2_start)[1]
                 fixed_para['P1_prime'] = get_static_func(theta_1_end, theta_2_end)[0]
                 fixed_para['P2_prime'] = get_static_func(theta_1_end, theta_2_end)[1]
-                time_sim_, theta1_sim_, theta2_sim_, frames_, valid_, valid_last_ = experiment_instance.run(fixed_para, 10, 20, False)
+                time_sim_, theta1_sim_, theta2_sim_, frames_, valid_, valid_last_ = experiment_instance.run(fixed_para, 10, 21, False)
                 exp_para_list.append({
                     'theta_1_start': theta_1_start,
                     'theta_2_start': theta_2_start,
@@ -189,15 +189,15 @@ for theta_1_start in tqdm(theta1_array, desc="Theta 1 Start Loop"):
                     'valid': valid_,
                     'valid_last': valid_last_
                 })
-                exp_data_t_list.append(time_sim_[0:1000*15])       # About 15s
-                exp_data_theta1_list.append(theta1_sim_[0:1000*15])
-                exp_data_theta2_list.append(theta2_sim_[0:1000*15])
+                exp_data_t_list.append(time_sim_[0:1000*20])       # About 15s
+                exp_data_theta1_list.append(theta1_sim_[0:1000*20])
+                exp_data_theta2_list.append(theta2_sim_[0:1000*20])
 
 # Save as csv
 exp_para_df = pd.DataFrame(exp_para_list)
-exp_para_df.to_csv('src/simulated_verify/dynamic/data/swing_exp_para.csv', index=False)
+exp_para_df.to_csv('src/simulated_verify/dynamic/newdata/swing_exp_para.csv', index=False)
 
 # save npy
-np.save('src/simulated_verify/dynamic/data/swing_exp_data_t.npy', np.array(exp_data_t_list))
-np.save('src/simulated_verify/dynamic/data/swing_exp_data_theta1.npy', np.array(exp_data_theta1_list))
-np.save('src/simulated_verify/dynamic/data/swing_exp_data_theta2.npy', np.array(exp_data_theta2_list))
+np.save('src/simulated_verify/dynamic/newdata/swing_exp_data_t.npy', np.array(exp_data_t_list))
+np.save('src/simulated_verify/dynamic/newdata/swing_exp_data_theta1.npy', np.array(exp_data_theta1_list))
+np.save('src/simulated_verify/dynamic/newdata/swing_exp_data_theta2.npy', np.array(exp_data_theta2_list))
