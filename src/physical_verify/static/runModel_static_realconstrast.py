@@ -12,8 +12,6 @@ import datetime
 import os
 import pandas as pd
 
-
-
 # 静力学计算模块
 def get_static_func(theta_1, theta_2):
 

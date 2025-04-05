@@ -1,5 +1,6 @@
-# Simulated Verificaition, dynamics with STANCE PHASE
-# This scripts the swing trajectory for the simulated robot, plan scan (10, 10) x (10, 10) grid
+# Physical Verificaition, generate a scan video, to compare with the real data
+# Just like sim_swing in src/simulated_verify/dynamic
+# TODO
 
 import numpy as np
 import math
@@ -148,7 +149,7 @@ fixed_para = {
     'stiffness_MAA': 318.76, # 637.52 / 2,
     'stiffness_BAA': 315.8, # 631.6 / 2,
     'l10': 0.174,
-    'l20': 0.2562,
+    'l20': 0.252,
     'damping_MAA': 11.34,
     'damping_BAA': 10.90,
     'c1_thigh': 0,

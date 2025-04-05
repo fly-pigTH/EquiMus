@@ -15,7 +15,7 @@ fixed_para = {
     'stiffness_MAA': 318.76, # 637.52 / 2,
     'stiffness_BAA': 315.8, # 631.6 / 2,
     'l10': 0.174,
-    'l20': 0.252,
+    'l20': 0.2562,
     'damping_MAA': 11.34,
     'damping_BAA': 10.90,
     'c1_thigh': 0,
