@@ -12,6 +12,7 @@ import pandas as pd
 import mediapy as media
 
 # Static force calculation module
+# Need change the parameters here!
 def get_static_func(theta_1, theta_2):
 
     a_1 = 0.25
@@ -29,7 +30,7 @@ def get_static_func(theta_1, theta_2):
     # NOTE: Use measured value here
     m_3, m_4 = 0.18648, 0.27266
     k_3, k_4 = 637.52/2, 631.6/2
-    l_10, l_20 = 0.174, 0.252
+    l_10, l_20 = 0.174, 0.2562
 
     # damping
     c_3, c_4 = 22.68/2, 21.8/2
