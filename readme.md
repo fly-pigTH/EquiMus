@@ -1,4 +1,4 @@
-# FleXrigid-Sim
+# FleXrigid-Sim (MUSEUMS prerelease version)
 > Struggling to Perfect
 
 ## About This Work
@@ -18,3 +18,5 @@ Study the Rigid-Flex Nature of Pneumatic Artificial Muscle through Discrete Dyna
 ## Structures
 1. check multi
 2. install in the Win 11 Omen!
+
+In the future, we will develop this repo into a more general-purpose tool, MUSEUMS.
