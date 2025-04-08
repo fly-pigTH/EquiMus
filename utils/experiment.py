@@ -173,6 +173,51 @@ class MujocoExperiment(object):
         time_sim, theta1_sim, theta2_sim = np.array(results).T
         return time_sim, theta1_sim, theta2_sim, frames, valid, valid_last
     
+    def fastrun(self, params, time_step, duration, ifrender=True):
+        self.apply_params(params)
+        m, d = self.model, self.data
+        # Reset state and time
+        mujoco.mj_resetData(m, d)
+
+        results = []
+        frames = []
+        valid = True        # check if the angle exceeds the limit
+        valid_last = True
+        threshold = math.pi/180     # 1 deg in rad
+        theta1_min, theta1_max = np.pi/6 + threshold, np.pi/6 + 2/3*np.pi - threshold
+        theta2_min, theta2_max = 0 + threshold, 0 + 2/3*np.pi - threshold
+
+        # Space change for time
+        max_steps = int(duration / 0.001) + 1  # 估算最多多少步
+        results = np.zeros((max_steps, 3))  # (time, theta1, theta2)
+        i = 0
+
+        while d.time < duration:
+            d.ctrl[:2] = params['P1'] * params['s1'] if d.time < time_step else params['P1_prime'] * params['s1']
+            d.ctrl[2:] = params['P2'] * params['s2'] if d.time < time_step else params['P2_prime'] * params['s2']
+            
+            if self.model_type == "real_geom":
+                theta1 = d.qpos[0] + np.pi / 2
+                theta2 = d.qpos[1] + np.pi / 2
+            else:   # ideal geom
+                theta1 = d.qpos[2] + np.pi / 2
+                theta2 = d.qpos[3] + 0
+            # results.append((d.time, theta1, theta2))
+            results[i] = (d.time, theta1, theta2)
+            i += 1
+            # check NOTE: only consider the real geom
+            # TODO: add threshold to judge the <=
+            # NOTE: Here we wet the range of angle to be [0, pi*2/3]
+            if not (theta1_min <= theta1 <= theta1_max and theta2_min <= theta2 <= theta2_max):
+                valid = False
+            mujoco.mj_step(m, d)
+        if not (theta1_min <= theta1 <= theta1_max and theta2_min <= theta2 <= theta2_max):
+            valid_last = False
+        frames = None
+        results = results[:i]  # 截取实际有效部分
+        time_sim, theta1_sim, theta2_sim = np.array(results).T
+        return time_sim, theta1_sim, theta2_sim, frames, valid, valid_last
+    
     @staticmethod
     def plot_results(time_sim, theta1_sim, theta2_sim, i=None):
         # 创建一个新的图形
