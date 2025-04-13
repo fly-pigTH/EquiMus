@@ -19,4 +19,6 @@ Study the Rigid-Flex Nature of Pneumatic Artificial Muscle through Discrete Dyna
 1. check multi
 2. install in the Win 11 Omen!
 
+MusGym
+
 In the future, we will develop this repo into a more general-purpose tool, MUSEUMS.
