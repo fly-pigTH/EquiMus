@@ -22,3 +22,4 @@ Study the Rigid-Flex Nature of Pneumatic Artificial Muscle through Discrete Dyna
 MusGym
 
 In the future, we will develop this repo into a more general-purpose tool, MUSEUMS.
+update real control

@@ -51,14 +51,14 @@
     <body name="base" pos="0 0 0">
       <geom size="10 10 .01" type="plane" material="grid"/>
       <body name="base box" pos="0 0 1">
-        <geom type="box" size="0.1 0.1 0.1" rgba="0 1 0 1"/>
+        <geom type="box" size="0.5 0.5 0.05" rgba="0 1 0 1"/>
         <!-- <freejoint/> -->
         <body name="floating mass" pos="0 0 2">
-          <geom type="box" size="0.1 0.1 0.1" rgba="1 0 0 1"/>
-          <joint name="j1" type="slide" axis="0 0 1" damping="10" stiffness="200" springref="0"/>
+          <geom type="box" size="0.5 0.5 0.05" rgba="1 0 0 1"/>
+          <joint name="j1" type="slide" axis="0 0 1" damping="10" stiffness="2000" springref="0"/>
           <body name="end box" pos="0 0 2"> 
-            <geom type="box" size="0.1 0.1 0.1" rgba="0 1 0 1"/>
-            <joint name="j2" type="slide" axis="0 0 1" damping="10" stiffness="200" springref="0"/>
+            <geom type="box" size="0.5 0.5 0.05" rgba="0 1 0 1"/>
+            <joint name="j2" type="slide" axis="0 0 1" damping="10" stiffness="2000" springref="0"/>
           </body>
         </body>
       </body>
