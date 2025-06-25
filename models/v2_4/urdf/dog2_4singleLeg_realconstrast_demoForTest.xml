@@ -78,8 +78,8 @@
         <geom type="mesh" rgba="0.752941 0.752941 0.752941 0.95" mesh="RB_Thigh" mass="0.086" contype="0" conaffinity="0"/>
 
         <!-- add BAA here -->
-
-        <body name="RB_BAA_UPLink" pos="0.125 -0.335 -0.105">
+        <!-- <body name="RB_BAA_UPLink" pos="0.125 -0.335 -0.105"> -->
+        <body name="RB_BAA_UPLink" pos="0.0005 -0.1 0">
           <joint name="RB_BAA_UpJoint" pos="0 0 0" axis="-1 0 0" damping="0" stiffness="0" springref="0"/>
           <geom type="mesh" rgba="0.5 0.5 0.5 0.9" mesh="RB_BAA_UPLink" mass="0.00001" contype="0" conaffinity="0"/>
           <!-- <site name="RB_BAA_START" pos="0 0 0" size="0.001" rgba="1 0 0 1"/> -->
