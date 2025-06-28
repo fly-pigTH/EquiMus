@@ -191,6 +191,7 @@ class MujocoExperiment(object):
         valve2 = 0.0
 
         results = []
+        pressure_states = []  # 用于存储压力状态
         frames = []
         valid = True        # check if the angle exceeds the limit
         valid_last = True
@@ -199,16 +200,16 @@ class MujocoExperiment(object):
             while d.time < duration:
                 # NOTE: only change here
                 # === 输入信号（阶跃） ===
-                u1 = params['P1'] * params['s1'] if d.time < time_step else params['P1_prime'] * params['s1']
-                u2 = params['P2'] * params['s2'] if d.time < time_step else params['P2_prime'] * params['s2']
+                u1 = params['P1']  if d.time < time_step else params['P1_prime'] 
+                u2 = params['P2']  if d.time < time_step else params['P2_prime'] 
 
                 # === 阀门动态响应（离散一阶系统） ===
                 valve1 = a * valve1 + b * u1
                 valve2 = a * valve2 + b * u2
 
                 # === 设置控制信号 ===
-                d.ctrl[:2] = valve1
-                d.ctrl[2:] = valve2
+                d.ctrl[:2] = valve1 * params['s1']
+                d.ctrl[2:] = valve2 * params['s2']
 
                 if self.model_type == "real_geom":
                     theta1 = d.qpos[0] + np.pi / 2
@@ -217,6 +218,7 @@ class MujocoExperiment(object):
                     theta1 = d.qpos[2] + np.pi / 2
                     theta2 = d.qpos[3] + 0
                 results.append((d.time, theta1, theta2))
+                pressure_states.append((valve1, valve2))  # 记录当前阀门状态
                 # check NOTE: only consider the real geom
                 # TODO: add threshold to judge the <=
                 threshold = math.pi/180     # 1 deg in rad
@@ -234,7 +236,8 @@ class MujocoExperiment(object):
                 valid_last = False
 
         time_sim, theta1_sim, theta2_sim = np.array(results).T
-        return time_sim, theta1_sim, theta2_sim, frames, valid, valid_last
+        pressure1_sim, pressure2_sim = np.array(pressure_states).T
+        return time_sim, theta1_sim, theta2_sim, frames, valid, valid_last, pressure1_sim, pressure2_sim
 
     def fastrun(self, params, time_step, duration, ifrender=True):
         self.apply_params(params)
@@ -304,15 +307,15 @@ if __name__ == "__main__":
     experiment_instance = MujocoExperiment(path)
 
     # Model Parameter Set
-    stiffness_MAA, stiffness_BAA = 141.02960841103112, 113.79784850542735
+    stiffness_MAA, stiffness_BAA = 318.76, 315.8
     l10, l20 = 0.164, 0.252
-    damping_MAA, damping_BAA = 10.1515, 10.3101
-    s1, s2 = 0.0003538647203395966, 0.0003466318012150854
-    c1_thigh, c2_calf = 0, 0
-    P1 = 0
+    damping_MAA, damping_BAA = 11.34, 10.9
+    s1, s2 = 0.000654, 0.000637
+    c1_thigh, c2_calf = 0.03, 0.03
+    P1 = 50*1e3
     P2 = 0
-    P1_prime = 10*1000
-    P2_prime = 10*1000
+    P1_prime = 0*1e3
+    P2_prime = 0*1e3
     
     exp_num = 100
     np.random.seed(0)
@@ -339,13 +342,29 @@ if __name__ == "__main__":
     time_step = 10
     duration_exp = 20  # seconds
     framerate = 60
-    time_sim, theta1_sim, theta2_sim, frames, valid, valid_last = experiment_instance.run_with_valve_dynamics(params, time_step=time_step, duration=duration_exp)
+    time_sim, theta1_sim, theta2_sim, frames, valid, valid_last, valve1, valve2 = experiment_instance.run_with_valve_dynamics(params, time_step=time_step, duration=duration_exp, ifrender=False)
 
     # show video
-    media.show_video(frames, fps=framerate)
+    # media.show_video(frames, fps=framerate)
+    # media.write_video("./log/temp_experiment_valve_dynamics.mp4", frames, fps=framerate)
 
-    # Plot Results
-    fig, ax = experiment_instance.plot_results(time_sim, theta1_sim, theta2_sim)
+    # Plot Results with dual y-axis for pressure states
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    # 绘制theta1和theta2的曲线
+    ax1.plot(time_sim, theta1_sim, label='Theta1', color='tab:blue')
+    ax1.plot(time_sim, theta2_sim, label='Theta2', color='tab:orange')
+    ax1.set_xlabel('Time (s)')
+    ax1.set_ylabel('Angle (radians)')
+    ax1.set_title('Joint Angles and Valve Pressures Over Time')
+    ax1.legend(loc='upper left')
+
+    # 创建第二个y轴
+    ax2 = ax1.twinx()
+    ax2.plot(time_sim, valve1, label='Valve1 Pressure', color='tab:green', linestyle='--')
+    ax2.plot(time_sim, valve2, label='Valve2 Pressure', color='tab:red', linestyle='--')
+    ax2.set_ylabel('Valve Pressure')
+    ax2.legend(loc='upper right')
+
     plt.show()
 
 
