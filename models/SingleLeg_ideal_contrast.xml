@@ -48,7 +48,7 @@
             </body>
             <body name="BAA_UPLink" pos="0 0.1 0" axisangle="1 0 0 -0.147464847">
                 <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.04544333333" contype="0" conaffinity="0"/>
-                <joint name="BAA_UPJoint"type="hinge" axis="1 0 0"/>
+                <joint name="BAA_UPJoint" type="hinge" axis="1 0 0"/>
                 <body name="BAA_FMLink" pos="0 0 -0.17014792842496052">
                     <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.1817733333" contype="0" conaffinity="0"/>
                     <joint name="BAA_SlideJoint" type="slide" axis="0 0 -1" damping="21.8" stiffness="258.9884689826" springref="-0.04118533830080082"/>
