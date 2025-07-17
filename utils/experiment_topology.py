@@ -1,6 +1,8 @@
 # 通用实验结果，用于测试系统响应，提供视频录制结果
 # 尽可能通用，为未来做强化学习做 prototype
 
+# topology randomization
+
 import mujoco
 import numpy as np
 import math
@@ -390,39 +392,3 @@ if __name__ == "__main__":
     }
     df = pd.DataFrame(data_traj)
     df.to_csv('data_mj.csv', index=False)
-
-    # for i in tqdm(range(exp_num)):
-    #     index_p1 = i // 10
-    #     index_p2 = i % 10
-    #     random_params = {
-    #         'stiffness_MAA': stiffness_MAA * (1 + 0*np.random.uniform(-0.1, 0.1)),
-    #         'stiffness_BAA': stiffness_BAA * (1 + 0*np.random.uniform(-0.1, 0.1)),
-    #         'l10': l10 * (1 + 0*np.random.uniform(-0.1, 0.1)),
-    #         'l20': l20 * (1 + 0*np.random.uniform(-0.1, 0.1)),
-    #         'damping_MAA': damping_MAA * (1 + 0*np.random.uniform(-0.5, 0.5)),
-    #         'damping_BAA': damping_BAA * (1 + 0*np.random.uniform(-0.5, 0.5)),
-    #         's1': s1 * (1 + 0*np.random.uniform(-0.1, 0.1)),
-    #         's2': s2 * (1 + 0*np.random.uniform(-0.1, 0.1)),
-    #         'c1_thigh': c1_thigh * (1 + 0*np.random.uniform(-0.5, 0.5)),
-    #         'c2_calf': c2_calf * (1 + 0*np.random.uniform(-0.5, 0.5)),
-    #         'P1': P1,
-    #         'P2': P2,
-    #         'P1_prime': P1_prime * 2*index_p1/math.sqrt(exp_num),
-    #         'P2_prime': P2_prime * 2*index_p2/math.sqrt(exp_num)
-    #     }
-
-    #     # Run the Experiments
-    #     time_step = 10
-    #     duration_exp = 20  # seconds
-    #     framerate = 60
-    #     time_sim, theta1_sim, theta2_sim, frames, valid = experiment_instance.run(random_params, time_step=time_step, duration=duration_exp)
-        
-    #     # Save Video
-    #     # media.write_video(f"./log/video/test/experiment_output_{i}.mp4", frames, fps=framerate)
-        
-    #     # Show the video
-    #     # media.show_video(frames, fps=framerate)
-
-    #     # Plot Results
-    #     # experiment_instance.plot_results(time_sim, theta1_sim, theta2_sim, i)
-    # print(f"Average time: {(time.time()-tic)/exp_num:.2f}s")

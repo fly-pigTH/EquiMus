@@ -1,0 +1,3 @@
+Thu Jul 17 11:10:17 2025
+WARNING: mju_openResource: unknown file './models/SingleLeg_ideal_topology.xml'
+
