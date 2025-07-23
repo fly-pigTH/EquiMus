@@ -49,13 +49,13 @@
                 </body>
             </body>
             <body name="RB_BAA_UPLink" pos="0 0.1 0" axisangle="1 0 0 -0.147464847">
-                <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.03" contype="0" conaffinity="0"/>
+                <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.04544333333" contype="0" conaffinity="0"/>
                 <joint name="RB_BAA_UpJoint" type="hinge" axis="1 0 0"/>
                 <body name="RB_BAA_FM_LINK" pos="0 0 -0.17014792842496052">
-                    <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.12" contype="0" conaffinity="0"/>
+                    <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.1817733333" contype="0" conaffinity="0"/>
                     <joint name="RB_BAA_SlideJoint" type="slide" axis="0 0 -1" damping="21.8" stiffness="631.6" springref="-0.044147928424960514"/>
                     <body name="RB_BAA_LOLink" pos="0 0 -0.17014792842496052">
-                        <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.03" contype="0" conaffinity="0"/>
+                        <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.04544333333" contype="0" conaffinity="0"/>
                         <joint name="RB_BAA_FM_SlideJoint" type="slide" axis="0 0 -1" damping="21.8" stiffness="631.6" springref="-0.044147928424960514"/>
                         <site name="D2"/>
                     </body>

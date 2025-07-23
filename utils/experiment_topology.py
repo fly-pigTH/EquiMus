@@ -84,6 +84,7 @@ class MujocoExperiment(object):
 
         # 设置偏置
         l1_bias, l2_bias = self.calculate_bias(params['l10'], params['l20'])
+        print(f"l1_bias: {l1_bias}, l2_bias: {l2_bias}")
         for joint in joint_ids:
             idx = mujoco.mj_name2id(_model, mujoco.mjtObj.mjOBJ_JOINT, f"RB_{joint}_SlideJoint")
             assert idx != -1, f"Joint {joint} not found in model"
@@ -133,6 +134,15 @@ class MujocoExperiment(object):
         self.model = _model
         self.data = _data
     
+    @staticmethod
+    def F1_func(t): return 0 if t < 10 else ((t//10)%3 + 1) * 2
+    
+    @staticmethod
+    def F2_func(t): return 0 if t < 10 else (((t//10)+1)%3 + 1) * 2
+    
+    @staticmethod
+    def F3_func(t): return 0 if t < 10 else (((t//10)+2)%3 + 1) * 2
+    
     def run(self, params, time_step, duration, ifrender=True):
         self.apply_params(params)
         m, d = self.model, self.data
@@ -146,8 +156,13 @@ class MujocoExperiment(object):
 
         with mujoco.Renderer(m, self.height, self.width) as renderer:
             while d.time < duration:
-                d.ctrl[:2] = params['P1'] * params['s1'] if d.time < time_step else params['P1_prime'] * params['s1']
-                d.ctrl[2:] = params['P2'] * params['s2'] if d.time < time_step else params['P2_prime'] * params['s2']
+                # d.ctrl[:2] = params['P1'] * params['s1'] if d.time < time_step else params['P1_prime'] * params['s1']
+                # d.ctrl[2:4] = params['P2'] * params['s2'] if d.time < time_step else params['P2_prime'] * params['s2']
+                # d.ctrl[4:] = params['P3'] * params['s3'] if d.time < time_step else params['P3_prime'] * params['s3']
+
+                d.ctrl[:2] = MujocoExperiment.F1_func(d.time)
+                d.ctrl[2:4] = MujocoExperiment.F2_func(d.time)
+                d.ctrl[4:] = MujocoExperiment.F3_func(d.time)
                 
                 if self.model_type == "real_geom":
                     theta1 = d.qpos[0] + np.pi / 2
@@ -155,11 +170,12 @@ class MujocoExperiment(object):
                 elif self.model_type == "ideal_geom_swing":     
                     theta1 = d.qpos[0] + np.pi / 2
                     theta2 = d.qpos[1] + 0
+                    theta3 = d.qpos[2] + 0
                 else:   # ideal geom    # ideal_geom_stance, with 2 DOF
                     theta1 = d.qpos[2] + np.pi / 2
                     theta2 = d.qpos[3] + 0
                     
-                results.append((d.time, theta1, theta2))
+                results.append((d.time, theta1, theta2, theta3))
                 # check NOTE: only consider the real geom
                 # TODO: add threshold to judge the <=
                 threshold = math.pi/180     # 1 deg in rad
@@ -176,8 +192,8 @@ class MujocoExperiment(object):
             if ((np.pi/6+threshold) >= (theta1)) or ((theta1) >= (np.pi/6 + 2/3*np.pi-threshold)) or ((0+threshold) >= (theta2)) or ((theta2) >= (0+2/3*np.pi-threshold)):
                 valid_last = False
 
-        time_sim, theta1_sim, theta2_sim = np.array(results).T
-        return time_sim, theta1_sim, theta2_sim, frames, valid, valid_last
+        time_sim, theta1_sim, theta2_sim, theta3_sim = np.array(results).T
+        return time_sim, theta1_sim, theta2_sim, theta3_sim, frames, valid, valid_last
     
     def run_with_valve_dynamics(self, params, time_step, duration, ifrender=True):
 
@@ -326,11 +342,14 @@ if __name__ == "__main__":
     l10, l20 = 0.174, 0.2562
     damping_MAA, damping_BAA = 11.34, 10.9
     s1, s2 = 0.000654, 0.000637
+    s3 = 1
     c1_thigh, c2_calf = 0.03*0, 0.03*0
-    P1 = 10/s1#50*1e3
+    P1 = 0/s1#50*1e3
     P2 = 0
-    P1_prime = 1.125/s1#*1e3
-    P2_prime = 1/s2#*1e3
+    P3 = 0
+    P1_prime = 10/s1#*1e3
+    P2_prime = 5/s2#*1e3
+    P3_prime = 1
     
     exp_num = 100
     np.random.seed(0)
@@ -345,20 +364,23 @@ if __name__ == "__main__":
         'damping_BAA': damping_BAA,
         's1': s1,
         's2': s2,
+        's3': s3,
         'c1_thigh': c1_thigh,
         'c2_calf': c2_calf,
         'P1': P1,
         'P2': P2,
+        'P3': P3,
         'P1_prime': P1_prime,
-        'P2_prime': P2_prime
+        'P2_prime': P2_prime,
+        'P3_prime': P3_prime
     }
 
     # Run the Experiments
     time_step = 10
-    duration_exp = 20  # seconds
+    duration_exp = 40  # seconds
     framerate = 60
     # time_sim, theta1_sim, theta2_sim, frames, valid, valid_last, valve1, valve2 = experiment_instance.run_with_valve_dynamics(params, time_step=time_step, duration=duration_exp, ifrender=False)
-    time_sim, theta1_sim, theta2_sim, frames, valid, valid_last = experiment_instance.run(params, time_step=time_step, duration=duration_exp, ifrender=True)
+    time_sim, theta1_sim, theta2_sim, theta3_sim, frames, valid, valid_last = experiment_instance.run(params, time_step=time_step, duration=duration_exp, ifrender=True)
 
     # show video
     # media.show_video(frames, fps=framerate)
@@ -369,6 +391,7 @@ if __name__ == "__main__":
     # 绘制theta1和theta2的曲线
     ax1.plot(time_sim, theta1_sim, label='Theta1', color='tab:blue')
     ax1.plot(time_sim, theta2_sim, label='Theta2', color='tab:orange')
+    ax1.plot(time_sim, theta3_sim, label='Theta3', color='tab:red')
     ax1.set_xlabel('Time (s)')
     ax1.set_ylabel('Angle (radians)')
     ax1.set_title('Joint Angles and Valve Pressures Over Time')
@@ -389,6 +412,7 @@ if __name__ == "__main__":
         'time': time_sim,
         'theta1': theta1_sim,
         'theta2': theta2_sim,
+        'theta3': theta3_sim,
     }
     df = pd.DataFrame(data_traj)
     df.to_csv('data_mj.csv', index=False)
