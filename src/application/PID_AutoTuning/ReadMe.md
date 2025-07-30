@@ -38,6 +38,12 @@ python src/application/PID_AutoTuning/data_analysis.py
 - `experiment_data.npy`: Stores time-series data ($\theta_1$, $\theta_2$, control inputs).
 - `PID_{iter}_xxx.mp4`: Video for each optimization iteration.
 
+## ⌘ Results
+![PID Convergence](figure/joint_trajectory.png)
+
+
+
+
 ## 🤝 Contribution & Development
 - You can modify the parameter bounds or optimization methods in `PID_experiment.py` to experiment with different controllers.
 - To add new plot types, extend plotting functions in `data_analysis.py`.
