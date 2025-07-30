@@ -3,6 +3,9 @@
 
 This repository contains a PID auto-tuning experiment based on our equivalent model implemented in **MuJoCo**, using L-BFGS-B and Differential Evolution algorithms to optimize PID controllers. The pipeline outputs experiment data, plots, and videos for analysis and reproducibility.
 
+## ⌘ Results
+![PID Convergence](figure/joint_trajectory.png)
+
 ## 📦 Project Structure
 
 - `PID_experiment.py`: Main experiment script (runs PID optimization).
@@ -37,12 +40,6 @@ python src/application/PID_AutoTuning/data_analysis.py
 - `parameters.csv`: Stores PID parameters and error values for each optimization iteration.
 - `experiment_data.npy`: Stores time-series data ($\theta_1$, $\theta_2$, control inputs).
 - `PID_{iter}_xxx.mp4`: Video for each optimization iteration.
-
-## ⌘ Results
-![PID Convergence](figure/joint_trajectory.png)
-
-
-
 
 ## 🤝 Contribution & Development
 - You can modify the parameter bounds or optimization methods in `PID_experiment.py` to experiment with different controllers.
