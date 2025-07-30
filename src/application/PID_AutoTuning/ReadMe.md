@@ -5,6 +5,10 @@ This repository contains a PID auto-tuning experiment based on our equivalent mo
 
 ## ⌘ Results
 ![PID Convergence](figure/joint_trajectory.png)
+Our goal is to control the robotic leg to reach and maintain a static, upright configuration at $(\pi/2, 0)$ using a PID controller. The optimization objective is to minimize the mean square error (MSE) between the actual joint angles and the desired target.
+
+To accomplish this, we adopt a two-stage optimization strategy: an initial L-BFGS-B phase provides local refinement of the PID parameters, followed by a Differential Evolution stage for broader, global exploration. Across iterations, the results clearly demonstrate that the tuned PID controller increasingly improves tracking accuracy, steadily reducing error and driving the robotic leg toward the desired upright state.
+
 
 ## 📦 Project Structure
 
