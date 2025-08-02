@@ -97,11 +97,18 @@ expdata_real_all = np.array(expdata_real_all)
 print(f"expdata_real_all.shape: {expdata_real_all.shape}")
 
 # real experiment setting
-data = pd.read_csv("./log/realdata/StaticProcess/real_StaticPoint_6group_2025-02-21_08-55-07.csv")
-P1_array = data['P1'].values
-P2_array = data['P2'].values
-theta1_array = data['theta1'].values
-theta2_array = data['theta2'].values
+# data = pd.read_csv("./log/realdata/StaticProcess/real_StaticPoint_6group_2025-02-21_08-55-07.csv")
+# P1_array = data['P1'].values
+# P2_array = data['P2'].values
+# theta1_array = data['theta1'].values
+# theta2_array = data['theta2'].values
+
+data = pd.read_csv("src/physical_verify/static/data/real_static_state/real(all)_StaticPoint_6group_2025-02-21_08-55-07_2025-08-01_19-34-21.csv")
+P1_array = np.array(data['P1 (kPa)'].values, dtype=np.float32)
+P2_array = np.array(data['P2 (kPa)'].values, dtype=np.float32)
+theta1_array = np.array(data['theta1 (deg)'].values, dtype=np.float32)
+theta2_array = np.array(data['theta2 (deg)'].values, dtype=np.float32)
+
 P1_array_all = np.linspace(0, 50, 6)
 P2_array_all = np.linspace(0, 50, 6)
 
@@ -455,7 +462,7 @@ if __name__ != "__main__":
 
 
 # draw the optimal solution
-if __name__ == "__main__":
+if __name__ != "__main__":
   # 优化后的参数
   k1 = 385.1225
   k2 = 335.4172

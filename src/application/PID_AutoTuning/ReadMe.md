@@ -1,5 +1,5 @@
 
-# PID Auto-Tuning Experiment
+# Application 1: PID Auto-Tuning
 
 This repository contains a PID auto-tuning experiment based on our equivalent model implemented in **MuJoCo**, using L-BFGS-B and Differential Evolution algorithms to optimize PID controllers. The pipeline outputs experiment data, plots, and videos for analysis and reproducibility.
 

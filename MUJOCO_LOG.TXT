@@ -1,3 +1,27 @@
-Thu Jul 17 11:10:17 2025
-WARNING: mju_openResource: unknown file './models/SingleLeg_ideal_topology.xml'
+Fri Aug  1 20:31:58 2025
+WARNING: mju_openResource: unknown file '/Users/flypig/Documents/Coding/MujocoLearn/src/application/RL_BallKicking/models/v2_4/urdf/dog2_4singleLeg_realconstrast_kickball.xml'
+
+Fri Aug  1 20:31:58 2025
+WARNING: mju_openResource: unknown file '/Users/flypig/Documents/Coding/MujocoLearn/src/application/RL_BallKicking/models/v2_4/urdf/dog2_4singleLeg_realconstrast_kickball.xml'
+
+Fri Aug  1 20:31:58 2025
+WARNING: mju_openResource: unknown file '/Users/flypig/Documents/Coding/MujocoLearn/src/application/RL_BallKicking/models/v2_4/urdf/dog2_4singleLeg_realconstrast_kickball.xml'
+
+Fri Aug  1 20:31:59 2025
+WARNING: mju_openResource: unknown file '/Users/flypig/Documents/Coding/MujocoLearn/src/application/RL_BallKicking/models/v2_4/urdf/dog2_4singleLeg_realconstrast_kickball.xml'
+
+Fri Aug  1 20:31:59 2025
+WARNING: mju_openResource: unknown file '/Users/flypig/Documents/Coding/MujocoLearn/src/application/RL_BallKicking/models/v2_4/urdf/dog2_4singleLeg_realconstrast_kickball.xml'
+
+Fri Aug  1 20:31:59 2025
+WARNING: mju_openResource: unknown file '/Users/flypig/Documents/Coding/MujocoLearn/src/application/RL_BallKicking/models/v2_4/urdf/dog2_4singleLeg_realconstrast_kickball.xml'
+
+Fri Aug  1 20:31:59 2025
+WARNING: mju_openResource: unknown file '/Users/flypig/Documents/Coding/MujocoLearn/src/application/RL_BallKicking/models/v2_4/urdf/dog2_4singleLeg_realconstrast_kickball.xml'
+
+Fri Aug  1 20:31:59 2025
+WARNING: mju_openResource: unknown file '/Users/flypig/Documents/Coding/MujocoLearn/src/application/RL_BallKicking/models/v2_4/urdf/dog2_4singleLeg_realconstrast_kickball.xml'
+
+Fri Aug  1 20:31:59 2025
+WARNING: mju_openResource: unknown file '/Users/flypig/Documents/Coding/MujocoLearn/src/application/RL_BallKicking/models/v2_4/urdf/dog2_4singleLeg_realconstrast_kickball.xml'
 

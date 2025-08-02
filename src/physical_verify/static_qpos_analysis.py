@@ -1,10 +1,19 @@
+# analyze the static qpos of the robotic leg, 
+# only take consideration of the interior working area
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 
-# analyze the static qpos of the robotic leg, 
-# only take consideration of the interior working area
-data = pd.read_csv('./dynamic/data/ToCenter_2025-02-20_21-06-20_A2B_data.csv')
+# Basic Path
+import rootpath
+from pathlib import Path
+import numpy as np
+
+ROOT_DIR = rootpath.detect()   # Get the root directory of the project (.git)
+CURRENT_DIR = Path(__file__).resolve().parent
+
+data = pd.read_csv(CURRENT_DIR / "dynamic" / "data" / "ToCenter_2025-02-20_21-06-20_A2B_data.csv")
 
 # plot the theta-index Figure
 plt.figure(figsize=(20, 6))
@@ -59,7 +68,6 @@ plt.xlabel('Sample Index')
 plt.ylabel('Pressure (kPa)')
 plt.title('Pressure vs Original Rank')
 
-
 # Extract the final converged positions: (P1, P2, theta1, theta2)
 # make the real static data for system identification
 def record_static_data(mode):
@@ -76,12 +84,10 @@ def record_static_data(mode):
 
 # save the static data of effective
 static_data_effective = record_static_data(mode="effective")
-print(static_data_effective)
-static_data_effective.to_csv(f'./tmpdata/real(effective)_StaticPoint_6group_2025-02-21_08-55-07_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.csv', index=False, float_format='%.4f')
+static_data_effective.to_csv(CURRENT_DIR / "static" / "data" / "real_static_state" / f'real(effective)_StaticPoint_6group_2025-02-21_08-55-07_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.csv', index=False, float_format='%.4f')
 print(f"File name: real_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv")
 
 # save the static data of all
-static_data_effective = record_static_data(mode="all")
-print(static_data_effective)
-static_data_effective.to_csv(f'./tmpdata/real(all)_StaticPoint_6group_2025-02-21_08-55-07_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.csv', index=False, float_format='%.4f')
+static_data_all = record_static_data(mode="all")
+static_data_all.to_csv(CURRENT_DIR / "static" / "data" / "real_static_state" / f'real(all)_StaticPoint_6group_2025-02-21_08-55-07_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.csv', index=False, float_format='%.4f')
 print(f"File name: real_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv")
