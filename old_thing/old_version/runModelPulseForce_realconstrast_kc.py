@@ -310,7 +310,7 @@ def error(params, mode="train", data_mode=data_mode):
     SE_mat_velocity = errorMat_velocity**2
     MSE_mat_velocity = np.mean(SE_mat_velocity, axis=2)
     MSE_mat_overview_velocity = np.mean(MSE_mat_velocity, axis=0)
-    MSE_all_velocity = np.mean(MSE_mat_overview_velocity[1:])   # 只考虑theta1的速度
+    MSE_all_velocity = np.mean(MSE_mat_overview_velocity[1:2])   # 只考虑theta1的速度
     print(f"MSE_all: {MSE_all:.4f}, MSE_all_velocity: {MSE_all_velocity:.4f}")
 
   # elif data_mode == "all":
