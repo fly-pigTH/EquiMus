@@ -103,7 +103,7 @@ print(f"expdata_real_all.shape: {expdata_real_all.shape}")
 # theta1_array = data['theta1'].values
 # theta2_array = data['theta2'].values
 
-data = pd.read_csv("src/physical_verify/static/data/real_static_state/real(all)_StaticPoint_6group_2025-02-21_08-55-07_2025-08-01_19-34-21.csv")
+data = pd.read_csv("./src/physical_verify/static/data/real_static_state/real(all)_StaticPoint_6group_2025-02-21_08-55-07_2025-08-01_19-34-21.csv")
 P1_array = np.array(data['P1 (kPa)'].values, dtype=np.float32)
 P2_array = np.array(data['P2 (kPa)'].values, dtype=np.float32)
 theta1_array = np.array(data['theta1 (deg)'].values, dtype=np.float32)
@@ -685,7 +685,7 @@ if __name__== "__main__":
     c1_thigh = 3.0              # 大腿附加阻尼（示例默认值）
     c2_calf = 1.0               # 小腿附加阻尼（示例默认值）
     bounds = [(k1*0.9, k1*1.5), (k2*0.9, k2*1.5), (l10*0.9, l10*1.1), (l20*0.9, l20*1.1), (0, 30), (0, 30), (s1*0.5, s1*1.5), (s2*0.5, s2*1.5), (0, 5), (0, 5)]  # 每个参数都有10%的变化范围
-    result = differential_evolution(error, bounds, strategy='best1bin', maxiter=10000, disp=False, callback=callback, popsize=25)
+    result = differential_evolution(error, bounds, strategy='best1bin', maxiter=10000, disp=True, callback=callback, popsize=5)
     # print the res
     k1_opt, k2_opt, l10_opt, l20_opt, c1_opt, c2_opt, s1_opt, s2_opt, c1_thigh_opt, c2_calf_opt = result.x
     print(f"Optimal k1={k1_opt:.4f}, k2={k2_opt:.4f}, l10={l10_opt:.4f}, l20={l20_opt:.4f}, c1={c1_opt:.4f}, c2={c2_opt:.4f}, s1={s1_opt:.8f}, s2={s2_opt:.8f}, c1_thigh={c1_thigh_opt:.4f}, c2_calf={c2_calf_opt:.4f}, MSE={result.fun:.4f}")

@@ -16,7 +16,7 @@ import time
 '''
 
 class MujocoExperiment(object):
-    def __init__(self, model_path, model_type="real_geom"):
+    def __init__(self, model_path, model_type="real_geom", xml_mode=False, xml_str=None):
         self.model_path = model_path
         self.model = None   # wait for instantiation
         self.data = None
@@ -26,6 +26,8 @@ class MujocoExperiment(object):
         self.width = 400
         self.framerate = 60  # (Hz)
         self.model_type = model_type        # default: swing
+        self.xml_mode = xml_mode
+        self.xml_str = xml_str
 
     @staticmethod
     def calculate_length(theta1, theta2):
@@ -54,7 +56,44 @@ class MujocoExperiment(object):
 
     def apply_params(self, params):
         # update model for Experiment
-        _model = mujoco.MjModel.from_xml_path(self.model_path)
+        if self.xml_mode and self.xml_str:
+            # NOTE: here, we firstly edit the mass of the geom
+            # TODO: implement the mass edit
+            # _model = mujoco.MjModel.from_string(self.xml_str)
+            spec = mujoco.MjSpec.from_string(self.xml_str)
+            # 如果有m3, m4, 则进行驱动器质量设置
+            # 分六个进行修改，以实现独立的控制（for baseline）
+            geom_name = "RB_MAA_uGeom"
+            geom_mass = 10
+            spec.geom(geom_name).mass = geom_mass
+            _model = spec.compile()
+            if "m_MAA" in params:
+                # set the maa mass
+                MAA_uGeom_id = _model.geom("RB_MAA_uGeom").id
+                assert MAA_uGeom_id != -1, "RB_MAA_uGeom not found in model"
+                MAA_mGeom_id = _model.geom("RB_MAA_mGeom").id
+                assert MAA_mGeom_id != -1, "RB_MAA_mGeom not found in model"
+                MAA_lGeom_id = _model.geom("RB_MAA_lGeom").id
+                assert MAA_lGeom_id != -1, "RB_MAA_lGeom not found in model"
+
+                _model.body_mass[MAA_uGeom_id] = params['m_MAA'] * 1/6
+                _model.body_mass[MAA_mGeom_id] = params['m_MAA'] * 2/3
+                _model.body_mass[MAA_lGeom_id] = params['m_MAA'] * 1/6
+            
+            if "m_BAA" in params:
+                # set the baa mass
+                BAA_uGeom_id = _model.geom("RB_BAA_uGeom").id
+                assert BAA_uGeom_id != -1, "RB_BAA_uGeom not found in model"
+                BAA_mGeom_id = _model.geom("RB_BAA_mGeom").id
+                assert BAA_mGeom_id != -1, "RB_BAA_mGeom not found in model"
+                BAA_lGeom_id = _model.geom("RB_BAA_lGeom").id
+                assert BAA_lGeom_id != -1, "RB_BAA_lGeom not found in model"
+
+                _model.body_mass[BAA_uGeom_id] = params['m_BAA'] * 1/6
+                _model.body_mass[BAA_mGeom_id] = params['m_BAA'] * 2/3
+                _model.body_mass[BAA_lGeom_id] = params['m_BAA'] * 1/6
+        else:
+            _model = mujoco.MjModel.from_xml_path(self.model_path)
         _data = mujoco.MjData(_model)
         
         # 设置关节阻尼与刚度
@@ -87,6 +126,8 @@ class MujocoExperiment(object):
             assert idx != -1, f"Joint {joint} not found in model"
             # print(f"RB_{joint}_SlideJoint id: {idx}")
             _model.qpos_spring[idx] = l1_bias if 'MAA' in joint else l2_bias
+
+        
 
         # old version
 
@@ -310,7 +351,7 @@ class MujocoExperiment(object):
         # 返回图形对象
         return fig, ax
 
-if __name__ == "__main__":
+def test_topology():
     
     # Load the Ancestors Model
     # path = "./models/v2_4/urdf/dog2_4singleLeg_realconstrast.xml"
@@ -348,7 +389,8 @@ if __name__ == "__main__":
         'P1': P1,
         'P2': P2,
         'P1_prime': P1_prime,
-        'P2_prime': P2_prime
+        'P2_prime': P2_prime,
+        # 'm_MAA': 1
     }
 
     # Run the Experiments
@@ -358,6 +400,7 @@ if __name__ == "__main__":
     # time_sim, theta1_sim, theta2_sim, frames, valid, valid_last, valve1, valve2 = experiment_instance.run_with_valve_dynamics(params, time_step=time_step, duration=duration_exp, ifrender=False)
     time_sim, theta1_sim, theta2_sim, frames, valid, valid_last = experiment_instance.run(params, time_step=time_step, duration=duration_exp, ifrender=True)
 
+    # input()
     # show video
     # media.show_video(frames, fps=framerate)
     media.write_video("./log/temp_experiment_valve_dynamics_temp0717.mp4", frames, fps=framerate)
@@ -426,3 +469,52 @@ if __name__ == "__main__":
     #     # Plot Results
     #     # experiment_instance.plot_results(time_sim, theta1_sim, theta2_sim, i)
     # print(f"Average time: {(time.time()-tic)/exp_num:.2f}s")
+
+
+def test_mass_set():
+
+    # Load the Ancestors Model
+    path = "./models/v2_4/urdf/dog2_4singleLeg_realconstrast.xml"
+    experiment_instance = MujocoExperiment(path, model_type="real_geom")
+
+    # Model Parameter Set
+    stiffness_MAA, stiffness_BAA = 318.76, 315.8
+    l10, l20 = 0.174, 0.2562
+    damping_MAA, damping_BAA = 11.34, 10.9
+    s1, s2 = 0.000654, 0.000637
+    c1_thigh, c2_calf = 0.03*0, 0.03*0
+    P1 = 10/s1#50*1e3
+    P2 = 0
+    P1_prime = 1.125/s1#*1e3
+    P2_prime = 1/s2#*1e3
+    
+    exp_num = 100
+    np.random.seed(0)
+    tic = time.time()
+
+    params = {
+        'stiffness_MAA': stiffness_MAA,
+        'stiffness_BAA': stiffness_BAA,
+        'l10': l10,
+        'l20': l20,
+        'damping_MAA': damping_MAA,
+        'damping_BAA': damping_BAA,
+        's1': s1,
+        's2': s2,
+        'c1_thigh': c1_thigh,
+        'c2_calf': c2_calf,
+        'P1': P1,
+        'P2': P2,
+        'P1_prime': P1_prime,
+        'P2_prime': P2_prime,
+        'm_MAA': 1
+    }
+
+    # Run the Experiments
+    time_step = 10
+    duration_exp = 20  # seconds
+    framerate = 60
+    time_sim, theta1_sim, theta2_sim, frames, valid, valid_last = experiment_instance.run(params, time_step=time_step, duration=duration_exp, ifrender=True)
+
+if __name__ == "__main__":
+    test_mass_set()

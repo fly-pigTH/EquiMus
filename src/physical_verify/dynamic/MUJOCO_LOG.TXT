@@ -1,9 +1,0 @@
-Thu May  1 06:29:04 2025
-WARNING: mju_openResource: unknown file '../models/v2_4/urdf/dog2_4singleLeg_realconstrast.xml'
-
-Thu May  1 06:30:18 2025
-WARNING: Read error while reading '../../../models/'
-
-Thu May  1 06:30:18 2025
-WARNING: mju_openResource: unknown file '../../../models/'
-
