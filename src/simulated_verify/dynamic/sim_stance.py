@@ -32,7 +32,7 @@ time_sim_, theta1_sim_, theta2_sim_, frames_, valid_, valid_last_ = experiment_i
 
 # show
 media.show_video(frames_, fps=60)
-media.write_video("./src/simulated_verify/dynamic/video/stance.mp4", frames_, fps=60)
+media.write_video("./src/simulated_verify/dynamic/video/stance_tmp.mp4", frames_, fps=60)
 
 # save the data as csv
 df = pd.DataFrame({
@@ -42,4 +42,4 @@ df = pd.DataFrame({
     'valid': valid_,
     'valid_last': valid_last_
 })
-df.to_csv("./src/simulated_verify/dynamic/data/stance_exp_data.csv", index=False)
+df.to_csv("./src/simulated_verify/dynamic/data/stance_exp_data_tmp.csv", index=False)

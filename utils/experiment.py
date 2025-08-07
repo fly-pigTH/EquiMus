@@ -16,7 +16,7 @@ import time
 '''
 
 class MujocoExperiment(object):
-    def __init__(self, model_path, model_type="real_geom", xml_mode=False, xml_str=None):
+    def __init__(self, model_path, model_type="real_geom", xml_mode=False):
         self.model_path = model_path
         self.model = None   # wait for instantiation
         self.data = None
@@ -27,7 +27,6 @@ class MujocoExperiment(object):
         self.framerate = 60  # (Hz)
         self.model_type = model_type        # default: swing
         self.xml_mode = xml_mode
-        self.xml_str = xml_str
 
     @staticmethod
     def calculate_length(theta1, theta2):
@@ -56,42 +55,27 @@ class MujocoExperiment(object):
 
     def apply_params(self, params):
         # update model for Experiment
-        if self.xml_mode and self.xml_str:
+        if self.xml_mode:
+            # print("XML_MODE")
             # NOTE: here, we firstly edit the mass of the geom
             # TODO: implement the mass edit
             # _model = mujoco.MjModel.from_string(self.xml_str)
-            spec = mujoco.MjSpec.from_string(self.xml_str)
+            spec = mujoco.MjSpec.from_file(self.model_path)
+            spec.to_xml()       # Note: necessary for the lazy-evaluation of the model (mujoco.MjSpec)
             # 如果有m3, m4, 则进行驱动器质量设置
             # 分六个进行修改，以实现独立的控制（for baseline）
-            geom_name = "RB_MAA_uGeom"
-            geom_mass = 10
-            spec.geom(geom_name).mass = geom_mass
+            geom_name_list = ["RB_MAA_uGeom", "RB_MAA_mGeom", "RB_MAA_lGeom", "RB_BAA_uGeom", "RB_BAA_mGeom", "RB_BAA_lGeom"]
+                        
+            for geom_name in geom_name_list:
+                geom_id = spec.geom(geom_name).id
+                # print(f"{geom_name}'s id: {geom_id}")
+                assert geom_id != -1, f"{geom_name} not found in model"
+                if geom_name in params:
+                    spec.geom(geom_name).mass = params[geom_name]
+                else:
+                    raise ValueError(f"{geom_name} not found in params")
+            # print(spec.to_xml())
             _model = spec.compile()
-            if "m_MAA" in params:
-                # set the maa mass
-                MAA_uGeom_id = _model.geom("RB_MAA_uGeom").id
-                assert MAA_uGeom_id != -1, "RB_MAA_uGeom not found in model"
-                MAA_mGeom_id = _model.geom("RB_MAA_mGeom").id
-                assert MAA_mGeom_id != -1, "RB_MAA_mGeom not found in model"
-                MAA_lGeom_id = _model.geom("RB_MAA_lGeom").id
-                assert MAA_lGeom_id != -1, "RB_MAA_lGeom not found in model"
-
-                _model.body_mass[MAA_uGeom_id] = params['m_MAA'] * 1/6
-                _model.body_mass[MAA_mGeom_id] = params['m_MAA'] * 2/3
-                _model.body_mass[MAA_lGeom_id] = params['m_MAA'] * 1/6
-            
-            if "m_BAA" in params:
-                # set the baa mass
-                BAA_uGeom_id = _model.geom("RB_BAA_uGeom").id
-                assert BAA_uGeom_id != -1, "RB_BAA_uGeom not found in model"
-                BAA_mGeom_id = _model.geom("RB_BAA_mGeom").id
-                assert BAA_mGeom_id != -1, "RB_BAA_mGeom not found in model"
-                BAA_lGeom_id = _model.geom("RB_BAA_lGeom").id
-                assert BAA_lGeom_id != -1, "RB_BAA_lGeom not found in model"
-
-                _model.body_mass[BAA_uGeom_id] = params['m_BAA'] * 1/6
-                _model.body_mass[BAA_mGeom_id] = params['m_BAA'] * 2/3
-                _model.body_mass[BAA_lGeom_id] = params['m_BAA'] * 1/6
         else:
             _model = mujoco.MjModel.from_xml_path(self.model_path)
         _data = mujoco.MjData(_model)
@@ -175,6 +159,8 @@ class MujocoExperiment(object):
     def run(self, params, time_step, duration, ifrender=True):
         self.apply_params(params)
         m, d = self.model, self.data
+        # print(m.geom('RB_BAA_lGeom'))
+        # print(m.body_mass)
         # Reset state and time
         mujoco.mj_resetData(m, d)
 
@@ -475,7 +461,7 @@ def test_mass_set():
 
     # Load the Ancestors Model
     path = "./models/v2_4/urdf/dog2_4singleLeg_realconstrast.xml"
-    experiment_instance = MujocoExperiment(path, model_type="real_geom")
+    experiment_instance = MujocoExperiment(path, model_type="ideal_geom_swing", xml_mode=True)
 
     # Model Parameter Set
     stiffness_MAA, stiffness_BAA = 318.76, 315.8
@@ -507,7 +493,12 @@ def test_mass_set():
         'P2': P2,
         'P1_prime': P1_prime,
         'P2_prime': P2_prime,
-        'm_MAA': 1
+        'RB_MAA_uGeom': 0.03,  # Example mass for RB_MAA_uGeom
+        'RB_MAA_mGeom': 0.12,  # Example mass for RB_MAA_mGeom
+        'RB_MAA_lGeom': 0.03,  # Example mass for RB_MAA_lGeom
+        'RB_BAA_uGeom': 0.03,  # Example mass for RB_BAA_uGeom
+        'RB_BAA_mGeom': 0.12,  # Example mass for RB_BAA_mGeom
+        'RB_BAA_lGeom': 0.03,  # Example mass for RB_BAA_lGeom
     }
 
     # Run the Experiments
@@ -515,6 +506,14 @@ def test_mass_set():
     duration_exp = 20  # seconds
     framerate = 60
     time_sim, theta1_sim, theta2_sim, frames, valid, valid_last = experiment_instance.run(params, time_step=time_step, duration=duration_exp, ifrender=True)
+
+    plt.plot(time_sim, theta1_sim, label="Theta 1")
+    plt.plot(time_sim, theta2_sim, label="Theta 2")
+    plt.xlabel("Time (s)")
+    plt.ylabel("Angle (rad)")
+    plt.title("Joint Angles Over Time")
+    plt.legend()
+    plt.show()
 
 if __name__ == "__main__":
     test_mass_set()
