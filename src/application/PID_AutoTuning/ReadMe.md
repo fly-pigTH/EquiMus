@@ -25,7 +25,7 @@ Same as the whole work directory.
 
 1. **Run PID Optimization**
 ```bash
-python src/application/PID_AutoTuning/experiment.py 
+python src/application/PID_AutoTuning/main.py
 ```
 - Output: parameter CSV (`data/parameters.csv`), experiment NPY data, videos (`video/`)
 
