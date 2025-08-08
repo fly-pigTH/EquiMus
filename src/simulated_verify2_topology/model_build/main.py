@@ -207,7 +207,7 @@ def set_anchor_to_zero(spec: mj.MjSpec):
 if __name__ == "__main__":
 
     static_model = '''
-    <mj model="v2_4">
+    <mujoco model="v2_4">
         <compiler angle="radian"/>
         <option timestep="0.001" iterations="2000" gravity="0 0 -9.8" tolerance="1e-10"/>
         
@@ -231,7 +231,7 @@ if __name__ == "__main__":
             </body>
         </worldbody>
 
-    </mj>
+    </mujoco>
     '''
 
     spec = mj.MjSpec.from_string(static_model)
@@ -600,4 +600,4 @@ if __name__ == "__main__":
             'theta3': theta3_sim,
         }
         df = pd.DataFrame(data_traj)
-        df.to_csv('data_mj.csv', index=False)
+        df.to_csv('src/simulated_verify2_topology/test_data/data_mj.csv', index=False)
