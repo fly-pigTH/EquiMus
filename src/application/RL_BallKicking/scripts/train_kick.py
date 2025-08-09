@@ -59,7 +59,7 @@ def train():
         model.learn(total_timesteps=steps, tb_log_name=f"ppo_kick_log_{stage}")
 
         # Save a checkpoint after each stage
-        checkpoint_path = CURRENT_DIR.parent / "model" / f"ppo_kick_model_{timesteps_schedule[stage]}.zip"
+        checkpoint_path = CURRENT_DIR.parent / "data" / "model" / f"ppo_kick_model_{timesteps_schedule[stage]}.zip"
         model.save(checkpoint_path)
         print(f"Stage {stage} done. Model saved to {checkpoint_path}")
 

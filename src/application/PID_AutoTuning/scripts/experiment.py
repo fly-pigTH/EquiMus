@@ -182,7 +182,7 @@ class Downstream_PID_experiment(object):
             if len(frames) == 0:
                 continue
             # save the video
-            video_filename = f"PID_{iteration}_{dt_str}.mp4"
+            video_filename = f"PID_{iteration}.mp4"
             video_dir = CURRENT_DIR.parent / "video"
             media.write_video(video_dir / video_filename, frames, fps=self.framerate)
 
@@ -191,7 +191,7 @@ class Downstream_PID_experiment(object):
         total_num = popsize * dim
 
         # 1. Latin Hypercube Sampling in [0,1]^dim
-        sampler = qmc.LatinHypercube(d=dim)
+        sampler = qmc.LatinHypercube(d=dim, seed=42)    # NOTE: set the seed to control the randomness
         sample_unit = sampler.random(n=total_num - 1)  # -1 to leave space for prior
 
         # 2. Scale LHS to bounds
@@ -238,8 +238,8 @@ class Downstream_PID_experiment(object):
         x0 = [100.0, 0.0, 2.0]      # initialization
         bounds = [(1, 10000), (0, 1000), (0, 100)]
         res_local = minimize(pid_objective, x0, bounds=bounds, method='L-BFGS-B', 
-                             callback=record_best_x, options={'disp': True, 'maxiter': 1000}, seed=42)
-        # TODO: fix the seed of minimize
+                             callback=record_best_x, options={'disp': True, 'maxiter': 1000})
+        # NOTE: for the BFGS is a deterministic algorithm, so no need to set seed
         
         # Step2: use the result of L-BFGS-B as the prior sample for differential evolution
         init_population = self.make_init_population(bounds, res_local.x, popsize=10)

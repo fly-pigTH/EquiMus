@@ -84,10 +84,10 @@ def record_static_data(mode):
 
 # save the static data of effective
 static_data_effective = record_static_data(mode="effective")
-static_data_effective.to_csv(CURRENT_DIR / "static" / "data" / "real_static_state" / f'real(effective)_StaticPoint_6group_2025-02-21_08-55-07_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.csv', index=False, float_format='%.4f')
+static_data_effective.to_csv(CURRENT_DIR / "static" / "data" / "real_static_state" / f'real(effective)_StaticPoint_6group.csv', index=False, float_format='%.4f')
 print(f"File name: real_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv")
 
 # save the static data of all
 static_data_all = record_static_data(mode="all")
-static_data_all.to_csv(CURRENT_DIR / "static" / "data" / "real_static_state" / f'real(all)_StaticPoint_6group_2025-02-21_08-55-07_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.csv', index=False, float_format='%.4f')
-print(f"File name: real_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv")
+static_data_all.to_csv(CURRENT_DIR / "static" / "data" / "real_static_state" / f'real(all)_StaticPoint_6group.csv', index=False, float_format='%.4f')
+# print(f"File name: real_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv")
