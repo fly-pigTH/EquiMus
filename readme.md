@@ -15,14 +15,14 @@ To address this issue, this study introduces EquiMus, a musculoskeletal equivale
   - [x] ❌ Validation (on the correctnes of our method)
   - [ ] validation_simulation
     - [ ] static
-    - [ ] dynamic
-    - [ ] topology
+    - [ ] dynamic 先不做
+    - [ ] topology 先不做
   - [ ] validation_physical
     - [ ] static
     - [ ] dynamic
-  - [ ] application (show the potential of our method)
-    - [ ] PID_AutoTuning (run with Geek), 这部分缺少优化的seed，最终结果有区别。需要修复minimize的seed～
-    - [ ] RL_BallKicking (run with Geek)
+  - [x] application (show the potential of our method)
+    - [x] PID_AutoTuning (run with Geek), 这部分缺少优化的seed，最终结果有区别。需要修复minimize的seed～
+    - [x] RL_BallKicking (run with Geek) 需要集成测试
 - [ ] utils
 - [ ] ReadMe.md
 

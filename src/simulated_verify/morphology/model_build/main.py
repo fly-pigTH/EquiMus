@@ -1,6 +1,5 @@
 # build random mj model accordingly
 # final version 
-# 似乎在 MusGym 环境中才能使用 spec
 
 import mediapy as media
 import random
@@ -15,6 +14,18 @@ import time
 import pandas as pd
 # solve the actuator
 import xml.etree.ElementTree as ET
+
+
+import rootpath
+import sys
+ROOT_DIR = rootpath.detect()
+from pathlib import Path
+
+sys.path.insert(0, str(ROOT_DIR))
+from utils.experiment import MujocoExperiment
+
+CURRENT_DIR = Path(__file__).resolve().parent
+EXP_DIR = CURRENT_DIR.parent
 
 DEFAULT_TENDON_SIZE = 0.003
 DEFAULT_TENDON_STIFFNESS = 0
@@ -44,17 +55,17 @@ class visual_tool():
 def add_motors_to_spec(spec: mj.MjSpec, joints: list[str], 
                             ctrlrange=(-200, 200), gear=1.0, prefix="motor_") -> mj.MjSpec:
     """
-    向 MjSpec 模型中添加 motor actuator（通过解析 XML 插入）。
-    
+    Add motor actuators to the MjSpec model by parsing and modifying the XML.
+
     Args:
-        spec: MjSpec 实例
-        joints: 需要控制的 joint 名称列表
-        ctrlrange: 控制范围，例如 (-200, 200)
-        gear: motor gear 值
-        prefix: motor 的命名前缀
+        spec: An instance of MjSpec.
+        joints: A list of joint names to be controlled.
+        ctrlrange: Control range, e.g., (-200, 200).
+        gear: Motor gear value.
+        prefix: Prefix for naming the motors.
 
     Returns:
-        新构建的 MjSpec 对象，包含 motor actuator
+        A newly constructed MjSpec object containing the motor actuators.
     """
     root = ET.fromstring(spec.to_xml())
 
@@ -401,33 +412,6 @@ if __name__ == "__main__":
 
         spec = add_muscle_fromto(spec, link_name_from_id[anchor_id0], link_name_from_id[anchor_id1], muscle_cfg)
 
-    # # add muscle
-    # muscle1_cfg = {
-    #     'name': "muscle1",
-    #     'mass': 0.18648*random.uniform(*factor_range),
-    #     'stiffness': 318.76*random.uniform(*factor_range),
-    #     'damping': 11.34*random.uniform(*factor_range),
-    #     'init_length': 0.2121301875*random.uniform(*factor_range),
-    #     'rest_length': 0.174*random.uniform(*factor_range),
-    #     'base_pos': [0, -0.06*random.uniform(*factor_range), 0],      # pos relative to the parent link origin
-    #     'base_axisangle': [1, 0, 0, 0.1419014548*random.uniform(*factor_range)],      # axisangle relative to the parent link origin
-    # }
-
-    # muscle2_cfg = {
-    #     'name': "muscle2",
-    #     'mass': 0.27266,
-    #     'stiffness': 315.8,
-    #     'damping': 10.9,
-    #     'init_length': 0.340296,
-    #     'rest_length': 0.2562,
-    #     'base_pos': [0, 0.1, 0],
-    #     'base_axisangle': [1, 0, 0, -0.147464847],
-    # }
-
-    # # spec = add_muscle_fromto(spec, 'Base', 'link2_body', muscle3_cfg)
-    # spec = add_muscle_fromto(spec, 'Base', 'link0_body', muscle1_cfg)
-    # spec = add_muscle_fromto(spec, 'Base', 'link1_body', muscle2_cfg)
-
     spec = set_anchor_to_zero(spec)
 
     # Step 3: check the topology
@@ -435,169 +419,162 @@ if __name__ == "__main__":
 
     # save xml
     xml_script = spec.to_xml()
-    with open(f'test.xml', 'w') as f:
+    with open(CURRENT_DIR / f'test.xml', 'w') as f:
         f.write(xml_script)
 
 
-    # load the test.xml and control
-    # topology randomization
-    class mjExperiment(object):
-        def __init__(self, model_path, model_type="ideal_geom_swing"):
-            self.model_path = model_path
-            self.model = None   # wait for instantiation
-            self.data = None
-            self.height = 320
-            self.width = 400
-            self.framerate = 60  # (Hz)
+# load the test.xml and control
+# topology randomization
+class mjExperiment(object):
+    def __init__(self, model_path, model_type="ideal_geom_swing"):
+        self.model_path = model_path
+        self.model = None   # wait for instantiation
+        self.data = None
+        self.height = 320
+        self.width = 400
+        self.framerate = 60  # (Hz)
 
-        @staticmethod
-        def calculate_length(theta1, theta2):
-            a1, a2 = 0.25, 0.25
-            b1, b2 = 0.21213, 0.1
-            d1, d2 = 0.06, 0.10
-            beta1, beta2 = np.radians(8.13), np.radians(30)
+    @staticmethod
+    def calculate_length(theta1, theta2):
+        a1, a2 = 0.25, 0.25
+        b1, b2 = 0.21213, 0.1
+        d1, d2 = 0.06, 0.10
+        beta1, beta2 = np.radians(8.13), np.radians(30)
 
-            C_x, C_y = b1 * np.cos(theta1 - beta1), b1 * np.sin(theta1 - beta1)
-            D_x = a1 * np.cos(theta1) + b2 * np.cos(theta1 + theta2 + beta2)
-            D_y = a1 * np.sin(theta1) + b2 * np.sin(theta1 + theta2 + beta2)
+        C_x, C_y = b1 * np.cos(theta1 - beta1), b1 * np.sin(theta1 - beta1)
+        D_x = a1 * np.cos(theta1) + b2 * np.cos(theta1 + theta2 + beta2)
+        D_y = a1 * np.sin(theta1) + b2 * np.sin(theta1 + theta2 + beta2)
 
-            l1 = np.hypot(d1 - C_x, 0-C_y)
-            l2 = np.hypot(-d2 - D_x, 0-D_y)
+        l1 = np.hypot(d1 - C_x, 0-C_y)
+        l2 = np.hypot(-d2 - D_x, 0-D_y)
 
-            return l1, l2
+        return l1, l2
 
-        def calculate_bias(self, l10, l20):
-            # ideal geom, with the initial qpos = [np.pi/2, 0]
-            l1, l2 = mjExperiment.calculate_length(np.pi/2, 0)
-            l1_rel = l10 - l1
-            l2_rel = l20 - l2
-            return l1_rel / 2, l2_rel / 2
+    def calculate_bias(self, l10, l20):
+        # ideal geom, with the initial qpos = [np.pi/2, 0]
+        l1, l2 = mjExperiment.calculate_length(np.pi/2, 0)
+        l1_rel = l10 - l1
+        l2_rel = l20 - l2
+        return l1_rel / 2, l2_rel / 2
 
-        def apply_params(self, params):
-            # do not need to apply params, for the XML is changed directly
-            _model = mj.MjModel.from_xml_path(self.model_path)
-            _data = mj.MjData(_model)
-            self.model = _model
-            self.data = _data
-        
-        @staticmethod
-        def F1_func(t): return 0 if t < 10 else ((t//10)%3 + 1) * 2
-        
-        @staticmethod
-        def F2_func(t): return 0 if t < 10 else (((t//10)+1)%3 + 1) * 2
-        
-        @staticmethod
-        def F3_func(t): return 0 if t < 10 else (((t//10)+2)%3 + 1) * 2
-        
-        def run(self, params, time_step, duration, ifrender=True):
-            self.apply_params(params)
-            m, d = self.model, self.data
-            # Reset state and time
-            mj.mj_resetData(m, d)
+    def apply_params(self, params):
+        # do not need to apply params, for the XML is changed directly
+        _model = mj.MjModel.from_xml_path(self.model_path)
+        _data = mj.MjData(_model)
+        self.model = _model
+        self.data = _data
+    
+    @staticmethod
+    def F1_func(t): return 0 if t < 10 else ((t//10)%3 + 1) * 2
+    
+    @staticmethod
+    def F2_func(t): return 0 if t < 10 else (((t//10)+1)%3 + 1) * 2
+    
+    @staticmethod
+    def F3_func(t): return 0 if t < 10 else (((t//10)+2)%3 + 1) * 2
+    
+    def run(self, params, time_step, duration, ifrender=True):
+        self.apply_params(params)
+        m, d = self.model, self.data
+        # Reset state and time
+        mj.mj_resetData(m, d)
 
-            results = []
-            frames = []
-            valid, valid_last = True, True        # check if the angle exceeds the limit
+        results = []
+        frames = []
+        valid, valid_last = True, True        # check if the angle exceeds the limit
 
-            with mj.Renderer(m, self.height, self.width) as renderer:
-                while d.time < duration:
-                    d.ctrl[:2] = mjExperiment.F1_func(d.time)
-                    d.ctrl[2:4] = mjExperiment.F2_func(d.time)
-                    d.ctrl[4:] = mjExperiment.F3_func(d.time)
+        with mj.Renderer(m, self.height, self.width) as renderer:
+            while d.time < duration:
+                d.ctrl[:2] = mjExperiment.F1_func(d.time)
+                d.ctrl[2:4] = mjExperiment.F2_func(d.time)
+                d.ctrl[4:] = mjExperiment.F3_func(d.time)
+                
+                theta1 = d.qpos[0] + np.pi / 2
+                theta2 = d.qpos[1] + 0
+                theta3 = d.qpos[2] + 0
                     
-                    theta1 = d.qpos[0] + np.pi / 2
-                    theta2 = d.qpos[1] + 0
-                    theta3 = d.qpos[2] + 0
-                        
-                    results.append((d.time, theta1, theta2, theta3))
+                results.append((d.time, theta1, theta2, theta3))
 
-                    mj.mj_step(m, d)
-                    if len(frames) < d.time * self.framerate:   # assume the simulation is running much faster than the rendering
-                        if ifrender:
-                            renderer.update_scene(d, camera="closeup")
-                            frames.append(renderer.render())
+                mj.mj_step(m, d)
+                if len(frames) < d.time * self.framerate:   # assume the simulation is running much faster than the rendering
+                    if ifrender:
+                        renderer.update_scene(d, camera="closeup")
+                        frames.append(renderer.render())
 
-            time_sim, theta1_sim, theta2_sim, theta3_sim = np.array(results).T
-            return time_sim, theta1_sim, theta2_sim, theta3_sim, frames, valid, valid_last
+        time_sim, theta1_sim, theta2_sim, theta3_sim = np.array(results).T
+        return time_sim, theta1_sim, theta2_sim, theta3_sim, frames, valid, valid_last
 
-    if __name__ == "__main__":
+if __name__ == "__main__":
 
-        path = "test.xml"
-        experiment_instance = mjExperiment(path, model_type="ideal_geom_swing")
+    path = CURRENT_DIR / "test.xml"
+    experiment_instance = mjExperiment(str(path), model_type="ideal_geom_swing")
 
-        # Model Parameter Set
-        stiffness_MAA, stiffness_BAA = 318.76, 315.8
-        l10, l20 = 0.174, 0.2562
-        damping_MAA, damping_BAA = 11.34, 10.9
-        s1, s2 = 0.000654, 0.000637
-        s3 = 1
-        c1_thigh, c2_calf = 0.03*0, 0.03*0
-        P1 = 0/s1#50*1e3
-        P2 = 0
-        P3 = 0
-        P1_prime = 10/s1#*1e3
-        P2_prime = 5/s2#*1e3
-        P3_prime = 1
-        
-        exp_num = 100
-        np.random.seed(0)
-        tic = time.time()
+    # Model Parameter Set
+    stiffness_MAA, stiffness_BAA = 318.76, 315.8
+    l10, l20 = 0.174, 0.2562
+    damping_MAA, damping_BAA = 11.34, 10.9
+    s1, s2 = 0.000654, 0.000637
+    s3 = 1
+    c1_thigh, c2_calf = 0.03*0, 0.03*0
+    P1 = 0/s1#50*1e3
+    P2 = 0
+    P3 = 0
+    P1_prime = 10/s1#*1e3
+    P2_prime = 5/s2#*1e3
+    P3_prime = 1
+    
+    exp_num = 100
+    np.random.seed(0)
+    tic = time.time()
 
-        params = {
-            'stiffness_MAA': stiffness_MAA,
-            'stiffness_BAA': stiffness_BAA,
-            'l10': l10,
-            'l20': l20,
-            'damping_MAA': damping_MAA,
-            'damping_BAA': damping_BAA,
-            's1': s1,
-            's2': s2,
-            's3': s3,
-            'c1_thigh': c1_thigh,
-            'c2_calf': c2_calf,
-            'P1': P1,
-            'P2': P2,
-            'P3': P3,
-            'P1_prime': P1_prime,
-            'P2_prime': P2_prime,
-            'P3_prime': P3_prime
-        }
+    params = {
+        'stiffness_MAA': stiffness_MAA,
+        'stiffness_BAA': stiffness_BAA,
+        'l10': l10,
+        'l20': l20,
+        'damping_MAA': damping_MAA,
+        'damping_BAA': damping_BAA,
+        's1': s1,
+        's2': s2,
+        's3': s3,
+        'c1_thigh': c1_thigh,
+        'c2_calf': c2_calf,
+        'P1': P1,
+        'P2': P2,
+        'P3': P3,
+        'P1_prime': P1_prime,
+        'P2_prime': P2_prime,
+        'P3_prime': P3_prime
+    }
 
-        # Run the Experiments
-        time_step = 10
-        duration_exp = 40  # seconds
-        time_sim, theta1_sim, theta2_sim, theta3_sim, frames, _, _ = experiment_instance.run(params, time_step=time_step, duration=duration_exp, ifrender=True)
+    # Run the Experiments
+    time_step = 10
+    duration_exp = 40  # seconds
+    time_sim, theta1_sim, theta2_sim, theta3_sim, frames, _, _ = experiment_instance.run(params, time_step=time_step, duration=duration_exp, ifrender=True)
 
-        # show video
-        # media.show_video(frames, fps=framerate)
-        media.write_video("./log/temp_experiment_valve_dynamics_temp0724_topology.mp4", frames, fps=experiment_instance.framerate)
+    # show video
+    # media.show_video(frames, fps=framerate)
+    # media.write_video("./log/temp_experiment_valve_dynamics_temp0724_topology.mp4", frames, fps=experiment_instance.framerate)
 
-        # Plot Results with dual y-axis for pressure states
-        fig, ax1 = plt.subplots(figsize=(10, 5))
-        # 绘制theta1和theta2的曲线
-        ax1.plot(time_sim, theta1_sim, label='Theta1', color='tab:blue')
-        ax1.plot(time_sim, theta2_sim, label='Theta2', color='tab:orange')
-        ax1.plot(time_sim, theta3_sim, label='Theta3', color='tab:red')
-        ax1.set_xlabel('Time (s)')
-        ax1.set_ylabel('Angle (radians)')
-        ax1.set_title('Joint Angles and Valve Pressures Over Time')
-        ax1.legend(loc='upper left')
+    # Plot Results with dual y-axis for pressure states
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    
+    ax1.plot(time_sim, theta1_sim, label='Theta1', color='tab:blue')
+    ax1.plot(time_sim, theta2_sim, label='Theta2', color='tab:orange')
+    ax1.plot(time_sim, theta3_sim, label='Theta3', color='tab:red')
+    ax1.set_xlabel('Time (s)')
+    ax1.set_ylabel('Angle (radians)')
+    ax1.set_title('Joint Angles and Valve Pressures Over Time')
+    ax1.legend(loc='upper left')
 
-        # 创建第二个y轴
-        # ax2 = ax1.twinx()
-        # ax2.plot(time_sim, valve1, label='Valve1 Pressure', color='tab:green', linestyle='--')
-        # ax2.plot(time_sim, valve2, label='Valve2 Pressure', color='tab:red', linestyle='--')
-        # ax2.set_ylabel('Valve Pressure')
-        # ax2.legend(loc='upper right')
+    plt.show()
 
-        plt.show()
-
-        # save for cross-validation of the sympy implementation
-        data_traj = {
-            'time': time_sim,
-            'theta1': theta1_sim,
-            'theta2': theta2_sim,
-            'theta3': theta3_sim,
-        }
-        df = pd.DataFrame(data_traj)
-        df.to_csv('src/simulated_verify2_topology/test_data/data_mj.csv', index=False)
+    # save for cross-validation of the sympy implementation
+    data_traj = {
+        'time': time_sim,
+        'theta1': theta1_sim,
+        'theta2': theta2_sim,
+        'theta3': theta3_sim,
+    }
+    df = pd.DataFrame(data_traj)
+    df.to_csv(EXP_DIR /'test_data'/'data_mj.csv', index=False)

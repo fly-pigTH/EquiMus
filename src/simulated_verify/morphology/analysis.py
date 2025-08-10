@@ -21,19 +21,18 @@ print(f"CURRENT_DIR: {CURRENT_DIR}")
 sys.path.append(str(Path(ROOT_DIR)))
 
 config = {
-    "font.family":'Times New Roman',  # 设置字体类型
-    "axes.unicode_minus": False, #解决负号无法显示的问题
-    "font.size": 15,  # 设置字体大小
+    "font.family":'Times New Roman', 
+    "axes.unicode_minus": False, 
+    "font.size": 15, 
 }
 rcParams.update(config)
 
 # load and compare
 traj_mj = pd.read_csv(CURRENT_DIR / 'test_data/data_mj.csv')
-traj_sp = pd.read_csv(CURRENT_DIR / 'test_data/data_sp_withoutkc.csv')
+traj_sp = pd.read_csv(CURRENT_DIR / 'test_data/data_sp.csv')
 
 plt.figure(figsize=(8, 5))
 
-# 设置颜色：每个角度一个颜色
 colors = plt.get_cmap('tab10')
 
 # Sympy
@@ -46,7 +45,6 @@ plt.plot(traj_mj['time'], traj_mj['theta1'], label=r'$\theta_1^{\mathrm{MJ}}$', 
 plt.plot(traj_mj['time'], traj_mj['theta2'], label=r'$\theta_2^{\mathrm{MJ}}$', color=colors(1), linestyle='--', linewidth=2, alpha=0.5)
 plt.plot(traj_mj['time'], traj_mj['theta3'], label=r'$\theta_3^{\mathrm{MJ}}$', color=colors(2), linestyle='--', linewidth=2, alpha=0.5)
 
-# 图形美化设置
 plt.xlabel('Time (s)', fontsize=25)
 plt.ylabel('Joint Angle (rad)', fontsize=25)
 # plt.title('Joint Angle Comparison between Analytical (Sympy) and EquiMus Simulation (MuJoCo)', fontsize=22)
@@ -73,16 +71,6 @@ theta3_sp_interp = np.interp(traj_mj['time'], traj_sp['time'], traj_sp['theta3']
 diff_theta1 = traj_mj['theta1'] - theta1_sp_interp
 diff_theta2 = traj_mj['theta2'] - theta2_sp_interp
 diff_theta3 = traj_mj['theta3'] - theta3_sp_interp
-
-# Plot differences
-# plt.figure()
-# plt.plot(traj_mj['time'], diff_theta1, label='theta1_mj - theta1_sp')
-# plt.plot(traj_mj['time'], diff_theta2, label='theta2_mj - theta2_sp')
-# plt.plot(traj_mj['time'], diff_theta3, label='theta3_mj - theta3_sp')
-# plt.xlabel('time')
-# plt.ylabel('difference')
-# plt.legend()
-# plt.show()
 
 rmse_theta1 = np.sqrt(np.mean(diff_theta1 ** 2))
 rmse_theta2 = np.sqrt(np.mean(diff_theta2 ** 2))

@@ -6,5 +6,6 @@
 
 ## Run
 python main.py
+python video/conj_video.py
 
 ## data and log
