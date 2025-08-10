@@ -3,14 +3,22 @@
 
 import mediapy as media
 import pandas as pd
-import rootpath
-import sys
-sys.path.append(rootpath.detect())
-from utils.experiment import MujocoExperiment
 import mediapy as media
 
-path = "./models/SingleLeg_ideal_landing2DOF.xml"
-experiment_instance = MujocoExperiment(path, model_type = "ideal_geom")
+import rootpath
+import sys
+ROOT_DIR = rootpath.detect()
+sys.path.append(str(Path(ROOT_DIR)))
+from utils.experiment import MujocoExperiment
+
+from pathlib import Path
+CURRENT_DIR = Path(__file__).resolve().parent
+EXP_DIR = CURRENT_DIR.parent
+VIDEO_DIR = EXP_DIR / "video"
+DATA_DIR = EXP_DIR / "data"
+
+path = ROOT_DIR / "models" / "SingleLeg_ideal_landing2DOF.xml"
+experiment_instance = MujocoExperiment(str(path), model_type = "ideal_geom")
 fixed_para = {
     'stiffness_MAA': 318.76, # 637.52 / 2,
     'stiffness_BAA': 315.8, # 631.6 / 2,
@@ -32,7 +40,7 @@ time_sim_, theta1_sim_, theta2_sim_, frames_, valid_, valid_last_ = experiment_i
 
 # show
 media.show_video(frames_, fps=60)
-media.write_video("./src/simulated_verify/dynamic/video/stance_tmp.mp4", frames_, fps=60)
+media.write_video(VIDEO_DIR / "stance_tmp.mp4", frames_, fps=60)
 
 # save the data as csv
 df = pd.DataFrame({
@@ -42,4 +50,4 @@ df = pd.DataFrame({
     'valid': valid_,
     'valid_last': valid_last_
 })
-df.to_csv("./src/simulated_verify/dynamic/data/stance_exp_data_tmp.csv", index=False)
+df.to_csv(DATA_DIR / "stance_exp_data_tmp.csv", index=False)

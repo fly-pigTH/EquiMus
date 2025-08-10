@@ -4,5 +4,7 @@
 - 简化：采用真实模型 + fixed数据，静力学参数可变，随机化检验
 - 已经验证可复现性！
 
-# Logic
-1. run exp.ipynb
+## Run
+python main.py
+
+## data and log

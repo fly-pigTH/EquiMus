@@ -293,9 +293,14 @@ def cal_angle_RMSE(mode):
     theta_2_error = static_analysis_data["theta2_error/rad"]
     RMSE_theta1 = np.sqrt(np.mean(np.square(theta_1_error)))
     RMSE_theta2 = np.sqrt(np.mean(np.square(theta_2_error)))
+    MaxAE_theta1 = np.max(np.abs(theta_1_error))
+    MaxAE_theta2 = np.max(np.abs(theta_2_error))
+
     RMSE_summary = pd.DataFrame()
     RMSE_summary["RMSE_theta1"]= [RMSE_theta1]
     RMSE_summary["RMSE_theta2"]= [RMSE_theta2]
+    RMSE_summary["MaxAE_theta1"]= [MaxAE_theta1]
+    RMSE_summary["MaxAE_theta2"]= [MaxAE_theta2]
     RMSE_summary.to_csv(EXP_DIR / "log" / f"RMSE_error_summary({mode}).csv", index=False)
 
 

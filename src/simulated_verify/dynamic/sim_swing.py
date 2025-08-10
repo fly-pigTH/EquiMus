@@ -4,12 +4,20 @@
 import numpy as np
 import math
 from tqdm import tqdm
-import rootpath
-import sys
-sys.path.append(rootpath.detect())
-from utils.experiment import MujocoExperiment
 import pandas as pd
 import mediapy as media
+
+import rootpath
+import sys
+ROOT_DIR = rootpath.detect()
+sys.path.append(str(Path(ROOT_DIR)))
+from utils.experiment import MujocoExperiment
+
+from pathlib import Path
+CURRENT_DIR = Path(__file__).resolve().parent
+EXP_DIR = CURRENT_DIR.parent
+VIDEO_DIR = EXP_DIR / "video"
+DATA_DIR = EXP_DIR / "data"
 
 # Static force calculation module
 # Need change the parameters here!
@@ -143,8 +151,8 @@ def get_static_func(theta_1, theta_2):
     StaticForce = np.linalg.solve(LHSA, b) + F_k
     return StaticForce
 
-path = "./models/v2_4/urdf/dog2_4singleLeg_realconstrast.xml"
-experiment_instance = MujocoExperiment(path)
+path = ROOT_DIR / "models" / "v2_4" / "urdf" / "dog2_4singleLeg_realconstrast.xml"
+experiment_instance = MujocoExperiment(str(path))
 fixed_para = {
     'stiffness_MAA': 318.76, # 637.52 / 2,
     'stiffness_BAA': 315.8, # 631.6 / 2,
@@ -196,12 +204,12 @@ for theta_1_start in tqdm(theta1_array, desc="Theta 1 Start Loop"):
 
 # Save as csv
 exp_para_df = pd.DataFrame(exp_para_list)
-exp_para_df.to_csv('src/simulated_verify/dynamic/data/swing_exp_para.csv', index=False)
+exp_para_df.to_csv(DATA_DIR / "swing_exp_para.csv", index=False)
 
 # save npy
-np.save('src/simulated_verify/dynamic/data/swing_exp_data_t.npy', np.array(exp_data_t_list))
-np.save('src/simulated_verify/dynamic/data/swing_exp_data_theta1.npy', np.array(exp_data_theta1_list))
-np.save('src/simulated_verify/dynamic/data/swing_exp_data_theta2.npy', np.array(exp_data_theta2_list))
+np.save(DATA_DIR / "swing_exp_data_t.npy", np.array(exp_data_t_list))
+np.save(DATA_DIR / "swing_exp_data_theta1.npy", np.array(exp_data_theta1_list))
+np.save(DATA_DIR / "swing_exp_data_theta2.npy", np.array(exp_data_theta2_list))
 
 # copy video for group(2 6 1 7)
 fixed_para['P1'] = get_static_func(theta1_array[2], theta2_array[6])[0]
@@ -209,4 +217,4 @@ fixed_para['P2'] = get_static_func(theta1_array[2], theta2_array[6])[1]
 fixed_para['P1_prime'] = get_static_func(theta1_array[1], theta2_array[7])[0]
 fixed_para['P2_prime'] = get_static_func(theta1_array[1], theta2_array[7])[1]
 time_sim_, theta1_sim_, theta2_sim_, frames_, valid_, valid_last_ = experiment_instance.run(fixed_para, 10, 21, True)
-media.write_video("./src/simulated_verify/dynamic/video/swing_2617.mp4", frames_, fps=60)
+media.write_video(VIDEO_DIR / "swing_2617.mp4", frames_, fps=60)

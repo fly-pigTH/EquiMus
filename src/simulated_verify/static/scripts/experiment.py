@@ -1,5 +1,5 @@
-# 从theo.ipynb 删减得到，精简完整实验版本
-# 通过utils-exp_func重构
+# Simplified and complete experimental version derived from theo.ipynb
+# Refactored using utils-exp_func
 
 import numpy as np
 import math
@@ -10,7 +10,7 @@ from pathlib import Path
 
 import rootpath
 import sys
-ROOT_DIR = rootpath.detect()   # 自动查找根目录
+ROOT_DIR = rootpath.detect()
 sys.path.append(str(Path(ROOT_DIR)))
 from utils.experiment import MujocoExperiment
 
@@ -22,14 +22,15 @@ EXP_DIR = CURRENT_DIR.parent
 # theta->static force (theoretical)
 def get_static_func(theta_1, theta_2, k_3=637.52/2, k_4=631.6/2, l_10=0.174, l_20=0.2562, m_3 = 0.18648, m_4=0.27266):
     """
-        计算静力学
-        - theta_1: 关节1角度
-        - theta_2: 关节2角度
-        - k_3: spring 1 stiffness
-        - k_4: spring 2 stiffness
-        - l_10: spring 1 original length
-        - l_20: spring 2 original length
-        
+    Calculate static forces based on given parameters.
+    - theta_1: Angle of joint 1 (in radians)
+    - theta_2: Angle of joint 2 (in radians)
+    - k_3: Stiffness of spring 1
+    - k_4: Stiffness of spring 2
+    - l_10: Rest length of spring 1
+    - l_20: Rest length of spring 2
+    - m_3: Mass at joint 1
+    - m_4: Mass at joint 2
     """
 
     a_1 = 0.25
@@ -40,7 +41,7 @@ def get_static_func(theta_1, theta_2, k_3=637.52/2, k_4=631.6/2, l_10=0.174, l_2
     d_2 = 0.10
     # s = 0
 
-    # M = 0.155  # 真实值
+    # M = 0.155
     m_1, m_2 = 0.086, 0.1033
     # I_1, I_2 = (1/12 * m_1 * 0.25**2), (1/12 * m_2 * 0.25**2)
 
@@ -48,17 +49,13 @@ def get_static_func(theta_1, theta_2, k_3=637.52/2, k_4=631.6/2, l_10=0.174, l_2
 
     # k_3, k_4 = 637.52/2, 631.6/2
 
-    # 阻尼参数
     # c_3, c_4 = 22.68/2, 21.8/2
 
-    # 重力加速度
     g = 9.8
 
-    # 角度参数 (度转弧度)
     beta_1 = 8.13 / 180 * np.pi
     beta_2 = 30 / 180 * np.pi
 
-    # 长度参数
     # l_10 = 0.174
     # l_20 = 0.252
 
@@ -86,8 +83,6 @@ def get_static_func(theta_1, theta_2, k_3=637.52/2, k_4=631.6/2, l_10=0.174, l_2
     H_x_O = a_1 * np.cos(theta_1) + b_2 * np.cos(beta_2) * np.cos(theta_1 + theta_2)
     H_y_O = a_1 * np.sin(theta_1) + b_2 * np.cos(beta_2) * np.sin(theta_1 + theta_2)
 
-    # 计算偏导数
-    # 对 theta_1 的偏导数
 
     dA_x_O_dtheta_1 = 0
     dA_y_O_dtheta_1 = 0
@@ -113,8 +108,6 @@ def get_static_func(theta_1, theta_2, k_3=637.52/2, k_4=631.6/2, l_10=0.174, l_2
     dH_x_O_dtheta_1 = -a_1 * np.sin(theta_1) - b_2 * np.cos(beta_2) * np.sin(theta_1 + theta_2)
     dH_y_O_dtheta_1 = a_1 * np.cos(theta_1) + b_2 * np.cos(beta_2) * np.cos(theta_1 + theta_2)
 
-    # 对 theta_2 的偏导数
-
     dA_x_O_dtheta_2 = 0
     dA_y_O_dtheta_2 = 0
 
@@ -137,34 +130,24 @@ def get_static_func(theta_1, theta_2, k_3=637.52/2, k_4=631.6/2, l_10=0.174, l_2
     dH_y_O_dtheta_2 = b_2 * np.cos(beta_2) * np.cos(theta_1 + theta_2)
 
 
-    # 计算长度 l1 和 l2
     l_1 = np.sqrt((A_x_O - C_x_O)**2 + (A_y_O - C_y_O)**2)
     l_2 = np.sqrt((B_x_O - D_x_O)**2 + (B_y_O - D_y_O)**2)
 
-    # 计算偏导数
-    # 偏导数 d/dtheta_1
     dl_1_dtheta_1 = 1/l_1 * ((A_x_O - C_x_O) * (dA_x_O_dtheta_1 - dC_x_O_dtheta_1) + (A_y_O - C_y_O) * (dA_y_O_dtheta_1 - dC_y_O_dtheta_1))
     dl_2_dtheta_1 = 1/l_2 * ((B_x_O - D_x_O) * (dB_x_O_dtheta_1 - dD_x_O_dtheta_1) + (B_y_O - D_y_O) * (dB_y_O_dtheta_1 - dD_y_O_dtheta_1))
 
-    # 偏导数 d/dtheta_2
     dl_1_dtheta_2 = 1/l_1 * ((A_x_O - C_x_O) * (dA_x_O_dtheta_2 - dC_x_O_dtheta_2) + (A_y_O - C_y_O) * (dA_y_O_dtheta_2 - dC_y_O_dtheta_2))
     dl_2_dtheta_2 = 1/l_2 * ((B_x_O - D_x_O) * (dB_x_O_dtheta_2 - dD_x_O_dtheta_2) + (B_y_O - D_y_O) * (dB_y_O_dtheta_2 - dD_y_O_dtheta_2))
 
-    # print(dl_1_dtheta_2)  # check the model
-
-    # 等式右侧
     RHSb_1 = -( m_1*g*(dE_y_O_dtheta_1/2) + m_2*g*((dE_y_O_dtheta_1+dF_y_O_dtheta_1)/2) + m_3*g*(dC_y_O_dtheta_1/2) + m_4*g*(dD_y_O_dtheta_1/2) )
     RHSb_2 = -( m_1*g*(dE_y_O_dtheta_2/2) + m_2*g*((dE_y_O_dtheta_2+dF_y_O_dtheta_2)/2) + m_3*g*(dC_y_O_dtheta_2/2) + m_4*g*(dD_y_O_dtheta_2/2) )
     b = np.array([RHSb_1, RHSb_2])
 
-    # 等式左侧
     LHSA = np.array([[dl_1_dtheta_1, dl_2_dtheta_1], 
                     [dl_1_dtheta_2, dl_2_dtheta_2]])
 
-    # 回复力
     F_k = np.array([k_3*(l_1-l_10), k_4*(l_2-l_20)])
 
-    # 计算静力学
     StaticForce = np.linalg.solve(LHSA, b) + F_k
     return StaticForce
 
@@ -335,7 +318,7 @@ def data_analysis():
     # Load the data
     multi_exp_data = pd.read_csv(EXP_DIR / "data" / "multi_exps_data.csv")
 
-    # 计算 RMSE, MAE, MaxAE
+    # Calculate RMSE, MAE, MaxAE
     RMSE_theta_1 = np.sqrt(np.mean((multi_exp_data['RMSE_theta_1'])**2))
     RMSE_theta_2 = np.sqrt(np.mean((multi_exp_data['RMSE_theta_2'])**2))
     MAE_theta_1 = np.mean(np.abs(multi_exp_data['MAE_theta_1']))
