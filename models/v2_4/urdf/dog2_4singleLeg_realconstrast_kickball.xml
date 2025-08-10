@@ -139,7 +139,7 @@
 
   </worldbody>
 
-  <!-- 增加在RB_BAA_LowerJoint等关节中加入8个位置控制器，要求增加位置限制 -->
+  <!--  Add position actuators for RB_BAA_LowerJoint and others -->
   <actuator>
     <!-- <position joint="RB_MAA_UpJoint" ctrllimited="true" ctrlrange="-1 1" /> -->
     <motor joint="RB_MAA_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
@@ -148,14 +148,14 @@
     <motor joint="RB_BAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
   </actuator>
 
-  <!-- 建立并联关系，如 RB_BAA_LOLink 应该与 RB_Calf 连接 --> 
+  <!-- build connections, such as RB_BAA_LOLink with RB_Calf -->
   <equality>
     <connect name="RB_MAA_LOLink" body1="RB_MAA_LOLink" body2="RB_Thigh" anchor="0 0 0" solref="0.001 1" solimp="0.95 0.99 0.00001 0.1 2"/>
     <connect name="RB_BAA_LOLink" body1="RB_BAA_LOLink" body2="RB_Calf" anchor="0 0 0" solref="0.001 1" solimp="0.95 0.99 0.00001 0.1 2"/>
     <!-- <connect name="MAA_connect" site1="C1" site2="C2" solimp="0.95 0.99 0.00001 0.1 2"/>
     <connect name="BAA_connect" site1="D1" site2="D2" solimp="0.95 0.99 0.00001 0.1 2"/> -->
         
-    <!-- FM 的相等约束 -->
+    <!-- FM's equality constraints -->
     <joint name="RB_MAA_FM" joint1="RB_MAA_SlideJoint" joint2="RB_MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
     <joint name="RB_BAA_FM" joint1="RB_BAA_SlideJoint" joint2="RB_BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
   </equality>

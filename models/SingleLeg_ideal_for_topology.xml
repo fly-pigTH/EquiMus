@@ -1,4 +1,4 @@
-<!-- 单腿的理想杆球模型 -->
+<!-- Ideal single-leg rod-ball model -->
 
 <mujoco model="v2_4">
     <compiler angle="radian"/>
@@ -82,7 +82,7 @@
 
     </worldbody>
 
-          <!-- 增加在RB_RB_BAA_LowerJoint等关节中加入8个位置控制器，要求增加位置限制 -->
+          <!-- Add 8 position controllers to joints like RB_RB_BAA_LowerJoint, with position limits -->
     <actuator>
         <motor joint="RB_MAA_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
         <motor joint="RB_MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
@@ -92,13 +92,13 @@
         <motor joint="Leg_RB_BAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
     </actuator>
 
-    <!-- 建立并联关系，如 RB_RB_BAA_LOLink 应该与 RB_Calf 连接 --> 
+    <!-- Establish parallel relationships, e.g., RB_RB_BAA_LOLink should connect to RB_Calf --> 
     <equality>
         <connect name="RB_BAA_connect" anchor="0 0 0" body2="RB_Calf" body1="RB_BAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
         <connect name="RB_MAA_connect" anchor="0 0 0" body2="RB_Thigh" body1="RB_MAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
         <connect name="Leg_RB_BAA_connect" anchor="0 0 0" body2="Leg" body1="Leg_RB_BAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
         
-        <!-- FM 的相等约束 -->
+        <!-- FM equality constraints -->
         <joint name="MAA" joint1="RB_MAA_SlideJoint" joint2="RB_MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
         <joint name="BAA" joint1="RB_BAA_SlideJoint" joint2="RB_BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
         <joint name="Leg_RB_BAA" joint1="Leg_RB_BAA_SlideJoint" joint2="Leg_RB_BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
