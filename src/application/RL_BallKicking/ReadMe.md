@@ -21,6 +21,8 @@ Same as the whole work directory.
 
 ## ▶️ How to Run the Experiment
 
+Directly run `python main.py` or train and evaluate step by step:
+
 1. **Run Training**
 ```bash
 python src/application/RL_BallKicking/scripts/train_kick.py
