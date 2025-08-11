@@ -4,6 +4,26 @@
 Leveraging the full potential of soft robots relies heavily on dynamic modeling and control, which remains challenging due to their complex constitutive relationships and real-world operational scenarios. Bio-inspired musculoskeletal robots, which integrate rigid skeletons with soft actuators, combine the advantages of heavy load-bearing capacity and inherent flexibility. Although actuation dynamics has been studied through experimental methods and surrogate models, accurate and effective modeling and simulation still pose a significant challenge when soft actuators are applied at a large scale, especially in hybrid rigid-soft robots with continuously distributed mass, kinematic loops and diverse motion modes.
 
 To address this issue, this study introduces EquiMus, a musculoskeletal equivalent dynamic modeling and MuJoCo-based simulation for rigid-soft hybrid robots with linear elastic actuators. The equivalence and effectiveness are proven in detail and examined through simulated and real experiments on a bionic robotic leg. Based on the energy-equivalent model and simulation, we do some explorations in model-based and data-driven control algorithms including reinforcement learning.
+
+## Installation
+- Clone the repo
+~~~bash
+git clone https://anonymous.4open.science/r/EquiMus-3DC5
+cd EquiMus
+~~~
+
+- Run in Conda
+~~~bash
+conda create -n equimus python=3.11 -y
+conda activate equimus
+pip install -r requirements.txt
+~~~
+
+- Quick check
+~~~bash
+python -c "import mujoco; print('MuJoCo:', mujoco.__version__)"
+~~~
+
 ## Run Demo
 
 To run the demo, use the following commands in your terminal:
@@ -30,7 +50,7 @@ In the interactive viewer, you can observe the simulations of the 2DOF and 3DOF 
 | **(a) Body Labels** | **(b) Geom Labels** | **(c) Joint Labels** |
 ## Project Structure
 
-The project is organized to align with the flow of the manuscript, ensuring clarity and ease of navigation:
+The project is organized to align with the flow of the manuscript, ensuring clarity and ease of navigation. Please click to visit ReadMe file for each part.
 
 - **models**: Contains MuJoCo `XML` files for simulation.
 - **src**:
