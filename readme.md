@@ -19,6 +19,7 @@ cd EquiMus-3DC5
 conda create -n equimus python=3.11 -y
 conda activate equimus
 pip install -r requirements.txt
+conda activate equimus
 ~~~
 
 - Quick check
