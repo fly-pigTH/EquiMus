@@ -3,7 +3,7 @@
 ## How to Run
 1. Navigate to the project directory:
     ```bash
-    cd /path/to/this/directory
+    cd src/validation_simulation/static
     ```
 2. Run the following commands:
     ```bash

@@ -38,6 +38,30 @@ This `data` folder is the datafile needed by `src/validation_simulation/dynamic`
 
 The ohter data is already put in the repository.
 
+## Core Implementation
+### Dynamic Model of the Linear Elastic Actuator
+
+![alt text](demo/figure/lumped_mass.png)
+
+Shown in figure above, the dynamic model of the linear elastic actuator (EA) can be equivalently represented by a discrete mass system. The method follows a **3-2-1 approach**:
+
+- **3 Mass Points**:  
+  The actuator is discretized into three mass points—two fixed at each end and one at the midpoint—with respective masses of $\frac{1}{6}m$, $\frac{1}{6}m$, and $\frac{2}{3}m$.
+
+- **2 Linear Actuators**:  
+  Two linear actuators (motors) are used to connect the mass points, each with:
+  - A stiffness of $2k$,
+  - A damping coefficient of $2c$,
+  - An initial length of $l_0/2$,
+  - Driving forces $F$.
+
+- **1 Constraint**:  
+  An equality constraint is implicitly enforced through the above conditions, ensuring that the elongation of both actuator segments remains identical.
+
+In MuJoCo, we construct the MJCF hierarchical structure of the EquiMus model, showing body–joint–geom relationships and key attributes. The “...” node denotes the remaining rigid skeleton structure, omitted here for clarity. Dashed arrows indicate `<equality>` constraints, including joint equality and body connection.
+
+![alt text](demo/figure/MJCF_structure.png)
+
 ## Run Demo
 
 To run the demo, use the following commands in your terminal:
