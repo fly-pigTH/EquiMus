@@ -19,6 +19,7 @@ python demo/demo.py --dof 3
   - [About This Work](#about-this-work)
   - [Installation](#installation)
   - [Data Download](#data-download)
+  - [FFmpeg install](#ffmpeg-install)
   - [Core Implementation](#core-implementation)
     - [Dynamic Model of the Linear Elastic Actuator](#dynamic-model-of-the-linear-elastic-actuator)
   - [Run Demo](#run-demo)
@@ -61,6 +62,21 @@ https://drive.google.com/file/d/1wKS-2Aa7IVpy4-AHKAF68sH8nZ6IhQTV/view?usp=drive
 This `data` folder is the datafile needed by `src/validation_simulation/dynamic`. Please put the downloaded file in `src/validation_simulation/dynamic`.
 
 The ohter data is already put in the repository.
+
+## FFmpeg install
+- Mac
+~~~
+brew install ffmpeg
+~~~
+- Windows
+~~~
+conda install -c conda-forge ffmpeg
+~~~
+- Linux
+~~~
+sudo apt update
+sudo apt install ffmpeg
+~~~
 
 ## Core Implementation
 ### Dynamic Model of the Linear Elastic Actuator

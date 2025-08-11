@@ -4,7 +4,6 @@
 This repository contains a ball kicking experiment with reinforcement learning (RL) based on our equivalent model implemented in **MuJoCo**.
 
 ## ⌘ Results
-![PID Convergence](figure/joint_trajectory.png)
 Ball kicking is achieved through RL training. We implement the pipeline with stable_baselines3 and gymnasium.
 
 ## 📦 Project Structure
