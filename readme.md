@@ -15,27 +15,17 @@ $ mjpython demo/demo.py # if the os is Mac
 $ python demo/demo.py # if the os is Windows
 ```
 
-If running successfully, you should see the simulation window pop up, which is the interactive viewer of MuJoCo [passive-viewer](https://mujoco.readthedocs.io/en/stable/python.html#passive-viewer).
+If running successfully, you should see the simulation window pop up, which is the interactive viewer of [MuJoCo passive-viewer](https://mujoco.readthedocs.io/en/stable/python.html#passive-viewer).
 
-<p align="center">
-  <img src="./demo/figure/demo_3DOF.png" alt="A" width="45%">
-  <img src="./demo/figure/demo_2DOF.png" alt="B" width="45%">
-</p>
-<p align="center"><em>Figure 1. (a) 2DOF, (b) 3DOF .</em></p>
-
-
-| ![3DOF](demo/figure/demo_3DOF.png) | ![2DOF](demo/figure/demo_2DOF.png) |
+| ![3DOF](./demo/figure/resized//demo_3DOF.png) | ![2DOF](./demo/figure/resized//demo_2DOF.png) |
 |:--:|:--:|
-| 3DOF | 2DOF |
+| **(a) Morphology with 3DOF** | **(b) Morphology with 2DOF** |
 
 In the interactive viewer, you can see the simulation of the 2DOF and 3DOF models. And following [the MuJoCo conventions of the GUI interaction](https://www.youtube.com/watch?v=P83tKA1iz2Y), you can interact with the models using the mouse and keyboard.
 
-<p align="center">
-  <img src="./demo/figure/demo_2DOF_body.png" alt="A" width="30%">
-  <img src="./demo/figure/demo_2DOF_geom.png" alt="B" width="30%">
-  <img src="./demo/figure/demo_2DOF_joint.png" alt="C" width="30%">
-</p>
-<p align="center"><em>Figure 1. (a) Body labels, (b) Geom labels, (c) Joint labels.</em></p>
+| ![Body labels](./demo/figure/resized//demo_2DOF_body.png) | ![Geom labels](./demo/figure/resized//demo_2DOF_geom.png) | ![Joint labels](./demo/figure/resized//demo_2DOF_joint.png) |
+|:--:|:--:|:--:|
+| **(a) Body labels** | **(b) Geom labels** | **(c) Joint labels** |
 
 
 ## Project structure
