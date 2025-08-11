@@ -23,13 +23,13 @@ Same as the whole work directory.
 
 1. **Run Training**
 ```bash
-python src/application/RL_BallKicking/train_kick.py
+python src/application/RL_BallKicking/scripts/train_kick.py
 ```
 - Output: Tensorboard log file (`data/log`), trained model saved in `data/model`.
 
 2. **Run Evaluation**
 ```bash
-python src/application/RL_BallKicking/evaluate.py
+python src/application/RL_BallKicking/scripts/evaluate.py
 ```
 - Output: Video output in `video/`.
 

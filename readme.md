@@ -2,6 +2,27 @@
 
 ![Built with](https://img.shields.io/static/v1?label=Built%20with&message=Python%20%7C%20MuJoCo%20%7C%20SymPy%20%7C%20Matplotlib&color=brightgreen)
 
+## Try it in 30 seconds
+> One line to install & run the demo. If you're on macOS and have `mjpython`, otherwise use the `python`.
+```bash
+conda create -n equimus python=3.11 -y &&
+conda activate equimus && pip install -r requirements.txt && python demo/demo.py -m -dof 3
+```
+
+## Table of Contents
+
+- [EquiMus: Musculoskeletal Equivalent Dynamic Modeling and Simulation for Rigid-soft Hybrid Robots with Linear Elastic Actuators](#equimus-musculoskeletal-equivalent-dynamic-modeling-and-simulation-for-rigid-soft-hybrid-robots-with-linear-elastic-actuators)
+  - [Try it in 30 seconds](#try-it-in-30-seconds)
+  - [Table of Contents](#table-of-contents)
+  - [About This Work](#about-this-work)
+  - [Installation](#installation)
+  - [Data Download](#data-download)
+  - [Core Implementation](#core-implementation)
+    - [Dynamic Model of the Linear Elastic Actuator](#dynamic-model-of-the-linear-elastic-actuator)
+  - [Run Demo](#run-demo)
+  - [Project Structure](#project-structure)
+  - [Statics of this repo](#statics-of-this-repo)
+
 ## About This Work
 Leveraging the full potential of soft robots relies heavily on dynamic modeling and control, which remains challenging due to their complex constitutive relationships and real-world operational scenarios. Bio-inspired musculoskeletal robots, which integrate rigid skeletons with soft actuators, combine the advantages of heavy load-bearing capacity and inherent flexibility. Although actuation dynamics has been studied through experimental methods and surrogate models, accurate and effective modeling and simulation still pose a significant challenge when soft actuators are applied at a large scale, especially in hybrid rigid-soft robots with continuously distributed mass, kinematic loops and diverse motion modes.
 
@@ -21,7 +42,6 @@ cd EquiMus-3DC5
 conda create -n equimus python=3.11 -y
 conda activate equimus
 pip install -r requirements.txt
-conda activate equimus
 ~~~
 
 - Quick check

@@ -3,7 +3,7 @@
 ## How to Run
 1. Navigate to this directory:
     ```bash
-    cd /path/to/this/directory
+    cd src/validation_simulation/dynamic
     ```
 2. Execute the following scripts in order:
     ```bash

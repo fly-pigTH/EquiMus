@@ -3,9 +3,6 @@ import time, argparse, os
 import mujoco
 import mujoco.viewer
 
-m = mujoco.MjModel.from_xml_path('./src/validation_simulation/morphology/model_build/demo_3DOF.xml')
-d = mujoco.MjData(m)
-
 DURATION = 1000
 
 def main():
@@ -14,11 +11,13 @@ def main():
     parser.add_argument("--duration", type=float, default=1000, help="viewer duration in seconds")
     args = parser.parse_args()
 
+    m = mujoco.MjModel.from_xml_path(f'./src/validation_simulation/morphology/model_build/demo_{args.dof}DOF.xml')
+    d = mujoco.MjData(m)
 
     with mujoco.viewer.launch_passive(m, d) as viewer:
         # Close the viewer automatically after DURATION wall-seconds.
         start = time.time()
-        while viewer.is_running() and time.time() - start < DURATION:
+        while viewer.is_running() and time.time() - start < args.duration:
             step_start = time.time()
 
             # mj_step can be replaced with code that also evaluates
@@ -40,4 +39,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-    
