@@ -1,0 +1,13 @@
+name: geek
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - scipy
+  - pandas
+  - ipykernel
+  - xlrd
+  - ffmpeg
+  - mujoco
+  - scipy
+prefix: /opt/anaconda3/envs/geek
