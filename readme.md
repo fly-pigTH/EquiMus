@@ -24,6 +24,16 @@ pip install -r requirements.txt
 python -c "import mujoco; print('MuJoCo:', mujoco.__version__)"
 ~~~
 
+## Data Download (Optional for `validation_simulation/dynamic`)
+
+- The partial data required for the project can be downloaded from the following link:
+
+https://drive.google.com/file/d/1wKS-2Aa7IVpy4-AHKAF68sH8nZ6IhQTV/view
+
+This is the data folder for the dynamic validation in the simulation. After downloading finished, please put the downloaded `data` folder in `EquiMus/src/validation_simulation/dynamic/`.
+
+- The other experimental data is already included in the repository.
+
 ## Run Demo
 
 To run the demo, use the following commands in your terminal:
@@ -70,3 +80,4 @@ The project is organized to align with the flow of the manuscript, ensuring clar
 - **ReadMe.md**: Project documentation.
 
 ## Requirements
+- Please check `requirements.txt`.
