@@ -5,6 +5,34 @@ Leveraging the full potential of soft robots relies heavily on dynamic modeling 
 
 To address this issue, this study introduces EquiMus, a musculoskeletal equivalent dynamic modeling and MuJoCo-based simulation for rigid-soft hybrid robots with linear elastic actuators. The equivalence and effectiveness are proven in detail and examined through simulated and real experiments on a bionic robotic leg. Based on the energy-equivalent model and simulation, we do some explorations in model-based and data-driven control algorithms including reinforcement learning.
 
+## Run Demo
+To run the demo, execute the following command in the terminal:
+```bash
+# show help message
+$ python demo/demo.py -h
+# run the simulation of 2DOF model or 3DOF model on Mac/Win/Linux
+$ mjpython demo/demo.py # if the os is Mac
+$ python demo/demo.py # if the os is Windows
+```
+
+If running successfully, you should see the simulation window pop up, which is the interactive viewer of MuJoCo [passive-viewer](https://mujoco.readthedocs.io/en/stable/python.html#passive-viewer).
+
+<p align="center">
+  <img src="./demo/figure/demo_3DOF.png" alt="A" width="45%">
+  <img src="./demo/figure/demo_2DOF.png" alt="B" width="45%">
+</p>
+<p align="center"><em>Figure 1. (a) 2DOF, (b) 3DOF .</em></p>
+
+In the interactive viewer, you can see the simulation of the 2DOF and 3DOF models. And following [the MuJoCo conventions of the GUI interaction](https://www.youtube.com/watch?v=P83tKA1iz2Y), you can interact with the models using the mouse and keyboard.
+
+<p align="center">
+  <img src="./demo/figure/demo_2DOF_body.png" alt="A" width="30%">
+  <img src="./demo/figure/demo_2DOF_geom.png" alt="B" width="30%">
+  <img src="./demo/figure/demo_2DOF_joint.png" alt="C" width="30%">
+</p>
+<p align="center"><em>Figure 1. (a) Body labels, (b) Geom labels, (c) Joint labels.</em></p>
+
+
 ## Project structure
 > obey the flow of the manuscript.
 - [x] models: MuJoCo `XML` files
@@ -27,3 +55,6 @@ To address this issue, this study introduces EquiMus, a musculoskeletal equivale
 - [x] ReadMe.md
 
 ## Requirements
+
+## TODO
+- A demo to show the EquiMus method

@@ -34,15 +34,15 @@
           </body>
           <body name="muscle2_uLink" pos="0 0.1 -0.1" quat="0.995133 -0.0985376 0 0">
             <joint name="muscle2_uRotJoint" pos="0 0 0" axis="1 0 0"/>
-            <geom name="muscle2_uGeom" size="0.005" contype="0" conaffinity="0" mass="0.03"/>
+            <geom name="muscle2_uGeom" size="0.015" contype="0" conaffinity="0" mass="0.03" rgba="0.8 0.3 0.3 0.8"/>
             <site name="muscle2_uSite" pos="0 0 0"/>
             <body name="muscle2_mLink" pos="0 0 -0.127475">
               <joint name="muscle2_mSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-3.98196e-11" stiffness="131.6" damping="1.8"/>
-              <geom name="muscle2_mGeom" size="0.005" contype="0" conaffinity="0" mass="0.12"/>
+              <geom name="muscle2_mGeom" size="0.015" contype="0" conaffinity="0" mass="0.12" rgba="0.8 0.3 0.3 0.8"/>
               <site name="muscle2_mSite" pos="0 0 0"/>
               <body name="muscle2_lLink" pos="0 0 -0.127475">
                 <joint name="muscle2_lSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-3.98196e-11" stiffness="131.6" damping="1.8"/>
-                <geom name="muscle2_lGeom" size="0.005" contype="0" conaffinity="0" mass="0.03"/>
+                <geom name="muscle2_lGeom" size="0.015" contype="0" conaffinity="0" mass="0.03" rgba="0.8 0.3 0.3 0.8"/>
                 <site name="muscle2_lSite" pos="0 0 0"/>
               </body>
             </body>
@@ -51,30 +51,30 @@
       </body>
       <body name="muscle0_uLink" pos="0 -0.06 0" quat="0.997484 0.0708912 0 0">
         <joint name="muscle0_uRotJoint" pos="0 0 0" axis="1 0 0"/>
-        <geom name="muscle0_uGeom" size="0.005" contype="0" conaffinity="0" mass="0.03108"/>
+        <geom name="muscle0_uGeom" size="0.015" contype="0" conaffinity="0" mass="0.03108" rgba="0.3 0.3 0.8 0.8"/>
         <site name="muscle0_uSite" pos="0 0 0"/>
         <body name="muscle0_mLink" pos="0 0 -0.106065">
           <joint name="muscle0_mSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-0.0190651" stiffness="637.52" damping="22.68"/>
-          <geom name="muscle0_mGeom" size="0.005" contype="0" conaffinity="0" mass="0.12432"/>
+          <geom name="muscle0_mGeom" size="0.015" contype="0" conaffinity="0" mass="0.12432" rgba="0.3 0.3 0.8 0.8"/>
           <site name="muscle0_mSite" pos="0 0 0"/>
           <body name="muscle0_lLink" pos="0 0 -0.106065">
             <joint name="muscle0_lSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-0.0190651" stiffness="637.52" damping="22.68"/>
-            <geom name="muscle0_lGeom" size="0.005" contype="0" conaffinity="0" mass="0.03108"/>
+            <geom name="muscle0_lGeom" size="0.015" contype="0" conaffinity="0" mass="0.03108" rgba="0.3 0.3 0.8 0.8"/>
             <site name="muscle0_lSite" pos="0 0 0"/>
           </body>
         </body>
       </body>
       <body name="muscle1_uLink" pos="0 0.1 0" quat="0.997283 -0.0736656 0 0">
         <joint name="muscle1_uRotJoint" pos="0 0 0" axis="1 0 0"/>
-        <geom name="muscle1_uGeom" size="0.005" contype="0" conaffinity="0" mass="0.0454433"/>
+        <geom name="muscle1_uGeom" size="0.015" contype="0" conaffinity="0" mass="0.0454433" rgba="0.3 0.8 0.3 0.8"/>
         <site name="muscle1_uSite" pos="0 0 0"/>
         <body name="muscle1_mLink" pos="0 0 -0.170148">
           <joint name="muscle1_mSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-0.0420479" stiffness="631.6" damping="21.8"/>
-          <geom name="muscle1_mGeom" size="0.005" contype="0" conaffinity="0" mass="0.181773"/>
+          <geom name="muscle1_mGeom" size="0.015" contype="0" conaffinity="0" mass="0.181773" rgba="0.3 0.8 0.3 0.8"/>
           <site name="muscle1_mSite" pos="0 0 0"/>
           <body name="muscle1_lLink" pos="0 0 -0.170148">
             <joint name="muscle1_lSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-0.0420479" stiffness="631.6" damping="21.8"/>
-            <geom name="muscle1_lGeom" size="0.005" contype="0" conaffinity="0" mass="0.0454433"/>
+            <geom name="muscle1_lGeom" size="0.015" contype="0" conaffinity="0" mass="0.0454433" rgba="0.3 0.8 0.3 0.8"/>
             <site name="muscle1_lSite" pos="0 0 0"/>
           </body>
         </body>
