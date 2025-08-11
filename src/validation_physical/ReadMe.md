@@ -46,8 +46,8 @@ cd src/validation_physical/
 ```
 
 1. Execute `./static_qpos_analysis.py` to analyze the static states of the robotic leg for both effective and complete datasets.
-2. Use `./static/scripts/sysid_static_effective.py` to identify static parameters from the effective dataset.
-3. Open and run `./dynamic/dynamic_sysid.ipynb` to analysis the static error.
+2. Use `./static/scripts/sysid_static_effective.py` to identify static parameters from the effective dataset. 
+3. Open and run `./dynamic/dynamic_sysid.ipynb` to analysis the static error. (Note: the optimization of the real experiment is captured in `src/validation_physical/dynamic/log/optimization_log`. For some reason on the seed and experiment setting, the result is slightly different with `dynamic_sysid`)
 4. Run `./dynamic/sensitivity_analysis_with_baseline.ipynb` to conduct sensitivity analysis and baseline experiments.
 5. Analyze trajectory tracking by running `./dynamic/trajectory_track_triangle.ipynb`.
 
