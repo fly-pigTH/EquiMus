@@ -39,18 +39,18 @@
 │   └── video
 └── static_qpos_analysis.py
 ```
-
 ## Run
-1. Run `./static_qpos_analysis.py` to analysis the static states of the robotic leg, both for effective and all data.
-2. Run `./static/scripts/sysid_static_effective.py`to identified the effective static parameters.
-3. Run `./dynamic/dynamic_sysid.ipynb` to identify the effective dynamic parameters.
-4. Run `./dynamic/sensitivity_analysis_with_baseline.ipynb` to perform sensitivity analysis and baseline experiments.
-5. Run `./dynamic/trajectory_track_triangle.ipynb` to analyze trajectory tracking.
+1. Execute `./static_qpos_analysis.py` to analyze the static states of the robotic leg for both effective and complete datasets.
+2. Use `./static/scripts/sysid_static_effective.py` to identify static parameters from the effective dataset.
+3. Open and run `./dynamic/dynamic_sysid.ipynb` to analysis the static error.
+4. Run `./dynamic/sensitivity_analysis_with_baseline.ipynb` to conduct sensitivity analysis and baseline experiments.
+5. Analyze trajectory tracking by running `./dynamic/trajectory_track_triangle.ipynb`.
 
 ## Results
-- Sensitivity Analysis
-![alt text](dynamic/figure/sensitivity_analysis.png)
+- **Sensitivity Analysis**  
 
-- Trajectory Tracking
-![alt text](dynamic/figure/tri_trajectory.png)
+![Sensitivity Analysis](dynamic/figure/sensitivity_analysis.png)
 
+- **Trajectory Tracking**  
+
+![Trajectory Tracking](dynamic/figure/tri_trajectory.png)
