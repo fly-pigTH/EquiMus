@@ -3,7 +3,5 @@ data
 __pycache__
 .DS_Store
 AtoBMatlab
-src/simulated_verify/dynamic/data
-src/simulated_verify/dynamic/newdata
 _archive
 *.mp4
