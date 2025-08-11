@@ -10,6 +10,7 @@
 2. **Build 3-DOF Model with the EquiMus Method**:  
 From the repository root, execute:
 ```bash
+cd src/validation_simulation/
 python ./morphology/model_build/main.py
 ```
 

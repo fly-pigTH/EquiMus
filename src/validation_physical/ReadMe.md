@@ -40,6 +40,11 @@
 └── static_qpos_analysis.py
 ```
 ## Run
+
+```bash
+cd src/validation_physical/ 
+```
+
 1. Execute `./static_qpos_analysis.py` to analyze the static states of the robotic leg for both effective and complete datasets.
 2. Use `./static/scripts/sysid_static_effective.py` to identify static parameters from the effective dataset.
 3. Open and run `./dynamic/dynamic_sysid.ipynb` to analysis the static error.
