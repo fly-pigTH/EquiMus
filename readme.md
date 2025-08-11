@@ -11,7 +11,7 @@ To address this issue, this study introduces EquiMus, a musculoskeletal equivale
 Directly click the `Download repository` button to download the whole project. (limitation by `Anonymous Github`)
 
 ~~~bash
-cd EquiMus
+cd EquiMus-3DC5
 ~~~
 
 - Run in Conda
