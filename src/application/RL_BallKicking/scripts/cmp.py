@@ -37,7 +37,7 @@ def train():
         # Launch 16 parallel environments
         num_envs = 16
         env_fns = [make_env(xml_path) for _ in range(num_envs)]
-        vec_env = SubprocVecEnv(env_fns, start_method="spawn")
+        vec_env = SubprocVecEnv(env_fns)
 
         # Optional: Check if your environment conforms to the standard (only one)
         check_env(make_env(xml_path)(), warn=True)
