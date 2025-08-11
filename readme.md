@@ -8,7 +8,7 @@
 conda create -n equimus python=3.11 -y
 conda activate equimus
 pip install -r requirements.txt
-python demo/demo.py -m -dof 3
+python demo/demo.py --dof 3
 ```
 
 ## Table of Contents
