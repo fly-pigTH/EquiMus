@@ -23,6 +23,11 @@ If running successfully, you should see the simulation window pop up, which is t
 </p>
 <p align="center"><em>Figure 1. (a) 2DOF, (b) 3DOF .</em></p>
 
+
+| ![3DOF](demo/figure/demo_3DOF.png) | ![2DOF](demo/figure/demo_2DOF.png) |
+|:--:|:--:|
+| 3DOF | 2DOF |
+
 In the interactive viewer, you can see the simulation of the 2DOF and 3DOF models. And following [the MuJoCo conventions of the GUI interaction](https://www.youtube.com/watch?v=P83tKA1iz2Y), you can interact with the models using the mouse and keyboard.
 
 <p align="center">
