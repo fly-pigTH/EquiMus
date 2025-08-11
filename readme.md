@@ -1,5 +1,7 @@
 # EquiMus: Musculoskeletal Equivalent Dynamic Modeling and Simulation for Rigid-soft Hybrid Robots with Linear Elastic Actuators
 
+![Built with](https://img.shields.io/static/v1?label=Built%20with&message=Python%20%7C%20MuJoCo%20%7C%20SymPy%20%7C%20Matplotlib&color=brightgreen)
+
 ## About This Work
 Leveraging the full potential of soft robots relies heavily on dynamic modeling and control, which remains challenging due to their complex constitutive relationships and real-world operational scenarios. Bio-inspired musculoskeletal robots, which integrate rigid skeletons with soft actuators, combine the advantages of heavy load-bearing capacity and inherent flexibility. Although actuation dynamics has been studied through experimental methods and surrogate models, accurate and effective modeling and simulation still pose a significant challenge when soft actuators are applied at a large scale, especially in hybrid rigid-soft robots with continuously distributed mass, kinematic loops and diverse motion modes.
 
@@ -107,4 +109,16 @@ The project is organized to align with the flow of the manuscript, ensuring clar
   - experiment_topology.py: Utility script for experiment topology.
 - **ReadMe.md**: Project documentation.
 
-## Requirements
+## Statics of this repo
+Language|files|blank|comment|code
+:-------|-------:|-------:|-------:|-------:
+CSV|19|0|0|41377
+Python|21|614|529|2438
+Jupyter Notebook|5|0|185448|1494
+XML|8|112|95|845
+Markdown|8|80|0|265
+Text|1|0|0|17
+JSON|1|0|0|5
+Bourne Shell|1|0|0|1
+--------|--------|--------|--------|--------
+SUM:|64|806|186072|46442
