@@ -24,6 +24,17 @@ pip install -r requirements.txt
 python -c "import mujoco; print('MuJoCo:', mujoco.__version__)"
 ~~~
 
+## Data Download
+> (Optional for `src/validation_simulation/dynamic`)
+
+To download the required data files, you can use the following link:
+
+https://drive.google.com/file/d/1wKS-2Aa7IVpy4-AHKAF68sH8nZ6IhQTV/view?usp=drive_link
+
+This `data` folder is the datafile needed by `src/validation_simulation/dynamic`. Please put the downloaded file in `src/validation_simulation/dynamic`.
+
+The ohter data is already put in the repository.
+
 ## Run Demo
 
 To run the demo, use the following commands in your terminal:
