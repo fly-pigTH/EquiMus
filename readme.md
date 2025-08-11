@@ -2,17 +2,19 @@
 
 ![Built with](https://img.shields.io/static/v1?label=Built%20with&message=Python%20%7C%20MuJoCo%20%7C%20SymPy%20%7C%20Matplotlib&color=brightgreen)
 
-## Try it in 30 seconds
-> One line to install & run the demo. If you're on macOS and have `mjpython`, otherwise use the `python`.
+## Try it in 3 minutes
+> Four line to install & run the demo. If you're on macOS and have `mjpython`, otherwise use the `python`.
 ```bash
-conda create -n equimus python=3.11 -y &&
-conda activate equimus && pip install -r requirements.txt && python demo/demo.py -m -dof 3
+conda create -n equimus python=3.11 -y
+conda activate equimus
+pip install -r requirements.txt
+python demo/demo.py -m -dof 3
 ```
 
 ## Table of Contents
 
 - [EquiMus: Musculoskeletal Equivalent Dynamic Modeling and Simulation for Rigid-soft Hybrid Robots with Linear Elastic Actuators](#equimus-musculoskeletal-equivalent-dynamic-modeling-and-simulation-for-rigid-soft-hybrid-robots-with-linear-elastic-actuators)
-  - [Try it in 30 seconds](#try-it-in-30-seconds)
+  - [Try it in 3 minutes](#try-it-in-3-minutes)
   - [Table of Contents](#table-of-contents)
   - [About This Work](#about-this-work)
   - [Installation](#installation)
