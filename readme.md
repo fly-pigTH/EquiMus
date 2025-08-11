@@ -7,7 +7,7 @@ To address this issue, this study introduces EquiMus, a musculoskeletal equivale
 
 ## Installation
 - Clone the repo
-- 
+
 Directly click the `Download repository` button to download the whole project. (limitation by `Anonymous Github`)
 
 ~~~bash
