@@ -1,0 +1,167 @@
+<mujoco model="v2_4">
+  <compiler angle="radian"/>
+  <option timestep="0.005" iterations="1000" gravity="0 0 -9.8" tolerance="1e-10"/>
+  <option>
+    <flag contact="disable"/>
+  </option>
+  <!-- ball size: 0.005 for simulation and 0.01 for rendering the picture -->
+  
+  <default>
+    <geom density="418"/>
+    <!-- <equality solimp="0.015 1 0.03" solref="0.005 1"/> -->
+  </default>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3"
+      rgb2=".2 .3 .4" width="300" height="300"/>
+    <material name="grid" texture="grid" texrepeat="8 8" reflectance=".2"/>
+
+    <!-- <mesh name="base_link" file="base_link.STL"/> -->
+    <mesh name="base_link" file="base_single.STL"/>
+    <mesh name="LF_Thigh" file="LF_Thigh.STL"/>
+    <mesh name="LF_Calf" file="LF_Calf.STL"/>
+    <mesh name="RF_Thigh" file="RF_Thigh.STL"/>
+    <mesh name="RF_Calf" file="RF_Calf.STL"/>
+    <mesh name="LB_Thigh" file="LB_Thigh.STL"/>
+    <mesh name="LB_Calf" file="LB_Calf.STL"/>
+    <mesh name="RB_Thigh" file="RB_Thigh.STL"/>
+    <mesh name="RB_Calf" file="RB_Calf.STL"/>
+    <mesh name="LF_MAA_UPLink" file="LF_MAA_UPLink.STL"/>
+    <mesh name="LF_MAA_FM_Link" file="LF_MAA_FM_Link.STL"/>
+    <mesh name="LF_MAA_LOLink" file="LF_MAA_LOLink.STL"/>
+    <mesh name="RF_MAA_UPLink" file="RF_MAA_UPLink.STL"/>
+    <mesh name="RF_MAA_FM_Link" file="RF_MAA_FM_Link.STL"/>
+    <mesh name="RF_MAA_LOLink" file="RF_MAA_LOLink.STL"/>
+    <mesh name="LB_MAA_UPLink" file="LB_MAA_UPLink.STL"/>
+    <mesh name="LB_MAA_FM_Link" file="LB_MAA_FM_Link.STL"/>
+    <mesh name="LB_MAA_LOLink" file="LB_MAA_LOLink.STL"/>
+    <mesh name="RB_MAA_UPLink" file="RB_MAA_UPLink.STL"/>
+    <mesh name="RB_MAA_FM_Link" file="RB_MAA_FM_Link.STL"/>
+    <mesh name="RB_MAA_LOLink" file="RB_MAA_LOLink.STL"/>
+    <mesh name="LF_BAA_UPLink" file="LF_BAA_UPLink.STL"/>
+    <mesh name="LF_BAA_FM_Link" file="LF_BAA_FM_Link.STL"/>
+    <mesh name="LF_BAA_LOLink" file="LF_BAA_LOLink.STL"/>
+    <mesh name="RF_BAA_UPLink" file="RF_BAA_UPLink.STL"/>
+    <mesh name="RF_BAA_FM_Link" file="RF_BAA_FM_Link.STL"/>
+    <mesh name="RF_BAA_LOLink" file="RF_BAA_LOLink.STL"/>
+    <mesh name="LB_BAA_UPLink" file="LB_BAA_UPLink.STL"/>
+    <mesh name="LB_BAA_FM_Link" file="LB_BAA_FM_Link.STL"/>
+    <mesh name="LB_BAA_LOLink" file="LB_BAA_LOLink.STL"/>
+    <mesh name="RB_BAA_UPLink" file="RB_BAA_UPLink.STL"/>
+    <mesh name="RB_BAA_FM_LINK" file="RB_BAA_FM_LINK.STL"/>
+    <mesh name="RB_BAA_LOLink" file="RB_BAA_LOLink.STL"/>
+  </asset>
+
+  <worldbody>
+    <light name="top" pos="0 0 3" dir="0 0 -1" diffuse="0.5 0.5 0.5" specular="0.5 0.5 0.5"/>
+    <light name="left" pos="0 1 3" dir="0 0 -1" diffuse="0.5 0.5 0.5" specular="0.5 0.5 0.5"/>
+    <light name="right" pos="0 -1 3" dir="0 0 -1" diffuse="0.5 0.5 0.5" specular="0.5 0.5 0.5"/>
+    <light name="front" pos="-1 0 3" dir="0 0 -1" diffuse="0.5 0.5 0.5" specular="0.5 0.5 0.5"/>
+    <light name="back" pos="1 0 5" dir="0 0 -1" diffuse="0.5 0.5 0.5" specular="0.5 0.5 0.5"/>
+    <!-- <light name="front" pos="0 0 5" dir="1 0 0" diffuse="1 1 1" specular="1 1 1"/>
+    <light name="side" pos="0 0 5" dir="-1 0 0" diffuse="1 1 1" specular="1 1 1"/> -->
+    <geom size="10 10 .01" type="plane" material="grid" friction="1 0.005 0.0001"  rgba="0.5 0.5 0.5 1"/>
+    <!-- <geom size="10 10 .01" type="plane" material="grid" friction="1 0.005 0.0001" rgba="1 1 1 1" pos="0 0 0" euler="0 1.57 0"/> -->
+
+    <camera name="closeup" pos="-0.940 -0.270 0.728" xyaxes="0.014 -1.000 -0.000 0.346 0.005 0.938"/>
+
+
+    <body name="base" pos="0.0 0 0.7">
+      <!-- <freejoint/> -->
+      <!-- <joint name="base_joint" type="slide" axis="0 0 1" damping="0" stiffness="0" springref="0.5"/> -->
+      <geom type="mesh" rgba="0.75294 0.75294 0.75294 0.95" mesh="base_link" mass="0.155" contype="0" conaffinity="0"/>
+
+      <body name="RB_Thigh" pos="0.1245 -0.235 -0.105">
+        <!-- <joint name="RB_Shoulder" pos="0 0 0" axis="-1 0 0" range="-1.046 1.046" damping="0" stiffness="0" springref="0"/> -->
+        <joint name="RB_Shoulder" pos="0 0 0" axis="-1 0 0" range="-1.0471975512 1.0471975512" damping="0.0" stiffness="0" springref="0"/>
+        <geom type="mesh" rgba="0.752941 0.752941 0.752941 0.95" mesh="RB_Thigh" mass="0.086" contype="0" conaffinity="0"/>
+        <!-- <site name="C1" pos="0 -0.02999933715459505 -0.20999803968200498"/> -->
+        <body name="RB_Calf" pos="0 0 -0.25"> 
+          <!-- <joint name="RB_Elbow" pos="0 0 0" axis="-1 0 0" range="-1.57 0.628" damping="0" stiffness="0" springref="0"/> -->
+          <joint name="RB_Elbow" pos="0 0 0" axis="-1 0 0" range="-1.57 0.5235987756" damping="0.0" stiffness="0" springref="0"/>
+          <geom type="mesh" rgba="0.752941 0.752941 0.752941 0.95" mesh="RB_Calf" mass="0.1033" friction="1 0.005 0.0001"/>
+          <!-- <site name="D1" pos="0  0.05 -0.08660254037844388"/> -->
+        </body>
+
+      </body>
+
+      <body name="RB_MAA_UPLink" pos="0.125 -0.175 -0.105">
+        <joint name="RB_MAA_UpJoint" pos="0 0 0" axis="-1 0 0" damping="0" stiffness="0" springref="0"/>
+        <geom type="mesh" rgba="0.5 0.5 0.5 0.5" mesh="RB_MAA_UPLink" mass="0.00001" contype="0" conaffinity="0"/>
+        <geom name="RB_MAA_uGeom" type="sphere" size="0.001" rgba="1 0 0 1" mass="0.03108" contype="0" conaffinity="0"/>
+
+        <body name="RB_MAA_FM_Link" pos="-0.01 -0.015 -0.105">
+          <joint name="RB_MAA_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="22.68" stiffness="282.0592168220622" springref="-0.024065093741353696"/>
+          <geom type="mesh" rgba="1 0 0 0.1" mesh="RB_MAA_FM_Link" mass="0.00001" contype="0" conaffinity="0"/>
+          <geom name="RB_MAA_mGeom" type="sphere" size="0.001" rgba="0.721 0.525 0.043 1.0" mass="0.12432" contype="0" conaffinity="0"/>
+          
+          <body name="RB_MAA_LOLink" pos="0.01 -0.015 -0.105">
+            <joint name="RB_MAA_FM_SlideJoint" pos="0 0 0" axis="0 -0.141421 -0.989949" type="slide" damping="22.68" stiffness="282.0592168220622" springref="-0.024065093741353696"/>
+            <geom type="mesh" rgba="0.5 0.5 0.5 0.5" mesh="RB_MAA_LOLink" mass="0.00001" contype="0" conaffinity="0"/>
+            <geom name="RB_MAA_lGeom" type="sphere" size="0.001" rgba="0 0 1 1" mass="0.03108" contype="0" conaffinity="0"/>
+            <!-- <site name="C2"/> -->
+          </body>
+
+        </body>
+
+      </body>
+      
+      <body name="RB_BAA_UPLink" pos="0.125 -0.335 -0.105">
+        <joint name="RB_BAA_UpJoint" pos="0 0 0" axis="-1 0 0" damping="0" stiffness="0" springref="0"/>
+        <geom type="mesh" rgba="0.5 0.5 0.5 0.9" mesh="RB_BAA_UPLink" mass="0.00001" contype="0" conaffinity="0"/>
+        <!-- <site name="RB_BAA_START" pos="0 0 0" size="0.001" rgba="1 0 0 1"/> -->
+        <geom name="RB_BAA_uGeom" type="sphere" size="0.001" rgba="1 0 0 1" mass="0.04544333333" contype="0" conaffinity="0"/>
+        
+        <body name="RB_BAA_FM_LINK" pos="-0.01 0.00669873 -0.1">
+          <joint name="RB_BAA_SlideJoint" pos="0 0 0" axis="0 0.0668375 -0.997764" type="slide" damping="21.8" stiffness="227.59569701085474" springref="0.028775886229521555"/>
+          <geom type="mesh" rgba="1 0 0 0.1" mesh="RB_BAA_FM_LINK" mass="0.00001" contype="0" conaffinity="0"/>
+          <geom name="RB_BAA_mGeom" type="sphere" size="0.001" rgba="0.721 0.525 0.043 1.0" mass="0.1817733333" contype="0" conaffinity="0"/>
+          
+          <body name="RB_BAA_LOLink" pos="0.01 0.00669873 -0.1">
+            <joint name="RB_BAA_FM_SlideJoint" pos="0 0 0" axis="0 0.0668375 -0.997764" type="slide" damping="21.8" stiffness="227.59569701085474" springref="0.028775886229521555"/>
+            <geom type="mesh" rgba="0.5 0.5 0.5 0.5" mesh="RB_BAA_LOLink" mass="0.00001" contype="0" conaffinity="0"/>
+            <!-- <site name="RB_BAA_END" pos="0 0 0" size="0.001" rgba="1 0 0 1"/> -->
+            <geom name="RB_BAA_lGeom" type="sphere" size="0.001" rgba="0 0 1 1" mass="0.04544333333" contype="0" conaffinity="0"/>
+            <!-- <site name="D2"/> -->
+          </body>
+
+        </body>
+
+      </body>
+
+    </body>
+
+
+  </worldbody>
+
+  <!-- Add 8 position controllers to joints like RB_BAA_LowerJoint, with position limits -->
+  <actuator>
+    <!-- <position joint="RB_MAA_UpJoint" ctrllimited="true" ctrlrange="-1 1" /> -->
+    <motor joint="RB_MAA_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
+    <motor joint="RB_MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
+    <motor joint="RB_BAA_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
+    <motor joint="RB_BAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-200 200" />
+  </actuator>
+
+  <!-- Establish parallel relationships, e.g., RB_BAA_LOLink should connect to RB_Calf -->
+  <equality>
+    <connect name="RB_MAA_LOLink" body1="RB_MAA_LOLink" body2="RB_Thigh" anchor="0 0 0" solref="0.001 1" solimp="0.95 0.99 0.00001 0.1 2"/>
+    <connect name="RB_BAA_LOLink" body1="RB_BAA_LOLink" body2="RB_Calf" anchor="0 0 0" solref="0.001 1" solimp="0.95 0.99 0.00001 0.1 2"/>
+    <!-- <connect name="MAA_connect" site1="C1" site2="C2" solimp="0.95 0.99 0.00001 0.1 2"/>
+    <connect name="BAA_connect" site1="D1" site2="D2" solimp="0.95 0.99 0.00001 0.1 2"/> -->
+        
+    <!-- FM equality constraints -->
+    <joint name="RB_MAA_FM" joint1="RB_MAA_SlideJoint" joint2="RB_MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
+    <joint name="RB_BAA_FM" joint1="RB_BAA_SlideJoint" joint2="RB_BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
+  </equality>
+
+  <sensor>
+    <!-- <jointpos name="RB_Shoulder" joint="RB_Shoulder"/>
+    <jointpos name="RB_Elbow" joint="RB_Elbow"/> -->
+    <!-- <jointpos name="RB_MAA_SlideJoint" joint="RB_MAA_SlideJoint"/> -->
+    <!-- <jointpos name="RB_BAA_SlideJoint" joint="RB_BAA_SlideJoint"/> -->
+    <!-- <jointpos name="RB_MAA_FM_SlideJoint" joint="RB_MAA_FM_SlideJoint"/> -->
+    <!-- <jointpos name="RB_BAA_FM_SlideJoint" joint="RB_BAA_FM_SlideJoint"/> -->
+  </sensor>
+
+</mujoco>

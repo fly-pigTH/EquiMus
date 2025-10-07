@@ -1,0 +1,149 @@
+<mujoco model="v2_4">
+  <compiler angle="radian"/>
+
+  <option timestep="0.001" tolerance="1e-10" gravity="0 0 -9.8" iterations="2000"/>
+
+  <default>
+    <geom density="418"/>
+  </default>
+
+  <asset>
+    <texture type="2d" name="grid" builtin="checker" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4" width="300" height="300"/>
+    <material name="grid" texture="grid" texrepeat="8 8" reflectance="0.2"/>
+  </asset>
+
+  <worldbody>
+    <geom size="10 10 0.01" type="plane" material="grid"/>
+    <camera name="closeup" pos="1.483 -0.033 0.58" quat="0.541807 0.475866 0.457194 0.520547"/>
+    <light name="top" pos="0 0 5" dir="0 0 -1" ambient="0.5 0.5 0.5" diffuse="1 1 1"/>
+    <body name="Base" pos="0 0 0.8">
+      <geom size="0.01 0.2 0.01" type="box" contype="0" conaffinity="0" mass="0.155" rgba="0.5 0.5 0.5 0.5"/>
+      <body name="link0_body">
+        <site name="link0_body_site" pos="0 0 0"/>
+        <joint name="link0_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"/>
+        <geom name="link0_geom" size="0.005 0.125" pos="0 0 -0.125" type="capsule" contype="0" conaffinity="0" mass="0.086" rgba="0.5 0.5 0.5 0.5"/>
+        <body name="link1_body" pos="0 0 -0.25">
+          <site name="link1_body_site" pos="0 0 0"/>
+          <joint name="link1_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"/>
+          <geom name="link1_geom" size="0.005 0.125" pos="0 0 -0.125" type="capsule" contype="0" conaffinity="0" mass="0.1033" rgba="0.5 0.5 0.5 0.5"/>
+          <body name="link2_body" pos="0 0 -0.25">
+            <site name="link2_body_site" pos="0 0 0"/>
+            <joint name="link2_joint" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"/>
+            <geom name="link2_geom" size="0.005 0.125" pos="0 0 -0.125" type="capsule" contype="0" conaffinity="0" mass="0.1033" rgba="0.5 0.5 0.5 0.5"/>
+            <site name="link3_body_site" pos="0 0 -0.25"/>
+          </body>
+          <body name="muscle2_uLink" pos="0 0.1 -0.1" quat="0.995133 -0.0985376 0 0">
+            <joint name="muscle2_uRotJoint" pos="0 0 0" axis="1 0 0"/>
+            <geom name="muscle2_uGeom" size="0.015" contype="0" conaffinity="0" mass="0.03" rgba="0.8 0.3 0.3 0.8"/>
+            <site name="muscle2_uSite" pos="0 0 0"/>
+            <body name="muscle2_mLink" pos="0 0 -0.127475">
+              <joint name="muscle2_mSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-3.98196e-11" stiffness="131.6" damping="1.8"/>
+              <geom name="muscle2_mGeom" size="0.015" contype="0" conaffinity="0" mass="0.12" rgba="0.8 0.3 0.3 0.8"/>
+              <site name="muscle2_mSite" pos="0 0 0"/>
+              <body name="muscle2_lLink" pos="0 0 -0.127475">
+                <joint name="muscle2_lSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-3.98196e-11" stiffness="131.6" damping="1.8"/>
+                <geom name="muscle2_lGeom" size="0.015" contype="0" conaffinity="0" mass="0.03" rgba="0.8 0.3 0.3 0.8"/>
+                <site name="muscle2_lSite" pos="0 0 0"/>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="muscle0_uLink" pos="0 -0.06 0" quat="0.997484 0.0708912 0 0">
+        <joint name="muscle0_uRotJoint" pos="0 0 0" axis="1 0 0"/>
+        <geom name="muscle0_uGeom" size="0.015" contype="0" conaffinity="0" mass="0.03108" rgba="0.3 0.3 0.8 0.8"/>
+        <site name="muscle0_uSite" pos="0 0 0"/>
+        <body name="muscle0_mLink" pos="0 0 -0.106065">
+          <joint name="muscle0_mSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-0.0190651" stiffness="637.52" damping="22.68"/>
+          <geom name="muscle0_mGeom" size="0.015" contype="0" conaffinity="0" mass="0.12432" rgba="0.3 0.3 0.8 0.8"/>
+          <site name="muscle0_mSite" pos="0 0 0"/>
+          <body name="muscle0_lLink" pos="0 0 -0.106065">
+            <joint name="muscle0_lSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-0.0190651" stiffness="637.52" damping="22.68"/>
+            <geom name="muscle0_lGeom" size="0.015" contype="0" conaffinity="0" mass="0.03108" rgba="0.3 0.3 0.8 0.8"/>
+            <site name="muscle0_lSite" pos="0 0 0"/>
+          </body>
+        </body>
+      </body>
+      <body name="muscle1_uLink" pos="0 0.1 0" quat="0.997283 -0.0736656 0 0">
+        <joint name="muscle1_uRotJoint" pos="0 0 0" axis="1 0 0"/>
+        <geom name="muscle1_uGeom" size="0.015" contype="0" conaffinity="0" mass="0.0454433" rgba="0.3 0.8 0.3 0.8"/>
+        <site name="muscle1_uSite" pos="0 0 0"/>
+        <body name="muscle1_mLink" pos="0 0 -0.170148">
+          <joint name="muscle1_mSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-0.0420479" stiffness="631.6" damping="21.8"/>
+          <geom name="muscle1_mGeom" size="0.015" contype="0" conaffinity="0" mass="0.181773" rgba="0.3 0.8 0.3 0.8"/>
+          <site name="muscle1_mSite" pos="0 0 0"/>
+          <body name="muscle1_lLink" pos="0 0 -0.170148">
+            <joint name="muscle1_lSlideJoint" pos="0 0 0" axis="0 0 -1" type="slide" springref="-0.0420479" stiffness="631.6" damping="21.8"/>
+            <geom name="muscle1_lGeom" size="0.015" contype="0" conaffinity="0" mass="0.0454433" rgba="0.3 0.8 0.3 0.8"/>
+            <site name="muscle1_lSite" pos="0 0 0"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <equality>
+    <joint name="muscle0_equality" joint1="muscle0_mSlideJoint" joint2="muscle0_lSlideJoint" polycoef="0 1 0 0 0" solimp="0.95 0.99 1e-05 0.1"/>
+    <connect name="_muscle0_equality_connect" body1="muscle0_lLink" body2="link0_body" anchor="0 0 0" solimp="0.95 0.99 1e-05 0.1"/>
+    <joint name="muscle1_equality" joint1="muscle1_mSlideJoint" joint2="muscle1_lSlideJoint" polycoef="0 1 0 0 0" solimp="0.95 0.99 1e-05 0.1"/>
+    <connect name="_muscle1_equality_connect" body1="muscle1_lLink" body2="link1_body" anchor="0 0 0" solimp="0.95 0.99 1e-05 0.1"/>
+    <joint name="muscle2_equality" joint1="muscle2_mSlideJoint" joint2="muscle2_lSlideJoint" polycoef="0 1 0 0 0" solimp="0.95 0.99 1e-05 0.1"/>
+    <connect name="_muscle2_equality_connect" body1="muscle2_lLink" body2="link2_body" anchor="0 0 0" solimp="0.95 0.99 1e-05 0.1"/>
+  </equality>
+
+  <tendon>
+    <spatial name="tendon_muscle0" rgba="0.3 0.3 0.8 0.8" width="0.01">
+      <site site="muscle0_uSite"/>
+      <site site="muscle0_lSite"/>
+    </spatial>
+    <spatial name="tendon_muscle1" rgba="0.3 0.8 0.3 0.8" width="0.01">
+      <site site="muscle1_uSite"/>
+      <site site="muscle1_lSite"/>
+    </spatial>
+    <spatial name="tendon_muscle2" rgba="0.8 0.3 0.3 0.8" width="0.01">
+      <site site="muscle2_uSite"/>
+      <site site="muscle2_lSite"/>
+    </spatial>
+    <spatial name="_0" rgba="0.5 0.5 0.5 1" width="0.005">
+      <site site="muscle0_lSite"/>
+      <site site="link0_body_site"/>
+    </spatial>
+    <spatial name="_1" rgba="0.5 0.5 0.5 1" width="0.005">
+      <site site="muscle0_lSite"/>
+      <site site="link1_body_site"/>
+    </spatial>
+    <spatial name="_2" rgba="0.5 0.5 0.5 1" width="0.005">
+      <site site="muscle1_lSite"/>
+      <site site="link1_body_site"/>
+    </spatial>
+    <spatial name="_3" rgba="0.5 0.5 0.5 1" width="0.005">
+      <site site="muscle1_lSite"/>
+      <site site="link2_body_site"/>
+    </spatial>
+    <spatial name="_4" rgba="0.5 0.5 0.5 1" width="0.005">
+      <site site="muscle2_lSite"/>
+      <site site="link2_body_site"/>
+    </spatial>
+    <spatial name="_5" rgba="0.5 0.5 0.5 1" width="0.005">
+      <site site="muscle2_lSite"/>
+      <site site="link3_body_site"/>
+    </spatial>
+    <spatial name="_6" rgba="0.5 0.5 0.5 1" width="0.005">
+      <site site="muscle2_uSite"/>
+      <site site="link1_body_site"/>
+    </spatial>
+    <spatial name="_7" rgba="0.5 0.5 0.5 1" width="0.005">
+      <site site="muscle2_uSite"/>
+      <site site="link2_body_site"/>
+    </spatial>    
+  </tendon>
+
+  <actuator>
+    <general name="motor_muscle0_mSlideJoint" joint="muscle0_mSlideJoint" ctrllimited="true" ctrlrange="-200 200"/>
+    <general name="motor_muscle0_lSlideJoint" joint="muscle0_lSlideJoint" ctrllimited="true" ctrlrange="-200 200"/>
+    <general name="motor_muscle1_mSlideJoint" joint="muscle1_mSlideJoint" ctrllimited="true" ctrlrange="-200 200"/>
+    <general name="motor_muscle1_lSlideJoint" joint="muscle1_lSlideJoint" ctrllimited="true" ctrlrange="-200 200"/>
+    <general name="motor_muscle2_mSlideJoint" joint="muscle2_mSlideJoint" ctrllimited="true" ctrlrange="-200 200"/>
+    <general name="motor_muscle2_lSlideJoint" joint="muscle2_lSlideJoint" ctrllimited="true" ctrlrange="-200 200"/>
+  </actuator>
+</mujoco>

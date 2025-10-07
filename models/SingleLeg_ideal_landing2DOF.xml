@@ -1,0 +1,121 @@
+<!-- Modified test: Ground contact model -->
+
+<mujoco model="v2_4">
+    <compiler angle="radian"/>
+    <option timestep="0.001" iterations="2000" gravity="0 0 -9.8" tolerance="1e-10"/>
+    
+    <default>
+        <geom density="418"/>
+    </default>
+
+        <asset>
+                <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3"
+                        rgb2=".2 .3 .4" width="300" height="300"/>
+                <material name="grid" texture="grid" texrepeat="8 8" reflectance=".2"/>
+        </asset>
+
+        <worldbody>
+                <light name="top" pos="0 0 5"/>
+                <camera name="closeup" pos="1.483 -0.033 0.580" xyaxes="0.040 0.999 -0.000 -0.129 0.005 0.992"/>
+                <geom size="10 10 .01" type="plane" material="grid" friction="1 0.005 0.0001"/>
+                <body name="Horizontal_Rail" pos="0 0 0.1">
+                        <geom size="0.02 0.5 0.02 " type="box" rgba="1 1 1 1" mass="1" contype="0" conaffinity="0"/>
+                <body name="Vertical_Rail" pos="0 0 0.6">
+                        <geom size="0.02 0.02 0.5" type="box" rgba="1 1 1 1" mass="0.00001" contype="0" conaffinity="0"/>
+                        <joint name="Horizontal_connector" type="slide" axis="0 1 0" range="-1.57 1.57"/>
+                <body name="base" pos="0.04 0 0">
+                        <joint name="connector" type="slide" axis="0 0 1" range="-1 1"/>
+                        <geom size="0.01 0.2 0.01" type="box" rgba="0.8 0 0 1" mass="0.155" contype="0" conaffinity="0"/>
+                        <body name="RB_Thigh" pos="0 0 0">
+                                <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.086" fromto="0 0 0 0 0 -0.25" contype="0" conaffinity="0"/>
+                                <joint name="RB_Shoulder" type="hinge" axis="1 0 0" range="-1.0471975512 1.0471975512"/>
+                                <site name="C1" pos="0 -0.02999933715459505 -0.20999803968200498"/>
+                                <body name="RB_Calf" pos="0 0 -0.25">
+                                        <geom size="0.005" type="capsule" rgba="0.8 0 0 0.8" mass="0.1033" fromto="0 0 0 0 0 -0.25" contype="0" conaffinity="0"/>
+                                        <joint name="RB_Elbow" type="hinge" axis="1 0 0" range="0 2.09"/>
+                                        <site name="D1" pos="0  0.05 -0.08660254037844388"/>
+                                        <body name="Foot" pos="0 0 -0.25">
+                                                <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.001" contype="0" conaffinity="0"/>
+                                                <joint name="foot_weld" type="hinge" axis="1 0 0" range="-3.14 3.14"/>
+                                        </body>
+                                </body>
+                        </body>
+                        <body name="RB_MAA_UPLink" pos="0 -0.06 0" axisangle="1 0 0 0.1419014548">
+                                <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.03108" contype="0" conaffinity="0"/>
+                                <site name="muscle0_uSite" pos="0 0 0"/>
+                                <joint name="RB_MAA_UpJoint" type="hinge" axis="1 0 0"/>
+                                <body name="RB_MAA_FM_Link" pos="0 0 -0.1060650937413537">
+                                        <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.12432" contype="0" conaffinity="0"/>
+                                        <joint name="RB_MAA_SlideJoint" type="slide" axis="0 0 -1" damping="22.68" stiffness="637.52" springref="-0.019065093741353706"/>
+                                        <body name="RB_MAA_LOLink" pos="0 0 -0.1060650937413537">
+                                                <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.03108" contype="0" conaffinity="0"/>
+                                                <site name="muscle0_lSite" pos="0 0 0"/>
+                                                <joint name="RB_MAA_FM_SlideJoint" type="slide" axis="0 0 -1" damping="22.68" stiffness="637.52" springref="-0.019065093741353706"/>
+                                                <site name="C2"/>
+                                        </body>
+                                </body>
+                        </body>
+                        <body name="RB_BAA_UPLink" pos="0 0.1 0" axisangle="1 0 0 -0.147464847">
+                                <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.04544333333" contype="0" conaffinity="0"/>
+                                <site name="muscle1_uSite" pos="0 0 0"/>
+                                <joint name="RB_BAA_UpJoint" type="hinge" axis="1 0 0"/>
+                                <body name="RB_BAA_FM_LINK" pos="0 0 -0.17014792842496052">
+                                        <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.1817733333" contype="0" conaffinity="0"/>
+                                        <joint name="RB_BAA_SlideJoint" type="slide" axis="0 0 -1" damping="21.8" stiffness="631.6" springref="-0.044147928424960514"/>
+                                        <body name="RB_BAA_LOLink" pos="0 0 -0.17014792842496052">
+                                                <geom size="0.005" type="sphere" rgba="0.8 0 0 0.8" mass="0.04544333333" contype="0" conaffinity="0"/>
+                                                <site name="muscle1_lSite" pos="0 0 0"/>
+                                                <joint name="RB_BAA_FM_SlideJoint" type="slide" axis="0 0 -1" damping="21.8" stiffness="631.6" springref="-0.044147928424960514"/>
+                                                <site name="D2"/>
+                                        </body>
+                                </body>
+                        </body>
+                </body>
+                </body>
+                </body>
+
+        </worldbody>
+
+                    <!-- Add 8 position controllers to joints like RB_BAA_LowerJoint, with position limits -->
+        <actuator>
+                <motor joint="RB_MAA_SlideJoint" ctrllimited="true" ctrlrange="-80 80" />
+                <motor joint="RB_MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-80 80" />
+                <motor joint="RB_BAA_SlideJoint" ctrllimited="true" ctrlrange="-80 80" />
+                <motor joint="RB_BAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-80 80" />
+                <!-- <position joint="RB_MAA_UpJoint" ctrllimited="true" ctrlrange="-1 1" /> -->
+                <!-- <motor joint="RB_MAA_SlideJoint" ctrllimited="true" ctrlrange="-20 20" />
+                <motor joint="RB_MAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-20 20" />
+                <motor joint="RB_BAA_SlideJoint" ctrllimited="true" ctrlrange="-20 20" />
+                <motor joint="RB_BAA_FM_SlideJoint" ctrllimited="true" ctrlrange="-20 20" /> -->
+        </actuator>
+
+        <!-- Establish parallel relationships, e.g., RB_BAA_LOLink should connect to RB_Calf --> 
+        <equality>
+                <connect name="MAA_connect" anchor="0 0 0" body2="RB_Calf" body1="RB_BAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
+                <connect name="BAA_connect" anchor="0 0 0" body2="RB_Thigh" body1="RB_MAA_LOLink" solimp="0.95 0.99 0.00001 0.1 2"/>
+                <!-- <connect name="foot_landed" anchor="0 0 0" body2="Horizontal_Rail" body1="Foot" solimp="0.995 0.9995 0.00001 0.1 2"/> -->
+                <connect name="foot_landed_weld" anchor="0 0 0" body2="Horizontal_Rail" body1="Foot" solimp="0.995 0.9995 0.00001 0.1 2"/>
+                
+                <!-- <connect name="MAA_connect" site1="C1" site2="C2" solimp="0.95 0.99 0.00001 0.1 2"/>
+                <connect name="BAA_connect" site1="D1" site2="D2" solimp="0.95 0.99 0.00001 0.1 2"/> -->
+                <!-- FM equality constraints -->
+                <joint name="MAA" joint1="RB_MAA_SlideJoint" joint2="RB_MAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
+                <joint name="BAA" joint1="RB_BAA_SlideJoint" joint2="RB_BAA_FM_SlideJoint" solimp="0.95 0.99 0.00001 0.1 2"/>
+        </equality>
+
+        <tendon>
+                <spatial name="tendon_muscle0">
+                        <site site="muscle0_uSite"/>
+                        <site site="muscle0_lSite"/>
+                </spatial>
+                <spatial name="tendon_muscle1">
+                        <site site="muscle1_uSite"/>
+                        <site site="muscle1_lSite"/>
+                </spatial>
+        </tendon>
+
+        <keyframe>
+                <!-- <key qpos='-0.13069 -0.302131 -0.493654 2.14682 -0.510301 -0.0145901 -0.0146984 -0.548023 -0.0632735 -0.0633618'/> -->
+        </keyframe>
+
+</mujoco>

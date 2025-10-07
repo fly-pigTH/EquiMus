@@ -1,0 +1,9 @@
+# data
+.vscode
+__pycache__
+.DS_Store
+AtoBMatlab
+src/validation_simulation/dynamic/data
+# src/simulated_verify/dynamic/newdata
+_archive
+# *.mp4

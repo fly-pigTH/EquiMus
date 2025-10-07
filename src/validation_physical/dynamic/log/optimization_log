@@ -1,0 +1,148 @@
+differential_evolution step 1: f(x)= 73.73665463518668
+Epoch: 1, Time/epoch: 246.67s, convergence=0.0203, MSE=73.7367
+k1=189.7984, k2=139.4904, l10=0.1685, l20=0.2506, c1=20.9144, c2=6.9938, s1=0.00031007, s2=0.00021218, c1_thigh=1.1367, c2_calf=2.2770
+Time/epoch: 246.67s
+differential_evolution step 2: f(x)= 63.867828654772744
+Epoch: 2, Time/epoch: 122.54s, convergence=0.0211, MSE=63.8678
+k1=208.7746, k2=143.2380, l10=0.1619, l20=0.2616, c1=23.8092, c2=27.9900, s1=0.00046515, s2=0.00044972, c1_thigh=0.3848, c2_calf=0.3067
+Time/epoch: 122.54s
+differential_evolution step 3: f(x)= 63.867828654772744
+Epoch: 3, Time/epoch: 101.00s, convergence=0.0600, MSE=63.8678
+k1=208.7746, k2=143.2380, l10=0.1619, l20=0.2616, c1=23.8092, c2=27.9900, s1=0.00046515, s2=0.00044972, c1_thigh=0.3848, c2_calf=0.3067
+Time/epoch: 101.00s
+differential_evolution step 4: f(x)= 63.239827366427036
+Epoch: 4, Time/epoch: 43.69s, convergence=0.0583, MSE=63.2398
+k1=208.7746, k2=134.9496, l10=0.1619, l20=0.2616, c1=23.8092, c2=23.1433, s1=0.00026269, s2=0.00032740, c1_thigh=3.0901, c2_calf=0.3067
+Time/epoch: 43.69s
+differential_evolution step 5: f(x)= 63.239827366427036
+Epoch: 5, Time/epoch: 42.66s, convergence=0.0638, MSE=63.2398
+k1=208.7746, k2=134.9496, l10=0.1619, l20=0.2616, c1=23.8092, c2=23.1433, s1=0.00026269, s2=0.00032740, c1_thigh=3.0901, c2_calf=0.3067
+Time/epoch: 42.66s
+differential_evolution step 6: f(x)= 55.81366010306937
+Epoch: 6, Time/epoch: 41.36s, convergence=0.0576, MSE=55.8137
+k1=208.0234, k2=148.2251, l10=0.1681, l20=0.2676, c1=22.0123, c2=13.9682, s1=0.00025894, s2=0.00034858, c1_thigh=0.9096, c2_calf=0.6146
+Time/epoch: 41.36s
+differential_evolution step 7: f(x)= 55.81366010306937
+Epoch: 7, Time/epoch: 41.54s, convergence=0.0570, MSE=55.8137
+k1=208.0234, k2=148.2251, l10=0.1681, l20=0.2676, c1=22.0123, c2=13.9682, s1=0.00025894, s2=0.00034858, c1_thigh=0.9096, c2_calf=0.6146
+Time/epoch: 41.54s
+differential_evolution step 8: f(x)= 55.81366010306937
+Epoch: 8, Time/epoch: 42.01s, convergence=0.0638, MSE=55.8137
+k1=208.0234, k2=148.2251, l10=0.1681, l20=0.2676, c1=22.0123, c2=13.9682, s1=0.00025894, s2=0.00034858, c1_thigh=0.9096, c2_calf=0.6146
+Time/epoch: 42.01s
+differential_evolution step 9: f(x)= 55.5316743485171
+Epoch: 9, Time/epoch: 49.53s, convergence=0.0699, MSE=55.5317
+k1=222.7613, k2=152.1181, l10=0.1659, l20=0.2653, c1=14.9865, c2=8.1740, s1=0.00026659, s2=0.00046152, c1_thigh=0.8214, c2_calf=0.3848
+Time/epoch: 49.53s
+differential_evolution step 10: f(x)= 46.81388162341662
+Epoch: 10, Time/epoch: 43.87s, convergence=0.0653, MSE=46.8139
+k1=258.7424, k2=120.5521, l10=0.1778, l20=0.2576, c1=13.1869, c2=8.2850, s1=0.00025544, s2=0.00041700, c1_thigh=1.6118, c2_calf=0.1797
+Time/epoch: 43.87s
+differential_evolution step 11: f(x)= 46.81388162341662
+Epoch: 11, Time/epoch: 47.07s, convergence=0.0630, MSE=46.8139
+k1=258.7424, k2=120.5521, l10=0.1778, l20=0.2576, c1=13.1869, c2=8.2850, s1=0.00025544, s2=0.00041700, c1_thigh=1.6118, c2_calf=0.1797
+Time/epoch: 47.07s
+differential_evolution step 12: f(x)= 46.81388162341662
+Epoch: 12, Time/epoch: 47.98s, convergence=0.0753, MSE=46.8139
+k1=258.7424, k2=120.5521, l10=0.1778, l20=0.2576, c1=13.1869, c2=8.2850, s1=0.00025544, s2=0.00041700, c1_thigh=1.6118, c2_calf=0.1797
+Time/epoch: 47.98s
+differential_evolution step 13: f(x)= 46.81388162341662
+Epoch: 13, Time/epoch: 53.13s, convergence=0.0711, MSE=46.8139
+k1=258.7424, k2=120.5521, l10=0.1778, l20=0.2576, c1=13.1869, c2=8.2850, s1=0.00025544, s2=0.00041700, c1_thigh=1.6118, c2_calf=0.1797
+Time/epoch: 53.13s
+differential_evolution step 14: f(x)= 46.81388162341662
+Epoch: 14, Time/epoch: 42.75s, convergence=0.0748, MSE=46.8139
+k1=258.7424, k2=120.5521, l10=0.1778, l20=0.2576, c1=13.1869, c2=8.2850, s1=0.00025544, s2=0.00041700, c1_thigh=1.6118, c2_calf=0.1797
+Time/epoch: 42.75s
+differential_evolution step 15: f(x)= 46.81388162341662
+Epoch: 15, Time/epoch: 42.25s, convergence=0.0843, MSE=46.8139
+k1=258.7424, k2=120.5521, l10=0.1778, l20=0.2576, c1=13.1869, c2=8.2850, s1=0.00025544, s2=0.00041700, c1_thigh=1.6118, c2_calf=0.1797
+Time/epoch: 42.25s
+differential_evolution step 16: f(x)= 44.52927225870512
+Epoch: 16, Time/epoch: 42.87s, convergence=0.0875, MSE=44.5293
+k1=287.9846, k2=126.4607, l10=0.1764, l20=0.2641, c1=19.0241, c2=8.0230, s1=0.00034393, s2=0.00044773, c1_thigh=0.6551, c2_calf=0.1744
+Time/epoch: 42.87s
+differential_evolution step 17: f(x)= 43.707816000141946
+Epoch: 17, Time/epoch: 46.85s, convergence=0.0836, MSE=43.7078
+k1=268.5197, k2=143.6999, l10=0.1782, l20=0.2599, c1=13.6188, c2=10.7773, s1=0.00038765, s2=0.00044799, c1_thigh=0.3647, c2_calf=0.1970
+Time/epoch: 46.85s
+differential_evolution step 18: f(x)= 43.707816000141946
+Epoch: 18, Time/epoch: 40.40s, convergence=0.0903, MSE=43.7078
+k1=268.5197, k2=143.6999, l10=0.1782, l20=0.2599, c1=13.6188, c2=10.7773, s1=0.00038765, s2=0.00044799, c1_thigh=0.3647, c2_calf=0.1970
+Time/epoch: 40.40s
+differential_evolution step 19: f(x)= 41.1538272973158
+Epoch: 19, Time/epoch: 40.87s, convergence=0.0816, MSE=41.1538
+k1=258.7424, k2=120.5521, l10=0.1778, l20=0.2589, c1=13.1869, c2=22.4410, s1=0.00033960, s2=0.00044676, c1_thigh=0.6948, c2_calf=0.1125
+Time/epoch: 40.87s
+differential_evolution step 20: f(x)= 41.1538272973158
+Epoch: 20, Time/epoch: 44.80s, convergence=0.0883, MSE=41.1538
+k1=258.7424, k2=120.5521, l10=0.1778, l20=0.2589, c1=13.1869, c2=22.4410, s1=0.00033960, s2=0.00044676, c1_thigh=0.6948, c2_calf=0.1125
+Time/epoch: 44.80s
+differential_evolution step 21: f(x)= 41.1538272973158
+Epoch: 21, Time/epoch: 44.04s, convergence=0.1087, MSE=41.1538
+k1=258.7424, k2=120.5521, l10=0.1778, l20=0.2589, c1=13.1869, c2=22.4410, s1=0.00033960, s2=0.00044676, c1_thigh=0.6948, c2_calf=0.1125
+Time/epoch: 44.04s
+differential_evolution step 22: f(x)= 41.05396159163669
+Epoch: 22, Time/epoch: 43.54s, convergence=0.2104, MSE=41.0540
+k1=257.1586, k2=116.3167, l10=0.1778, l20=0.2595, c1=15.0221, c2=19.2527, s1=0.00035200, s2=0.00044124, c1_thigh=0.6948, c2_calf=0.1191
+Time/epoch: 43.54s
+differential_evolution step 23: f(x)= 41.05396159163669
+Epoch: 23, Time/epoch: 43.89s, convergence=0.2258, MSE=41.0540
+k1=257.1586, k2=116.3167, l10=0.1778, l20=0.2595, c1=15.0221, c2=19.2527, s1=0.00035200, s2=0.00044124, c1_thigh=0.6948, c2_calf=0.1191
+Time/epoch: 43.89s
+differential_evolution step 24: f(x)= 41.05396159163669
+Epoch: 24, Time/epoch: 42.40s, convergence=0.2357, MSE=41.0540
+k1=257.1586, k2=116.3167, l10=0.1778, l20=0.2595, c1=15.0221, c2=19.2527, s1=0.00035200, s2=0.00044124, c1_thigh=0.6948, c2_calf=0.1191
+Time/epoch: 42.40s
+differential_evolution step 25: f(x)= 41.05396159163669
+Epoch: 25, Time/epoch: 44.98s, convergence=0.2289, MSE=41.0540
+k1=257.1586, k2=116.3167, l10=0.1778, l20=0.2595, c1=15.0221, c2=19.2527, s1=0.00035200, s2=0.00044124, c1_thigh=0.6948, c2_calf=0.1191
+Time/epoch: 44.98s
+differential_evolution step 26: f(x)= 41.05396159163669
+Epoch: 26, Time/epoch: 46.30s, convergence=0.3576, MSE=41.0540
+k1=257.1586, k2=116.3167, l10=0.1778, l20=0.2595, c1=15.0221, c2=19.2527, s1=0.00035200, s2=0.00044124, c1_thigh=0.6948, c2_calf=0.1191
+Time/epoch: 46.30s
+differential_evolution step 27: f(x)= 41.01154902001665
+Epoch: 27, Time/epoch: 46.80s, convergence=0.3901, MSE=41.0115
+k1=270.4649, k2=112.8639, l10=0.1797, l20=0.2588, c1=14.6576, c2=19.2255, s1=0.00037756, s2=0.00043747, c1_thigh=0.7366, c2_calf=0.0451
+Time/epoch: 46.80s
+differential_evolution step 28: f(x)= 40.64137106718965
+Epoch: 28, Time/epoch: 45.10s, convergence=0.3604, MSE=40.6414
+k1=277.6068, k2=118.3818, l10=0.1802, l20=0.2563, c1=19.6548, c2=17.1405, s1=0.00040470, s2=0.00045737, c1_thigh=0.5039, c2_calf=0.1287
+Time/epoch: 45.10s
+differential_evolution step 29: f(x)= 40.62462930230457
+Epoch: 29, Time/epoch: 46.72s, convergence=0.4879, MSE=40.6246
+k1=281.6163, k2=126.0915, l10=0.1818, l20=0.2587, c1=9.5428, c2=26.4211, s1=0.00039936, s2=0.00046268, c1_thigh=0.5103, c2_calf=0.1220
+Time/epoch: 46.72s
+differential_evolution step 30: f(x)= 40.249183064321585
+Epoch: 30, Time/epoch: 49.08s, convergence=0.5785, MSE=40.2492
+k1=269.3928, k2=111.8270, l10=0.1792, l20=0.2559, c1=21.3128, c2=21.8726, s1=0.00045232, s2=0.00046555, c1_thigh=0.5175, c2_calf=0.1105
+Time/epoch: 49.08s
+differential_evolution step 31: f(x)= 40.23824064655702
+Epoch: 31, Time/epoch: 48.06s, convergence=0.5171, MSE=40.2382
+k1=274.9556, k2=117.2656, l10=0.1802, l20=0.2569, c1=18.4870, c2=17.6507, s1=0.00046651, s2=0.00047747, c1_thigh=0.4141, c2_calf=0.1129
+Time/epoch: 48.06s
+differential_evolution step 32: f(x)= 40.165372960315935
+Epoch: 32, Time/epoch: 41.87s, convergence=0.6970, MSE=40.1654
+k1=259.4032, k2=113.0232, l10=0.1783, l20=0.2575, c1=23.2190, c2=17.5252, s1=0.00040803, s2=0.00046264, c1_thigh=0.4528, c2_calf=0.1246
+Time/epoch: 41.87s
+differential_evolution step 33: f(x)= 40.11430588362361
+Epoch: 33, Time/epoch: 41.18s, convergence=0.7104, MSE=40.1143
+k1=273.8434, k2=116.9622, l10=0.1800, l20=0.2570, c1=18.8254, c2=17.6418, s1=0.00045232, s2=0.00046555, c1_thigh=0.4169, c2_calf=0.1138
+Time/epoch: 41.18s
+differential_evolution step 34: f(x)= 39.88959228699735
+Epoch: 34, Time/epoch: 47.32s, convergence=0.7355, MSE=39.8896
+k1=260.2138, k2=115.7564, l10=0.1787, l20=0.2582, c1=15.1065, c2=18.8156, s1=0.00039537, s2=0.00044780, c1_thigh=0.5385, c2_calf=0.0819
+Time/epoch: 47.32s
+differential_evolution step 35: f(x)= 39.88959228699735
+Epoch: 35, Time/epoch: 49.83s, convergence=0.7963, MSE=39.8896
+k1=260.2138, k2=115.7564, l10=0.1787, l20=0.2582, c1=15.1065, c2=18.8156, s1=0.00039537, s2=0.00044780, c1_thigh=0.5385, c2_calf=0.0819
+Time/epoch: 49.83s
+differential_evolution step 36: f(x)= 39.73720760059491
+Epoch: 36, Time/epoch: 46.81s, convergence=1.0516, MSE=39.7372
+k1=265.8241, k2=110.3559, l10=0.1803, l20=0.2565, c1=12.4815, c2=24.7863, s1=0.00040288, s2=0.00043593, c1_thigh=0.5235, c2_calf=0.0617
+Time/epoch: 46.81s
+Polishing solution with 'L-BFGS-B'
+Optimal k1=265.8241, k2=110.3559, l10=0.1803, l20=0.2565, c1=12.4815, c2=24.7863, s1=0.00040288, s2=0.00043593, c1_thigh=0.5235, c2_calf=0.0617, MSE=39.7372
+Error: 39.73720760059491
+Time Cost: 2513.42s
