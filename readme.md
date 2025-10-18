@@ -38,9 +38,11 @@ We proposed EquiMus, an energy-equivalent dynamics and simulation for the rigid-
 ### Core Implementation
 
 The robot dynamics are formulated using the vector form of the Lagrangian equation,
+
 $$
     (\frac{d}{dt} \frac{\partial }{\partial \dot{\mathbf{q}}} - \frac{\partial }{\partial \mathbf{q}}) (L_{\text{EA}}+L_{\text{other}}) = \mathbf{Q}_{\text{EA}} + \mathbf{Q}_{\text{other}}
 $$
+
 where $L$, $\mathbf{q}$, and $\mathbf{Q}$ denote the Lagrangian, generalized coordinates, and generalized forces respectively. We decompose $L$ and $\mathbf{Q}$ into contributions from elastic actuators (EA) and rigid structures (other). $L_{\text{other}}$ and $\mathbf{Q}_{\text{other}}$ depend on $\mathbf{q}$, its derivative $\dot{\mathbf{q}}$, and external inputs. From an energy perspective, if the energy and forces of the elastic actuator can be discretized with rigid--body equivalents, the overall dynamics remain invariant, regardless of the specific configuration and type of soft actuators. 
 
 ![alt text](demo/figure/figure_lumped_mass_fv.svg)
