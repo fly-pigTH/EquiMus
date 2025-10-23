@@ -6,6 +6,8 @@
 
 ![Built with](https://img.shields.io/static/v1?label=Built%20with&message=Python%20%7C%20MuJoCo%20%7C%20SymPy%20%7C%20Matplotlib&color=brightgreen)
 
+- [ ] Building EquiMus-ToolBox in the future... Welcome to join us!
+
 ## Table of Contents
 - [EquiMus: Musculoskeletal Equivalent Dynamic Modeling and Simulation for Rigid-soft Hybrid Robots with Linear Elastic Actuators](#equimus-musculoskeletal-equivalent-dynamic-modeling-and-simulation-for-rigid-soft-hybrid-robots-with-linear-elastic-actuators)
   - [Table of Contents](#table-of-contents)
