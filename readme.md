@@ -27,7 +27,7 @@
 ### Design Philosophy
 **[EN]** EquiMus fakes how nature uses energy to control motion — through an energy-equivalent formulation that turns physics intuition into simulation reality. That is the “fake it until you make it” philosophy in the energy domain.
 
-**[CN]** 假之以能量，得之于运动。以伪成真，以虚造实。斯为自然之道，亦乃人之所驭。
+**[CN]** 假之以能量，得之于运动。以伪成真，以虚造实。自然之道，人之所驭。
 
 ### Abstract
 Leveraging the full potential of soft robots relies heavily on dynamic modeling and control, which remains challenging due to their complex constitutive relationships and real-world operational scenarios. Bio-inspired musculoskeletal robots, which integrate rigid skeletons with soft actuators, combine the advantages of heavy load-bearing capacity and inherent flexibility. Although actuation dynamics has been studied through experimental methods and surrogate models, accurate and effective modeling and simulation still pose a significant challenge when soft actuators are applied at a large scale, especially in hybrid rigid-soft robots with continuously distributed mass, kinematic loops and diverse motion modes.
