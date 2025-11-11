@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="media/logo2.jpg" alt="EquiMus Logo" width= 100%; style="max-width:none;">
+  <img src="media/logo_long.png" alt="EquiMus Logo" width= 100%; style="max-width:none;">
 </p>
 
 # EquiMus: Musculoskeletal Equivalent Dynamic Modeling and Simulation for Rigid-soft Hybrid Robots with Linear Elastic Actuators
