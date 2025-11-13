@@ -44,23 +44,23 @@
   <summary><strong>Table of Contents</strong></summary>
 
 - [EquiMus: Musculoskeletal Equivalent Dynamic Modeling and Simulation for Rigid-soft Hybrid Robots with Linear Elastic Actuators](#equimus-musculoskeletal-equivalent-dynamic-modeling-and-simulation-for-rigid-soft-hybrid-robots-with-linear-elastic-actuators)
-  - [⚡ What is EquiMus?](#-what-is-equimus)
+  - [✏️ What is EquiMus?](#️-what-is-equimus)
   - [💡 What Problems Does EquiMus Solve?](#-what-problems-does-equimus-solve)
-    - [🔧 1. Soft actuators are difficult to model—especially with dynamic mass redistribution](#-1-soft-actuators-are-difficult-to-modelespecially-with-dynamic-mass-redistribution)
-    - [🔗 2. Musculoskeletal systems contain kinematic loops](#-2-musculoskeletal-systems-contain-kinematic-loops)
-    - [⚡ 3. High-fidelity soft-body simulation is too slow for control \& RL](#-3-high-fidelity-soft-body-simulation-is-too-slow-for-control--rl)
-    - [📍 4. No unified workflow from CAD → simulation → real robot](#-4-no-unified-workflow-from-cad--simulation--real-robot)
+    - [1. Soft actuators are difficult to model—especially with dynamic mass redistribution](#1-soft-actuators-are-difficult-to-modelespecially-with-dynamic-mass-redistribution)
+    - [2. Musculoskeletal systems contain kinematic loops](#2-musculoskeletal-systems-contain-kinematic-loops)
+    - [3. High-fidelity soft-body simulation is too slow for control \& RL](#3-high-fidelity-soft-body-simulation-is-too-slow-for-control--rl)
+    - [4. No unified workflow from CAD → simulation → real robot](#4-no-unified-workflow-from-cad--simulation--real-robot)
+  - [🎶 Design Philosophy](#-design-philosophy)
   - [🚀 Install \& Run EquiMus (3 minutes)](#-install--run-equimus-3-minutes)
-    - [📥 Optional: Download Validation Data](#-optional-download-validation-data)
-    - [Install FFmpeg (for video logging)](#install-ffmpeg-for-video-logging)
+    - [Optional: Download Validation Data](#optional-download-validation-data)
+    - [Optional: Install FFmpeg (for video logging)](#optional-install-ffmpeg-for-video-logging)
   - [📂 Project Structure](#-project-structure)
-  - [Roadmap](#roadmap)
+  - [🧭 Roadmap](#-roadmap)
   - [✉️ Contact](#️-contact)
   - [📖 Citation](#-citation)
-  - [♫ Design Philosophy](#-design-philosophy)
 </details>
 
-## ⚡ What is EquiMus?
+## ✏️ What is EquiMus?
 
 **EquiMus is an energy-equivalent dynamic modeling framework that brings musculoskeletal robots into real-time simulation, based on MuJoCo.** It converts soft actuators (e.g., pneumatic muscles, FEAs) into a rigorously derived **3-2-1 lumped-mass representation**, preserving their true kinetic, potential, damping, and actuation energies.
 
@@ -79,25 +79,30 @@ EquiMus provides:
 
 EquiMus addresses four long-standing pain points in musculoskeletal robot simulation:
 
-### 🔧 1. Soft actuators are difficult to model—especially with dynamic mass redistribution  
+### 1. Soft actuators are difficult to model—especially with dynamic mass redistribution  
 Most simulators approximate muscles as massless springs, leading to incorrect dynamics.  
 **→ EquiMus preserves actuator inertia, elasticity, damping, and work through an energy-equivalent formulation.**
 
-### 🔗 2. Musculoskeletal systems contain kinematic loops  
+### 2. Musculoskeletal systems contain kinematic loops  
 URDF/PyBullet cannot represent multi-joint muscles or loop closures.  
 **→ EquiMus uses MJCF with automatically generated constraints to model loops safely and robustly.**
 
-### ⚡ 3. High-fidelity soft-body simulation is too slow for control & RL  
+### 3. High-fidelity soft-body simulation is too slow for control & RL  
 FEM and Cosserat rod models are accurate but far from real time.  
 **→ EquiMus achieves MuJoCo-level performance (>140× real-time) while retaining physical consistency.**
 
-### 📍 4. No unified workflow from CAD → simulation → real robot  
+### 4. No unified workflow from CAD → simulation → real robot  
 Current workflows require hand-built hacks and produce inconsistent dynamics.  
 **→ EquiMus provides a clean, reproducible end-to-end pipeline, including calibration and sim-to-real examples.**
 
+## 🎶 Design Philosophy
+**[EN]** EquiMus fakes how nature uses energy to control motion — through an energy-equivalent formulation that turns physics intuition into simulation reality. That is the “fake it until you make it” philosophy in the energy domain.
+
+**[CN]** 假之以能量，得之于运动。以伪成真，以虚造实。自然之道，人之所驭。
+
 ## 🚀 Install & Run EquiMus (3 minutes)
 
-1️⃣ Clone the repo & install dependencies
+1. Clone the repo & install dependencies
 ~~~bash
 git clone https://github.com/fly-pigTH/EquiMus.git
 cd EquiMus
@@ -105,11 +110,11 @@ conda create -n equimus python=3.11 -y
 conda activate equimus
 pip install -r requirements.txt
 ~~~
-2️⃣ Quick check
+2. Quick check
 ~~~bash
 python -c "import mujoco; print('MuJoCo:', mujoco.__version__)"
 ~~~
-3️⃣ Run the demo (2-DOF & 3-DOF musculoskeletal morphologies)
+3. Run the demo (2-DOF & 3-DOF musculoskeletal morphologies)
 ```bash
 # Display help message
 python demo/demo.py -h
@@ -130,14 +135,14 @@ If successful, a [MuJoCo passive-viewer](https://mujoco.readthedocs.io/en/stable
 You can rotate, drag, and actuate the model using standard MuJoCo GUI controls following ([MuJoCo interaction conventions](https://www.youtube.com/watch?v=P83tKA1iz2Y)).
 
 
-### 📥 Optional: Download Validation Data
+### Optional: Download Validation Data
 Dynamic-validation examples require extra datasets:
 
 👉 Download here: https://drive.google.com/file/d/1wKS-2Aa7IVpy4-AHKAF68sH8nZ6IhQTV/view?usp=drive_link
 
 Place the extracted `data/` folder inside `src/validation_simulation/dynamic/`. Static & morphology validation demos already include necessary data.
 
-### Install FFmpeg (for video logging)
+### Optional: Install FFmpeg (for video logging)
 - MacOS
 ~~~
 brew install ffmpeg
@@ -155,7 +160,7 @@ sudo apt install ffmpeg
 
 ## 📂 Project Structure
 
-The project is structured to mirror the workflow presented in the paper, making it easy to navigate and reproduce all experiments. Each module includes its own `ReadMe` for quick reference.
+The project is structured to mirror the workflow presented in the paper, making it easy to navigate and reproduce all experiments. Each module includes its own `ReadMe` for quick reference. 
 
 ```txt
 EquiMus/
@@ -197,7 +202,7 @@ EquiMus/
 └── ReadMe.md                       # Main documentation
 ```
 
-## Roadmap
+## 🧭 Roadmap
 We are actively developing **EquiMus** and have outlined the following roadmap for future enhancements and features:
 - [ ] **EquiMus Toolbox (will be released before December 2025)**
   - [ ] Automated actuator parsing from URDF/MJCF
@@ -230,8 +235,3 @@ If you find EquiMus helpful, please cite us:
   publisher={IEEE}
 }
 ```
-
-## ♫ Design Philosophy
-**[EN]** EquiMus fakes how nature uses energy to control motion — through an energy-equivalent formulation that turns physics intuition into simulation reality. That is the “fake it until you make it” philosophy in the energy domain.
-
-**[CN]** 假之以能量，得之于运动。以伪成真，以虚造实。自然之道，人之所驭。
