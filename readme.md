@@ -4,72 +4,100 @@
 
 # EquiMus: Musculoskeletal Equivalent Dynamic Modeling and Simulation for Rigid-soft Hybrid Robots with Linear Elastic Actuators
 
-![Built with](https://img.shields.io/static/v1?label=Built%20with&message=Python%20%7C%20MuJoCo%20%7C%20SymPy%20%7C%20Matplotlib&color=brightgreen)
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/MuJoCo-3.1-green?logo=google&logoColor=white">
+  <img src="https://img.shields.io/badge/SymPy-verified-orange?logo=sympy&logoColor=white">
+  <img src="https://img.shields.io/badge/Matplotlib-data--viz-lightgrey?logo=plotly&logoColor=black">
+</p>
 
-- [ ] Building EquiMus-ToolBox in the future... Welcome to join us!
+<p align="center">
 
-## Table of Contents
+  <a href="https://arxiv.org/abs/2511.07887">
+    <img src="https://img.shields.io/badge/arXiv-2511.07887-b31b1b.svg" alt="arXiv">
+  </a>
+
+  <!-- Previous Work -->
+  <a href="https://ieeexplore.ieee.org/document/10989779">
+    <img src="https://img.shields.io/badge/IEEE%20T--RO-Published-blue.svg" alt="Previous Work TRO">
+  </a>
+
+  <a href="https://ieeexplore.ieee.org/abstract/document/11204509">
+    <img src="https://img.shields.io/badge/IEEE%20RA--L-Published-blue.svg" alt="IEEE RA-L">
+  </a>
+
+  <a href="https://fly-pigth.github.io/EquiMus.github.io/">
+    <img src="https://img.shields.io/badge/Project-Homepage-9cf.svg" alt="Project Page">
+  </a>
+
+  <!-- <a href="https://github.com/fly-pigTH/EquiMus/releases">
+    <img src="https://img.shields.io/github/v/release/fly-pigTH/EquiMus?color=orange&label=Version" alt="Release">
+  </a> -->
+
+  <a href="https://github.com/fly-pigTH/EquiMus/stargazers">
+    <img src="https://img.shields.io/github/stars/fly-pigTH/EquiMus?style=social" alt="GitHub stars">
+  </a>
+
+</p>
+
+<details>
+  <summary><strong>Table of Contents</strong></summary>
+
 - [EquiMus: Musculoskeletal Equivalent Dynamic Modeling and Simulation for Rigid-soft Hybrid Robots with Linear Elastic Actuators](#equimus-musculoskeletal-equivalent-dynamic-modeling-and-simulation-for-rigid-soft-hybrid-robots-with-linear-elastic-actuators)
-  - [Table of Contents](#table-of-contents)
-  - [About This Work](#about-this-work)
-    - [Design Philosophy](#design-philosophy)
-    - [Abstract](#abstract)
-    - [TL;DR](#tldr)
-    - [Core Implementation](#core-implementation)
-  - [Install and try EquiMus in 3 minutes!](#install-and-try-equimus-in-3-minutes)
-  - [Data Download](#data-download)
-  - [FFmpeg install](#ffmpeg-install)
-  - [Project Structure](#project-structure)
-  - [Statics of this repo](#statics-of-this-repo)
+  - [⚡ What is EquiMus?](#-what-is-equimus)
+  - [💡 What Problems Does EquiMus Solve?](#-what-problems-does-equimus-solve)
+    - [🔧 1. Soft actuators are difficult to model—especially with dynamic mass redistribution](#-1-soft-actuators-are-difficult-to-modelespecially-with-dynamic-mass-redistribution)
+    - [🔗 2. Musculoskeletal systems contain kinematic loops](#-2-musculoskeletal-systems-contain-kinematic-loops)
+    - [⚡ 3. High-fidelity soft-body simulation is too slow for control \& RL](#-3-high-fidelity-soft-body-simulation-is-too-slow-for-control--rl)
+    - [📍 4. No unified workflow from CAD → simulation → real robot](#-4-no-unified-workflow-from-cad--simulation--real-robot)
+  - [🚀 Install \& Run EquiMus (3 minutes)](#-install--run-equimus-3-minutes)
+    - [📥 Optional: Download Validation Data](#-optional-download-validation-data)
+    - [Install FFmpeg (for video logging)](#install-ffmpeg-for-video-logging)
+  - [📂 Project Structure](#-project-structure)
+  - [Roadmap](#roadmap)
+  - [✉️ Contact](#️-contact)
+  - [📖 Citation](#-citation)
+  - [♫ Design Philosophy](#-design-philosophy)
+</details>
 
-## About This Work
+## ⚡ What is EquiMus?
 
-### Design Philosophy
-**[EN]** EquiMus fakes how nature uses energy to control motion — through an energy-equivalent formulation that turns physics intuition into simulation reality. That is the “fake it until you make it” philosophy in the energy domain.
+**EquiMus is an energy-equivalent dynamic modeling framework that brings musculoskeletal robots into real-time simulation, based on MuJoCo.** It converts soft actuators (e.g., pneumatic muscles, FEAs) into a rigorously derived **3-2-1 lumped-mass representation**, preserving their true kinetic, potential, damping, and actuation energies.
 
-**[CN]** 假之以能量，得之于运动。以伪成真，以虚造实。自然之道，人之所驭。
+This allows EquiMus to accurately model **dynamic mass redistribution, biarticular routing, and kinematic loops** within standard MuJoCo workflows—features that are traditionally hard (or impossible) to simulate.
 
-### Abstract
-Leveraging the full potential of soft robots relies heavily on dynamic modeling and control, which remains challenging due to their complex constitutive relationships and real-world operational scenarios. Bio-inspired musculoskeletal robots, which integrate rigid skeletons with soft actuators, combine the advantages of heavy load-bearing capacity and inherent flexibility. Although actuation dynamics has been studied through experimental methods and surrogate models, accurate and effective modeling and simulation still pose a significant challenge when soft actuators are applied at a large scale, especially in hybrid rigid-soft robots with continuously distributed mass, kinematic loops and diverse motion modes.
+EquiMus provides:
 
-To address this issue, this study introduces **EquiMus**, a musculoskeletal equivalent dynamic modeling and MuJoCo-based simulation for rigid-soft hybrid robots with linear elastic actuators. The equivalence and effectiveness are proven in detail and examined through simulated and real experiments on a bionic robotic leg. Based on the energy-equivalent model and simulation, we do some explorations in model-based and data-driven control algorithms including reinforcement learning.
+- A physically consistent actuator model validated in **theory, simulation, and hardware**
+- A MuJoCo-compatible implementation supporting **complex multi-muscle topologies**
+- **Static, dynamic, and morphological** validation results
+- Downstream examples including **PID auto-tuning**, **model-based control**, and **RL tasks**
 
-### TL;DR
-We proposed EquiMus, an energy-equivalent dynamics and simulation for the rigid-soft musculoskeletal robots with linear elastic actuators. The method captures dynamic mass redistribution, supports loop-closure constraints in MuJoCo, and remains real-time capable. Experiments on a pneumatic leg show close sim-to-real agreement and enable downstream usage in PID auto-tuning, model-based control, and reinforcement learning.
+👉 **In short: EquiMus makes muscle-driven robots truly simulatable.**
 
-### Core Implementation
+## 💡 What Problems Does EquiMus Solve?
 
-The robot dynamics are formulated using the vector form of the Lagrangian equation,
+EquiMus addresses four long-standing pain points in musculoskeletal robot simulation:
 
-$$
-    (\frac{d}{dt} \frac{\partial }{\partial \dot{\mathbf{q}}} - \frac{\partial }{\partial \mathbf{q}}) (L_{\text{EA}}+L_{\text{other}}) = \mathbf{Q}_{\text{EA}} + \mathbf{Q}_{\text{other}}
-$$
+### 🔧 1. Soft actuators are difficult to model—especially with dynamic mass redistribution  
+Most simulators approximate muscles as massless springs, leading to incorrect dynamics.  
+**→ EquiMus preserves actuator inertia, elasticity, damping, and work through an energy-equivalent formulation.**
 
-where $L$, $\mathbf{q}$, and $\mathbf{Q}$ denote the Lagrangian, generalized coordinates, and generalized forces respectively. We decompose $L$ and $\mathbf{Q}$ into contributions from elastic actuators (EA) and rigid structures (other). $L_{\text{other}}$ and $\mathbf{Q}_{\text{other}}$ depend on $\mathbf{q}$, its derivative $\dot{\mathbf{q}}$, and external inputs. From an energy perspective, if the energy and forces of the elastic actuator can be discretized with rigid--body equivalents, the overall dynamics remain invariant, regardless of the specific configuration and type of soft actuators. 
+### 🔗 2. Musculoskeletal systems contain kinematic loops  
+URDF/PyBullet cannot represent multi-joint muscles or loop closures.  
+**→ EquiMus uses MJCF with automatically generated constraints to model loops safely and robustly.**
 
-![alt text](demo/figure/figure_lumped_mass_fv.svg)
+### ⚡ 3. High-fidelity soft-body simulation is too slow for control & RL  
+FEM and Cosserat rod models are accurate but far from real time.  
+**→ EquiMus achieves MuJoCo-level performance (>140× real-time) while retaining physical consistency.**
 
-Shown in figure above, the dynamic model of the linear elastic actuator (EA) can be equivalently represented by a discrete mass system. The method follows a **3-2-1 approach**:
+### 📍 4. No unified workflow from CAD → simulation → real robot  
+Current workflows require hand-built hacks and produce inconsistent dynamics.  
+**→ EquiMus provides a clean, reproducible end-to-end pipeline, including calibration and sim-to-real examples.**
 
-- **3 Mass Points**:  
-  The actuator is discretized into three mass points—two fixed at each end and one at the midpoint—with respective masses of $\frac{1}{6}m$, $\frac{1}{6}m$, and $\frac{2}{3}m$.
+## 🚀 Install & Run EquiMus (3 minutes)
 
-- **2 Linear Actuators**:  
-  Two linear actuators (motors) are used to connect the mass points, each with:
-  - A stiffness of $2k$,
-  - A damping coefficient of $2c$,
-  - An initial length of $l_0/2$,
-  - Driving forces $F$.
-
-- **1 Constraint**:  
-  An equality constraint is implicitly enforced through the above conditions, ensuring that the elongation of both actuator segments remains identical.
-
-In MuJoCo, we construct the MJCF hierarchical structure of the EquiMus model, showing body–joint–geom relationships and key attributes. The “...” node denotes the remaining rigid skeleton structure, omitted here for clarity. Dashed arrows indicate `<equality>` constraints, including joint equality and body connection.
-
-![alt text](demo/figure/MJCF_structure.png)
-
-## Install and try EquiMus in 3 minutes!
-- Clone the repo and install requirements in conda env
+1️⃣ Clone the repo & install dependencies
 ~~~bash
 git clone https://github.com/fly-pigTH/EquiMus.git
 cd EquiMus
@@ -77,49 +105,40 @@ conda create -n equimus python=3.11 -y
 conda activate equimus
 pip install -r requirements.txt
 ~~~
-
-- Quick check
+2️⃣ Quick check
 ~~~bash
 python -c "import mujoco; print('MuJoCo:', mujoco.__version__)"
 ~~~
-
-- Run the demo: To run the demo, use the following commands in your terminal:
+3️⃣ Run the demo (2-DOF & 3-DOF musculoskeletal morphologies)
 ```bash
 # Display help message
 python demo/demo.py -h
 
-# Run the simulation for the 2DOF or 3DOF model on Mac/Windows/Linux
-mjpython demo/demo.py --dof 3  # For macOS
-python demo/demo.py --dof 3    # For Windows
+# macOS (mjpython)
+mjpython demo/demo.py --dof 3
+
+# Windows/Linux
+python demo/demo.py --dof 3
 ```
 
-Upon successful execution, a simulation window will appear, showcasing the interactive viewer of the [MuJoCo passive-viewer](https://mujoco.readthedocs.io/en/stable/python.html#passive-viewer).
+If successful, a [MuJoCo passive-viewer](https://mujoco.readthedocs.io/en/stable/python.html#passive-viewer) will open:
 
 | ![3DOF](./demo/figure/resized/demo_3DOF.png) | ![2DOF](./demo/figure/resized/demo_2DOF.png) |
 |:--:|:--:|
-| **(a) Morphology with 3DOF** | **(b) Morphology with 2DOF** |
+| **(a) 3-DOF Morphology** | **(b) 2-DOF Morphology** |
 
-In the interactive viewer, you can observe the simulations of the 2DOF and 3DOF models. You can interact with the models using your mouse and keyboard, following [MuJoCo's GUI interaction conventions](https://www.youtube.com/watch?v=P83tKA1iz2Y).
-
-| ![Body labels](./demo/figure/resized/demo_2DOF_body.png) | ![Geom labels](./demo/figure/resized/demo_2DOF_geom.png) | ![Joint labels](./demo/figure/resized/demo_2DOF_joint.png) |
-|:--:|:--:|:--:|
-| **(a) Body Labels** | **(b) Geom Labels** | **(c) Joint Labels** |
+You can rotate, drag, and actuate the model using standard MuJoCo GUI controls following ([MuJoCo interaction conventions](https://www.youtube.com/watch?v=P83tKA1iz2Y)).
 
 
+### 📥 Optional: Download Validation Data
+Dynamic-validation examples require extra datasets:
 
-## Data Download
-> (Optional for `src/validation_simulation/dynamic`)
+👉 Download here: https://drive.google.com/file/d/1wKS-2Aa7IVpy4-AHKAF68sH8nZ6IhQTV/view?usp=drive_link
 
-To download the required data files, you can use the following link:
+Place the extracted `data/` folder inside `src/validation_simulation/dynamic/`. Static & morphology validation demos already include necessary data.
 
-https://drive.google.com/file/d/1wKS-2Aa7IVpy4-AHKAF68sH8nZ6IhQTV/view?usp=drive_link
-
-This `data` folder is the datafile needed by `src/validation_simulation/dynamic`. Please put the downloaded file in `src/validation_simulation/dynamic`.
-
-The ohter data is already put in the repository.
-
-## FFmpeg install
-- Mac
+### Install FFmpeg (for video logging)
+- MacOS
 ~~~
 brew install ffmpeg
 ~~~
@@ -134,37 +153,85 @@ sudo apt install ffmpeg
 ~~~
 
 
-## Project Structure
+## 📂 Project Structure
 
-The project is organized to align with the flow of the manuscript, ensuring clarity and ease of navigation. Please click to visit ReadMe file for each part.
+The project is structured to mirror the workflow presented in the paper, making it easy to navigate and reproduce all experiments. Each module includes its own `ReadMe` for quick reference.
 
-- **models**: Contains MuJoCo `XML` files for simulation.
-- **src**:
-  - **validation_simulation**: Includes simulation-based validation.
-    - [static](src/validation_simulation/static/ReadMe.md): Static validation details.
-    - [dynamic](src/validation_simulation/dynamic/ReadMe.md): Dynamic validation details.
-    - [morphology](src/validation_simulation/morphology/ReadMe.md): Morphological validation details.
-  - **[validation_physical](src/validation_physical/ReadMe.md)**: Contains physical validation experiments.
-    - static: Physical static validation.
-    - dynamic: Physical dynamic validation.
-  - **application**: Demonstrates the potential applications of the EquiMus method.
-    - [PID_AutoTuning](src/application/PID_AutoTuning/ReadMe.md): PID auto-tuning application.
-    - [RL_BallKicking](src/application/RL_BallKicking/ReadMe.md): Reinforcement learning for ball-kicking application.
-- **utils**:
-  - experiment.py: Utility script for experiments.
-  - experiment_topology.py: Utility script for experiment topology.
-- **ReadMe.md**: Project documentation.
+```txt
+EquiMus/
+├── models/                         # MuJoCo XML models
+│   ├── 2DOF/
+│   ├── 3DOF/
+│   └── ...
+│
+├── src/
+│   ├── validation_simulation/      # Simulation-based validation
+│   │   ├── static/                 # ├─ Static validation
+│   │   │   └── ReadMe.md
+│   │   ├── dynamic/                # ├─ Dynamic validation
+│   │   │   └── ReadMe.md
+│   │   └── morphology/             # └─ Morphology generalization
+│   │       └── ReadMe.md
+│   │
+│   ├── validation_physical/        # Real-world experiments
+│   │   ├── static/
+│   │   ├── dynamic/
+│   │   └── ReadMe.md
+│   │
+│   ├── application/                # Downstream usage demos
+│   │   ├── PID_AutoTuning/         # ├─ PID auto-tuning demo
+│   │   │   └── ReadMe.md
+│   │   └── RL_BallKicking/         # └─ RL ball-kicking demo
+│   │       └── ReadMe.md
+│   │
+│   └── utils/
+│       ├── experiment.py           # Utility script for experiments.
+│       └── experiment_topology.py
+│
+├── demo/                           # Demo scripts & figures
+│
+├── media/                          # Logos & website resources
+│
+├── requirements.txt
+├── LICENSE
+└── ReadMe.md                       # Main documentation
+```
 
-## Statics of this repo
-Language|files|blank|comment|code
-:-------|-------:|-------:|-------:|-------:
-CSV|19|0|0|41377
-Python|21|614|529|2438
-Jupyter Notebook|5|0|185448|1494
-XML|8|112|95|845
-Markdown|8|80|0|265
-Text|1|0|0|17
-JSON|1|0|0|5
-Bourne Shell|1|0|0|1
---------|--------|--------|--------|--------
-SUM:|64|806|186072|46442
+## Roadmap
+We are actively developing **EquiMus** and have outlined the following roadmap for future enhancements and features:
+- [ ] **EquiMus Toolbox (will be released before December 2025)**
+  - [ ] Automated actuator parsing from URDF/MJCF
+  - [ ] Automatic 3-2-1 reconstruction & constraint generation
+  - [ ] Support for batch model conversion
+- [ ] **Model Library Expansion**
+  - [ ] Single-joint actuator examples (FEA, McKibben)
+  - [ ] Biarticular / multi-joint muscles
+  - [ ] Rigid–soft hybrid benchmark models
+- [ ] **Parameter Identification Suite**
+- [ ] **Documentation & Website**
+  - [ ] Tutorials & interactive examples
+  - [ ] Model Zoo on website
+
+
+## ✉️ Contact
+If you are interested in collaborating, have questions, or need support, please feel free to reach out to us!
+- Yinglei Zhu: zylbhsf@gmail.com
+- Huichan Zhao: zhaohuichan@mail.tsinghua.edu.cn
+
+## 📖 Citation
+If you find EquiMus helpful, please cite us:
+
+```bibtex
+@article{zhu2025equimus,
+  title={EquiMus: Energy-Equivalent Dynamic Modeling and Simulation of Musculoskeletal Robots Driven by Linear Elastic Actuators},
+  author={Zhu, Yinglei and Dong, Xuguang and Wang, Qiyao and Shao, Qi and Xie, Fugui and Liu, Xinjun and Zhao, Huichan},
+  journal={IEEE Robotics and Automation Letters},
+  year={2025},
+  publisher={IEEE}
+}
+```
+
+## ♫ Design Philosophy
+**[EN]** EquiMus fakes how nature uses energy to control motion — through an energy-equivalent formulation that turns physics intuition into simulation reality. That is the “fake it until you make it” philosophy in the energy domain.
+
+**[CN]** 假之以能量，得之于运动。以伪成真，以虚造实。自然之道，人之所驭。
