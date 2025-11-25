@@ -75,6 +75,8 @@ EquiMus provides:
 
 👉 **In short: EquiMus makes muscle-driven robots truly simulatable.**
 
+‼️ Note: Our repository **EquiMus** focuses on the verification of the energy-equivalent modeling method in MuJoCo simulation at this stage. For real-world application, we are still working on building a complete open-source toolbox **EquiMus-Toolbox** for musculoskeletal robot design, fabrication, and sim-to-real deployment. Stay tuned for updates!
+
 ## 💡 What Problems Does EquiMus Solve?
 
 EquiMus addresses four long-standing pain points in musculoskeletal robot simulation:
