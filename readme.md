@@ -1,3 +1,5 @@
+
+
 <p align="center">
   <img src="media/logo_long.png" alt="EquiMus Logo" width= 100%; style="max-width:none;">
 </p>
@@ -127,6 +129,8 @@ mjpython demo/demo.py --dof 3
 # Windows/Linux
 python demo/demo.py --dof 3
 ```
+
+To run the 2-DOF morphology, use `--dof 2` instead of `--dof 3`.
 
 If successful, a [MuJoCo passive-viewer](https://mujoco.readthedocs.io/en/stable/python.html#passive-viewer) will open:
 
